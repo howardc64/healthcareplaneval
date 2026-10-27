@@ -1,0 +1,1166 @@
+{
+  "app": "health-plan-evaluator",
+  "version": "2.3.1",
+  "savedAt": "2026-10-27T00:42:00.060Z",
+  "state": {
+    "household": {
+      "p1": {
+        "name": "Howard",
+        "age": "62"
+      },
+      "p2": {
+        "name": "Nancy",
+        "age": "53"
+      },
+      "taxRate": "28",
+      "pcp1": "2",
+      "pcp2": "2",
+      "spec": "15",
+      "proc": "4",
+      "us": "6",
+      "mri": "2",
+      "ct": "",
+      "bloodWork": "10",
+      "xray": "",
+      "ucVisits": "2",
+      "ucBlood": "2",
+      "ucXray": "1",
+      "ucUS": "2",
+      "ucMRI": "",
+      "ucCT": "",
+      "rx5": "",
+      "rx4": "",
+      "rx3": "",
+      "rx2": "",
+      "rx1": "10"
+    },
+    "plans": [
+      {
+        "id": "plmvpy57k89",
+        "collapsed": true,
+        "hide": {
+          "identity": true,
+          "network": true,
+          "premium": false,
+          "limits": false,
+          "svcVisits": false,
+          "svcTests": false,
+          "svcFacility": false,
+          "svcMental": true,
+          "svcOther": true,
+          "drugs": false,
+          "prices": false,
+          "lists": true,
+          "examples": true,
+          "extraction": true,
+          "hsa": false
+        },
+        "hsaContrib": "",
+        "identity": {
+          "name": "Ambetter Cascade Select Vital Gold: Standard Gold On Exchange Plan",
+          "carrier": "Ambetter from Coordinated Care Corporation",
+          "state": "WA",
+          "plan_year": "2027",
+          "coverage_start": "2027-01-01",
+          "coverage_end": "2027-12-31",
+          "metal_level": "Gold",
+          "plan_type": "HMO",
+          "hsa_eligible": false,
+          "sbc_id": "SBC-61836WA0050016-01-2027",
+          "source_documents": "AB_Vital_Gold_61836WA0050016-01.pdf (Summary of Benefits and Coverage)\nAB_Vital_Gold_Compare_Plans___Washington_Healthplanfinder.pdf (plan details page)"
+        },
+        "network": {
+          "out_of_network_covered": "false",
+          "primary_care_provider_required": "true",
+          "specialist_referral_required": "false",
+          "emergency_out_of_network_pays_in_network_rates": "true"
+        },
+        "premium": {
+          "monthly": "2318.8",
+          "estimated_yearly_cost": "33976",
+          "note": "Washington Healthplanfinder estimate for this household; the SBC does not list a premium."
+        },
+        "limits": {
+          "deductible_individual": "2200",
+          "deductible_family": "4400",
+          "deductible_embedded": "true",
+          "separate_service_deductibles": "false",
+          "oop_max_individual": "11000",
+          "oop_max_family": "22000",
+          "coinsurance_member_pct": "20",
+          "not_counted_toward_oop_max": "Premiums\nBalance-billing charges\nHealth care this plan doesn't cover\nPenalties for failure to obtain preauthorization\nCosts for non-covered services\nServices provided by out-of-network providers"
+        },
+        "services": {
+          "preventive_care": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Preventive care/screening/immunization: No charge; deductible does not apply"
+          },
+          "primary_care_visit": {
+            "cost_share": {
+              "structure": "copay",
+              "copay_amount": "15",
+              "coinsurance_pct": "",
+              "deductible_applies": "false",
+              "unit": "visit",
+              "max_units": "",
+              "limits": "",
+              "source_text": "Primary care visit to treat an injury or illness: $15 Copay / visit; deductible does not apply"
+            },
+            "first_count": "",
+            "first": {
+              "structure": "",
+              "copay_amount": "",
+              "coinsurance_pct": "",
+              "deductible_applies": "",
+              "unit": "",
+              "max_units": "",
+              "limits": "",
+              "source_text": ""
+            }
+          },
+          "specialist_visit": {
+            "structure": "copay",
+            "copay_amount": "40",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Specialist visit: $40 Copay / visit; deductible does not apply"
+          },
+          "urgent_care_visit": {
+            "structure": "copay",
+            "copay_amount": "35",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Urgent care: $35 Copay / visit; deductible does not apply"
+          },
+          "virtual_care_visit": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "Unlimited virtual 24/7 care visits from Ambetter network providers.",
+            "source_text": "Unlimited Virtual 24/7 Care Visits received from Ambetter's network providers covered at No Charge"
+          },
+          "chiropractic": {
+            "cost_share": {
+              "structure": "copay",
+              "copay_amount": "15",
+              "coinsurance_pct": "",
+              "deductible_applies": "false",
+              "unit": "visit",
+              "max_units": "",
+              "limits": "Up to 10 visits per year.",
+              "source_text": "Chiropractic visit: You pay $15, up to 10 visits. See Additional Benefits for an exception."
+            },
+            "first_count": "",
+            "first": {
+              "structure": "",
+              "copay_amount": "",
+              "coinsurance_pct": "",
+              "deductible_applies": "",
+              "unit": "",
+              "max_units": "",
+              "limits": "",
+              "source_text": ""
+            }
+          },
+          "lab_test": {
+            "structure": "copay",
+            "copay_amount": "30",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "",
+            "source_text": "$30 Copay / visit; deductible does not apply for laboratory & professional services"
+          },
+          "xray_diagnostic_imaging": {
+            "structure": "copay",
+            "copay_amount": "30",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "",
+            "source_text": "$30 Copay / visit; deductible does not apply for x-ray & diagnostic imaging"
+          },
+          "diagnostic_test_other_place_of_service": {
+            "structure": "copay",
+            "copay_amount": "350",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "Applies to lab and x-ray/diagnostic imaging at other places of service (hospital, emergency room, outpatient facility). Whether the deductible applies is not stated.",
+            "source_text": "$350 Copay / visit for laboratory & professional services and x-ray & diagnostic imaging at other places of service"
+          },
+          "imaging_ct_pet_mri": {
+            "structure": "copay",
+            "copay_amount": "300",
+            "coinsurance_pct": "",
+            "deductible_applies": "true",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "Prior authorization may be required.",
+            "source_text": "Imaging (CT/PET scans, MRIs) $300 Copay / visit. Plan page: You pay up to the deductible / $300 copay after you meet your deductible"
+          },
+          "outpatient_surgery_facility": {
+            "structure": "copay",
+            "copay_amount": "350",
+            "coinsurance_pct": "",
+            "deductible_applies": "true",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Facility fee (e.g., ambulatory surgery center) $350 Copay / visit. Plan page: up to the deductible / $350 copay after you meet your deductible"
+          },
+          "outpatient_surgery_professional": {
+            "structure": "copay",
+            "copay_amount": "75",
+            "coinsurance_pct": "",
+            "deductible_applies": "true",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Physician/surgeon fees $75 Copay / visit. Plan page: up to the deductible / $75 copay after you meet your deductible"
+          },
+          "emergency_room": {
+            "structure": "copay",
+            "copay_amount": "800",
+            "coinsurance_pct": "",
+            "deductible_applies": "true",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "Same $800 copay in and out of network for emergency care; no balance billing in Washington.",
+            "source_text": "Emergency room care $800 Copay / visit. Plan page: You pay up to the deductible / $800 copay after you meet your deductible"
+          },
+          "emergency_transport": {
+            "structure": "copay",
+            "copay_amount": "375",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "trip",
+            "max_units": "",
+            "limits": "Same copay in and out of network.",
+            "source_text": "Emergency medical transportation $375 Copay / trip; deductible does not apply"
+          },
+          "hospital_facility": {
+            "structure": "copay",
+            "copay_amount": "650",
+            "coinsurance_pct": "",
+            "deductible_applies": "true",
+            "unit": "day",
+            "max_units": "5",
+            "limits": "The per day copayment is limited to 5 copayments per stay.",
+            "source_text": "Facility fee (e.g., hospital room) $650 Copay / day, up to 5 days. Plan page: up to the deductible / $650 copay a day after you meet the deductible"
+          },
+          "hospital_professional": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Physician/surgeon fees: No charge"
+          },
+          "mental_health_outpatient_office": {
+            "cost_share": {
+              "structure": "copay",
+              "copay_amount": "15",
+              "coinsurance_pct": "",
+              "deductible_applies": "false",
+              "unit": "visit",
+              "max_units": "",
+              "limits": "",
+              "source_text": "Office Visit: $15 Copay / visit; deductible does not apply"
+            },
+            "first_count": "",
+            "first": {
+              "structure": "",
+              "copay_amount": "",
+              "coinsurance_pct": "",
+              "deductible_applies": "",
+              "unit": "",
+              "max_units": "",
+              "limits": "",
+              "source_text": ""
+            }
+          },
+          "mental_health_outpatient_other": {
+            "structure": "copay",
+            "copay_amount": "15",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Other Outpatient Services: $15 Copay / visit; deductible does not apply"
+          },
+          "mental_health_inpatient": {
+            "structure": "copay",
+            "copay_amount": "650",
+            "coinsurance_pct": "",
+            "deductible_applies": "true",
+            "unit": "day",
+            "max_units": "5",
+            "limits": "The per day copayment is limited to 5 copayments per stay.",
+            "source_text": "Inpatient services $650 Copay / day, up to 5 days"
+          },
+          "maternity_office_visit": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Pregnant, office visits: No charge; deductible does not apply"
+          },
+          "delivery_professional": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Childbirth/delivery professional services: No charge"
+          },
+          "delivery_facility": {
+            "structure": "copay",
+            "copay_amount": "650",
+            "coinsurance_pct": "",
+            "deductible_applies": "true",
+            "unit": "day",
+            "max_units": "5",
+            "limits": "The per day copayment is limited to 5 copayments per stay.",
+            "source_text": "Childbirth/delivery facility services $650 Copay / day, up to 5 days. Plan page: up to the deductible / $650 copay a day after you meet the deductible"
+          },
+          "home_health": {
+            "structure": "copay",
+            "copay_amount": "15",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "day",
+            "max_units": "",
+            "limits": "Limited to 130 visits per year.",
+            "source_text": "Home health care $15 Copay / day; deductible does not apply"
+          },
+          "rehabilitation_outpatient": {
+            "structure": "copay",
+            "copay_amount": "30",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "25 outpatient visits per year, shared with habilitation (limit does not apply for a mental health/substance use disorder diagnosis).",
+            "source_text": "Outpatient: $30 Copay / visit; deductible does not apply"
+          },
+          "rehabilitation_inpatient": {
+            "structure": "copay",
+            "copay_amount": "650",
+            "coinsurance_pct": "",
+            "deductible_applies": "true",
+            "unit": "day",
+            "max_units": "5",
+            "limits": "30 inpatient days per year, shared with habilitation (limit does not apply for a mental health/substance use disorder diagnosis).",
+            "source_text": "Inpatient: $650 Copay / day, up to 5 days"
+          },
+          "habilitation_outpatient": {
+            "structure": "copay",
+            "copay_amount": "30",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "25 outpatient visits per year, shared with rehabilitation (limit does not apply for a mental health/substance use disorder diagnosis).",
+            "source_text": "Outpatient: $30 Copay / visit; deductible does not apply"
+          },
+          "habilitation_inpatient": {
+            "structure": "copay",
+            "copay_amount": "650",
+            "coinsurance_pct": "",
+            "deductible_applies": "true",
+            "unit": "day",
+            "max_units": "5",
+            "limits": "30 inpatient days per year, shared with rehabilitation (limit does not apply for a mental health/substance use disorder diagnosis).",
+            "source_text": "Inpatient: $650 Copay / day, up to 5 days"
+          },
+          "skilled_nursing": {
+            "structure": "copay",
+            "copay_amount": "350",
+            "coinsurance_pct": "",
+            "deductible_applies": "true",
+            "unit": "day",
+            "max_units": "",
+            "limits": "Limited to 60 days per year.",
+            "source_text": "Skilled nursing care $350 Copay / day"
+          },
+          "durable_medical_equipment": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "20",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Durable medical equipment 20% Coinsurance"
+          },
+          "hospice": {
+            "structure": "copay",
+            "copay_amount": "15",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "day",
+            "max_units": "",
+            "limits": "14 days per lifetime for respite care covered with hospice services.",
+            "source_text": "Hospice services $15 Copay / day; deductible does not apply"
+          },
+          "children_eye_exam": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "",
+            "max_units": "",
+            "limits": "1 exam per year.",
+            "source_text": "Children's eye exam: No charge; deductible does not apply"
+          },
+          "children_glasses": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "",
+            "max_units": "",
+            "limits": "1 frame and 1 pair of lenses per year.",
+            "source_text": "Children's glasses: No charge; deductible does not apply"
+          },
+          "children_dental_checkup": {
+            "structure": "not_covered",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Children's dental check-up: Not covered"
+          }
+        },
+        "drugs": {
+          "tier5": {
+            "structure": "not_applicable",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "The SBC lists drug tiers 1 to 4 only"
+          },
+          "tier4_specialty": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "20",
+            "deductible_applies": "true",
+            "unit": "prescription",
+            "max_units": "",
+            "limits": "Up to 30 days retail and up to 30 days through mail order.",
+            "source_text": "Specialty drugs (Tier 4) Retail: 20% Coinsurance. Plan page: up to the deductible / 20% after you meet your deductible"
+          },
+          "tier3_non_preferred_brand": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "20",
+            "deductible_applies": "true",
+            "unit": "prescription",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Non-preferred brand drugs (Tier 3) Retail: 20% Coinsurance. Plan page: up to the deductible / 20% after you meet your deductible"
+          },
+          "tier2_preferred_brand": {
+            "structure": "copay",
+            "copay_amount": "75",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "prescription",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Preferred brand drugs (Tier 2) Retail: $75 Copay / prescription; deductible does not apply"
+          },
+          "tier1_generic": {
+            "structure": "copay",
+            "copay_amount": "10",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "prescription",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Generic drugs (Tier 1) Retail: $10 Copay / prescription; deductible does not apply"
+          },
+          "insulin_30_day_cap": "35",
+          "retail_days_supply": "30",
+          "mail_order_days_supply": "90",
+          "mail_order_cost_multiplier": "2.5"
+        },
+        "excluded_services": "Bariatric surgery\nCosmetic surgery\nDental care (Adult)\nDental care (Children)\nInfertility Treatment (except for Artificial Insemination)\nLong-term care\nNon-emergency care when traveling outside the U.S.\nPrivate-duty nursing\nRoutine eye care (Adult)\nWeight loss programs",
+        "other_covered_services": "Abortion\nAcupuncture\nChiropractic care (10 visits/year)\nHearing aids (Limited to 1 per ear every 3 years)\nRoutine foot care",
+        "coverage_examples": [
+          {
+            "name": "Having a baby (Peg)",
+            "total_example_cost": "12700",
+            "deductible_paid": "2200",
+            "copayments_paid": "1100",
+            "coinsurance_paid": "0",
+            "limits_or_exclusions": "60",
+            "patient_total": "3360"
+          },
+          {
+            "name": "Managing type 2 diabetes (Joe)",
+            "total_example_cost": "5600",
+            "deductible_paid": "800",
+            "copayments_paid": "1400",
+            "coinsurance_paid": "0",
+            "limits_or_exclusions": "20",
+            "patient_total": "2220"
+          },
+          {
+            "name": "Simple fracture (Mia)",
+            "total_example_cost": "2800",
+            "deductible_paid": "1000",
+            "copayments_paid": "800",
+            "coinsurance_paid": "0",
+            "limits_or_exclusions": "0",
+            "patient_total": "1800"
+          }
+        ],
+        "prices": {
+          "primary_care_visit": "",
+          "specialist_visit": "",
+          "urgent_care_visit": "",
+          "specialist_procedure": "",
+          "blood_work": "",
+          "xray": "",
+          "ultrasound": "",
+          "mri": "",
+          "ct": "",
+          "er_visit": "",
+          "hospital_day": "",
+          "surgery": "",
+          "rx_tier1": "",
+          "rx_tier2": "",
+          "rx_tier3": "",
+          "rx_tier4": "",
+          "rx_tier5": ""
+        },
+        "evaluator_notes": "No dollar price estimates are stored in this file. Enter allowed prices in the evaluator's section 2 (Costs).\nER, imaging (CT/MRI), outpatient surgery and hospital stays are flat copays that apply after the deductible; the evaluator needs a full allowed price for them (section 2) to count the deductible correctly.\nUltrasound uses the plan's x-ray and diagnostic imaging cost share ($30 copay).",
+        "extraction": {
+          "confidence": "high",
+          "assumptions": "Deductible applies = true for hospital, delivery facility, mental health inpatient, inpatient rehabilitation and habilitation, and skilled nursing: they are not on the plan page's list of services covered before the deductible.\nDeductible applies = true for durable medical equipment for the same reason.\nThe primary care price equals every sick visit ($15); an annual preventive visit is no charge.",
+          "notes": "Tier 3 and Tier 4 drugs are coinsurance with no dollar price in the documents.\nThe SBC does not state whether the deductible applies to lab and x-ray at other places of service ($350 copay), so it is left unset.\nMail order is 90 days at 2.5x the retail copay for Tier 1 and Tier 2; Tier 4 is 30 days.\nSBC coverage examples are self-only coverage."
+        }
+      },
+      {
+        "id": "plmvpy5g3d10",
+        "collapsed": true,
+        "hide": {
+          "identity": true,
+          "network": true,
+          "premium": false,
+          "limits": false,
+          "svcVisits": false,
+          "svcTests": false,
+          "svcFacility": false,
+          "svcMental": true,
+          "svcOther": true,
+          "drugs": false,
+          "prices": false,
+          "lists": true,
+          "examples": true,
+          "extraction": true,
+          "hsa": false
+        },
+        "hsaContrib": "",
+        "identity": {
+          "name": "Ambetter Cascade Select Bronze: Standard Expanded Bronze On Exchange Plan",
+          "carrier": "Ambetter from Coordinated Care Corporation",
+          "state": "WA",
+          "plan_year": "2027",
+          "coverage_start": "2027-01-01",
+          "coverage_end": "2027-12-31",
+          "metal_level": "Bronze",
+          "plan_type": "HMO",
+          "hsa_eligible": true,
+          "sbc_id": "SBC-61836WA0050036-01-2027",
+          "source_documents": "AB_Select_Bronze_61836WA0050036-01.pdf (Summary of Benefits and Coverage)\nAB_Select_Bronze_HSA_Compare_Plans___Washington_Healthplanfinder.pdf (plan details page)"
+        },
+        "network": {
+          "out_of_network_covered": "false",
+          "primary_care_provider_required": "true",
+          "specialist_referral_required": "false",
+          "emergency_out_of_network_pays_in_network_rates": "true"
+        },
+        "premium": {
+          "monthly": "1839.7",
+          "estimated_yearly_cost": "31907",
+          "note": "Washington Healthplanfinder estimate for this household; the SBC does not list a premium."
+        },
+        "limits": {
+          "deductible_individual": "7000",
+          "deductible_family": "14000",
+          "deductible_embedded": "true",
+          "separate_service_deductibles": "false",
+          "oop_max_individual": "11800",
+          "oop_max_family": "23600",
+          "coinsurance_member_pct": "40",
+          "not_counted_toward_oop_max": "Premiums\nBalance-billing charges\nHealth care this plan doesn't cover\nPenalties for failure to obtain preauthorization\nCosts for non-covered services\nServices provided by out-of-network providers"
+        },
+        "services": {
+          "preventive_care": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Preventive care/screening/immunization: No charge; deductible does not apply"
+          },
+          "primary_care_visit": {
+            "cost_share": {
+              "structure": "copay",
+              "copay_amount": "45",
+              "coinsurance_pct": "",
+              "deductible_applies": "false",
+              "unit": "visit",
+              "max_units": "",
+              "limits": "",
+              "source_text": "Additional visits: $45 Copay / visit; deductible does not apply."
+            },
+            "first_count": "2",
+            "first": {
+              "structure": "copay",
+              "copay_amount": "1",
+              "coinsurance_pct": "",
+              "deductible_applies": "false",
+              "unit": "visit",
+              "max_units": "",
+              "limits": "",
+              "source_text": "First two visits: $1 Copay / visit; deductible does not apply. Additional visits: $45 Copay / visit"
+            }
+          },
+          "specialist_visit": {
+            "structure": "copay",
+            "copay_amount": "100",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Specialist visit: $100 Copay / visit; deductible does not apply"
+          },
+          "urgent_care_visit": {
+            "structure": "copay",
+            "copay_amount": "100",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Urgent care: $100 Copay / visit; deductible does not apply"
+          },
+          "virtual_care_visit": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "Unlimited virtual 24/7 care visits from Ambetter network providers.",
+            "source_text": "Unlimited Virtual 24/7 Care Visits received from Ambetter's network providers covered at No Charge"
+          },
+          "chiropractic": {
+            "cost_share": {
+              "structure": "copay",
+              "copay_amount": "45",
+              "coinsurance_pct": "",
+              "deductible_applies": "false",
+              "unit": "visit",
+              "max_units": "",
+              "limits": "Up to 10 visits per year.",
+              "source_text": "Chiropractic visit: You pay $45, up to 10 visits. See Additional Benefits for an exception."
+            },
+            "first_count": "2",
+            "first": {
+              "structure": "copay",
+              "copay_amount": "1",
+              "coinsurance_pct": "",
+              "deductible_applies": "false",
+              "unit": "visit",
+              "max_units": "",
+              "limits": "",
+              "source_text": "Additional benefits: First 2 visits are $1. Visits include Primary Care, Chiropractic, Hearing Exams, and MH/SUD."
+            }
+          },
+          "lab_test": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "test",
+            "max_units": "",
+            "limits": "",
+            "source_text": "40% Coinsurance for laboratory & professional services. Plan page: up to the deductible / 40% after you meet your deductible"
+          },
+          "xray_diagnostic_imaging": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "test",
+            "max_units": "",
+            "limits": "",
+            "source_text": "40% Coinsurance for x-ray & diagnostic imaging. Plan page: up to the deductible / 40% after you meet your deductible"
+          },
+          "diagnostic_test_other_place_of_service": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "40% Coinsurance for laboratory & professional services and x-ray & diagnostic imaging at other places of service"
+          },
+          "imaging_ct_pet_mri": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "test",
+            "max_units": "",
+            "limits": "Prior authorization may be required.",
+            "source_text": "Imaging (CT/PET scans, MRIs) 40% Coinsurance. Plan page: up to the deductible / 40% after you meet your deductible"
+          },
+          "outpatient_surgery_facility": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Facility fee (e.g., ambulatory surgery center) 40% Coinsurance"
+          },
+          "outpatient_surgery_professional": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Physician/surgeon fees 40% Coinsurance"
+          },
+          "emergency_room": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "visit",
+            "max_units": "",
+            "limits": "Same 40% in and out of network for emergency care; no balance billing in Washington.",
+            "source_text": "Emergency room care 40% Coinsurance (in and out of network)"
+          },
+          "emergency_transport": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "trip",
+            "max_units": "",
+            "limits": "Same 40% in and out of network.",
+            "source_text": "Emergency medical transportation 40% Coinsurance (in and out of network)"
+          },
+          "hospital_facility": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Facility fee (e.g., hospital room) 40% Coinsurance"
+          },
+          "hospital_professional": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Physician/surgeon fees 40% Coinsurance"
+          },
+          "mental_health_outpatient_office": {
+            "cost_share": {
+              "structure": "copay",
+              "copay_amount": "45",
+              "coinsurance_pct": "",
+              "deductible_applies": "false",
+              "unit": "visit",
+              "max_units": "",
+              "limits": "",
+              "source_text": "Additional office visits: $45 Copay / visit; deductible does not apply."
+            },
+            "first_count": "2",
+            "first": {
+              "structure": "copay",
+              "copay_amount": "1",
+              "coinsurance_pct": "",
+              "deductible_applies": "false",
+              "unit": "visit",
+              "max_units": "",
+              "limits": "",
+              "source_text": "First two office visits: $1 Copay / visit; deductible does not apply."
+            }
+          },
+          "mental_health_outpatient_other": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Other Outpatient Services: 40% Coinsurance"
+          },
+          "mental_health_inpatient": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Inpatient services 40% Coinsurance"
+          },
+          "maternity_office_visit": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Pregnant, office visits: No charge; deductible does not apply"
+          },
+          "delivery_professional": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Childbirth/delivery professional services 40% Coinsurance"
+          },
+          "delivery_facility": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Childbirth/delivery facility services 40% Coinsurance"
+          },
+          "home_health": {
+            "structure": "copay",
+            "copay_amount": "50",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "day",
+            "max_units": "",
+            "limits": "Limited to 130 visits per year.",
+            "source_text": "Home health care $50 Copay / day; deductible does not apply"
+          },
+          "rehabilitation_outpatient": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "25 outpatient visits per year, shared with habilitation (limit does not apply for a mental health/substance use disorder diagnosis).",
+            "source_text": "Outpatient: 40% Coinsurance"
+          },
+          "rehabilitation_inpatient": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "30 inpatient days per year, shared with habilitation (limit does not apply for a mental health/substance use disorder diagnosis).",
+            "source_text": "Inpatient: 40% Coinsurance"
+          },
+          "habilitation_outpatient": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "25 outpatient visits per year, shared with rehabilitation (limit does not apply for a mental health/substance use disorder diagnosis).",
+            "source_text": "Outpatient: 40% Coinsurance"
+          },
+          "habilitation_inpatient": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "30 inpatient days per year, shared with rehabilitation (limit does not apply for a mental health/substance use disorder diagnosis).",
+            "source_text": "Inpatient: 40% Coinsurance"
+          },
+          "skilled_nursing": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "Limited to 60 days per year.",
+            "source_text": "Skilled nursing care 40% Coinsurance"
+          },
+          "durable_medical_equipment": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Durable medical equipment 40% Coinsurance"
+          },
+          "hospice": {
+            "structure": "copay",
+            "copay_amount": "50",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "day",
+            "max_units": "",
+            "limits": "14 days per lifetime for respite care covered with hospice services.",
+            "source_text": "Hospice services $50 Copay / day; deductible does not apply"
+          },
+          "children_eye_exam": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "",
+            "max_units": "",
+            "limits": "1 exam per year.",
+            "source_text": "Children's eye exam: No charge; deductible does not apply"
+          },
+          "children_glasses": {
+            "structure": "no_charge",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "",
+            "max_units": "",
+            "limits": "1 frame and 1 pair of lenses per year.",
+            "source_text": "Children's glasses: No charge; deductible does not apply"
+          },
+          "children_dental_checkup": {
+            "structure": "not_covered",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Children's dental check-up: Not covered"
+          }
+        },
+        "drugs": {
+          "tier5": {
+            "structure": "not_applicable",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": "The SBC lists drug tiers 1 to 4 only"
+          },
+          "tier4_specialty": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "prescription",
+            "max_units": "",
+            "limits": "Up to 30 days retail and up to 30 days through mail order.",
+            "source_text": "Specialty drugs (Tier 4) Retail: 40% Coinsurance"
+          },
+          "tier3_non_preferred_brand": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "prescription",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Non-preferred brand drugs (Tier 3) Retail: 40% Coinsurance"
+          },
+          "tier2_preferred_brand": {
+            "structure": "coinsurance",
+            "copay_amount": "",
+            "coinsurance_pct": "40",
+            "deductible_applies": "true",
+            "unit": "prescription",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Preferred brand drugs (Tier 2) Retail: 40% Coinsurance. Plan page: up to the deductible / 40% after you meet your deductible"
+          },
+          "tier1_generic": {
+            "structure": "copay",
+            "copay_amount": "32",
+            "coinsurance_pct": "",
+            "deductible_applies": "false",
+            "unit": "prescription",
+            "max_units": "",
+            "limits": "",
+            "source_text": "Generic drugs (Tier 1) Retail: $32 Copay / prescription; deductible does not apply"
+          },
+          "insulin_30_day_cap": "35",
+          "retail_days_supply": "30",
+          "mail_order_days_supply": "90",
+          "mail_order_cost_multiplier": "2.5"
+        },
+        "excluded_services": "Bariatric surgery\nCosmetic surgery\nDental care (Adult)\nDental care (Children)\nInfertility Treatment (except for Artificial Insemination)\nLong-term care\nNon-emergency care when traveling outside the U.S.\nPrivate-duty nursing\nRoutine eye care (Adult)\nWeight loss programs",
+        "other_covered_services": "Abortion\nAcupuncture\nChiropractic care (10 visits/year)\nHearing aids (Limited to 1 per ear every 3 years)\nRoutine foot care",
+        "coverage_examples": [
+          {
+            "name": "Having a baby (Peg)",
+            "total_example_cost": "12700",
+            "deductible_paid": "7000",
+            "copayments_paid": "60",
+            "coinsurance_paid": "1200",
+            "limits_or_exclusions": "60",
+            "patient_total": "8320"
+          },
+          {
+            "name": "Managing type 2 diabetes (Joe)",
+            "total_example_cost": "5600",
+            "deductible_paid": "4000",
+            "copayments_paid": "700",
+            "coinsurance_paid": "0",
+            "limits_or_exclusions": "20",
+            "patient_total": "4720"
+          },
+          {
+            "name": "Simple fracture (Mia)",
+            "total_example_cost": "2800",
+            "deductible_paid": "2500",
+            "copayments_paid": "300",
+            "coinsurance_paid": "0",
+            "limits_or_exclusions": "0",
+            "patient_total": "2800"
+          }
+        ],
+        "prices": {
+          "primary_care_visit": "",
+          "specialist_visit": "",
+          "urgent_care_visit": "",
+          "specialist_procedure": "",
+          "blood_work": "",
+          "xray": "",
+          "ultrasound": "",
+          "mri": "",
+          "ct": "",
+          "er_visit": "",
+          "hospital_day": "",
+          "surgery": "",
+          "rx_tier1": "",
+          "rx_tier2": "",
+          "rx_tier3": "",
+          "rx_tier4": "",
+          "rx_tier5": ""
+        },
+        "evaluator_notes": "No dollar price estimates are stored in this file. Every service except visits, home health, hospice and Tier 1 drugs is 40% coinsurance after the deductible, so the documents give no dollar price; enter allowed prices in the evaluator's section 2 (Costs).\nUltrasound uses the plan's x-ray and diagnostic imaging cost share (40% after the deductible).",
+        "extraction": {
+          "confidence": "high",
+          "assumptions": "Deductible applies = true for emergency transportation, hospital, delivery, inpatient and other outpatient mental health, rehabilitation, habilitation, skilled nursing and durable medical equipment: they are not on the plan page's list of services covered before the deductible.\nThe '$1 for the first two visits' rule is recorded on primary care, outpatient mental health office visits and chiropractic. The plan page says the two visits cover primary care, chiropractic, hearing exams and MH/SUD together, so the real total across all of them is two; the evaluator counts the primary care discount only.",
+          "notes": "The plan page says HSA eligible: Yes. The plan type is HMO, and the out-of-pocket maximum ($23,600 family) is above the usual HDHP cap, so the evaluator may show an HDHP warning; confirm eligibility with the carrier.\nDrug tiers 2 to 4 are 40% coinsurance with no dollar price in the documents.\nMail order is 90 days at 2.5x the retail copay for Tier 1 and Tier 2; Tier 4 is 30 days.\nSBC coverage examples are self-only coverage."
+        }
+      }
+    ],
+    "stress": {
+      "p1": true,
+      "p2": true,
+      "er": "2",
+      "erBlood": "2",
+      "erXray": "2",
+      "erUS": "2",
+      "erMRI": "0",
+      "erCT": "0",
+      "days": "2",
+      "surgeries": "1"
+    },
+    "costs": {
+      "er_visit": "5000",
+      "specialist_procedure": "375",
+      "blood_work": "200",
+      "xray": "200",
+      "ultrasound": "350",
+      "mri": "350",
+      "ct": "350",
+      "hospital_day": "10000",
+      "surgery": "6000"
+    },
+    "view": {
+      "hide": {
+        "s1": false,
+        "s2": false,
+        "s3": false,
+        "s4": false,
+        "hsaDetails": true,
+        "hsaCost": true
+      },
+      "secHide": {
+        "household": false,
+        "costs": false,
+        "stress": false
+      }
+    },
+    "settings": {
+      "year": "2027",
+      "family": "9000",
+      "catchUp": "1000",
+      "minDed": "3500",
+      "maxOop": "17400",
+      "catchAge": "55",
+      "medicareAge": "65",
+      "taxFull": false
+    }
+  }
+}
