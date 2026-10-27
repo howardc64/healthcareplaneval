@@ -76,7 +76,7 @@ header.top .legend .lnote{margin-left:auto;opacity:.8}
 header.top .brow{display:grid;grid-template-columns:190px 1fr;gap:10px;align-items:center;margin:4px 0}
 header.top .bn{display:flex;align-items:center;gap:4px;min-width:0;font-weight:600;font-size:13px;color:#fff}
 header.top .bn .tag{background:rgba(255,255,255,.9);color:var(--head)}
-header.top .bn .pname{max-width:130px}
+header.top .bn .pname{max-width:150px;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;vertical-align:baseline}
 header.top .bl{display:flex;align-items:center;gap:8px;margin:1px 0}
 header.top .bsel{flex:0 0 auto;width:14px;height:14px;margin:0;accent-color:#fff;cursor:pointer}
 header.top .btrack{flex:1 1 auto;min-width:0;display:flex;align-items:center}
@@ -112,6 +112,11 @@ header.top .baxis .tl{position:absolute;top:6px;transform:translateX(-50%);font-
 header.top .bars-empty{font-size:13px;opacity:.9;margin:2px 0}
 @media(max-width:640px){header.top .brow{grid-template-columns:1fr;gap:2px}header.top .baxis{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){header.top .b{transition:none}}
+header.top button.flash-ok{background:#1f9d5c!important;border-color:#7be0a8!important;color:#fff!important}
+header.top button.flash-bad{background:#c0392b!important;border-color:#ff9d92!important;color:#fff!important}
+header.top #fileName.flash{animation:fnflash 1.8s ease-out}
+@keyframes fnflash{0%,35%{background:rgba(123,224,168,.55);box-shadow:0 0 0 4px rgba(123,224,168,.55);border-radius:3px}100%{background:transparent;box-shadow:0 0 0 4px transparent}}
+@media (prefers-reduced-motion:reduce){header.top #fileName.flash{animation:none}}
 #status{font-size:13px;color:var(--muted);min-height:18px;margin:0 0 10px}
 footer{color:var(--muted);font-size:12px;text-align:center;padding:0 20px 30px}
 details summary{cursor:pointer;font-weight:600}
@@ -301,7 +306,7 @@ header.top button{background:rgba(255,255,255,.1)}
 
 <script>
 "use strict";
-const APP_VERSION = "2.15.0";
+const APP_VERSION = "2.17.1";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -1320,9 +1325,46 @@ function resRow(label, vals, o, tips){
   }).join("");
   return '<tr class="' + (o.cls || "") + '"><th>' + label + "</th>" + cells + "</tr>";
 }
-function nameHtml(name){
+function nameHtml(name, shown){
   const full = name || "(unnamed plan)";
-  return '<span class="pname" data-tip="' + esc(full) + '" tabindex="0">' + esc(full) + "</span>";
+  return '<span class="pname" data-tip="' + esc(full) + '" tabindex="0">' + esc(shown || full) + "</span>";
+}
+/* Bar chart names: the leading words that a plan shares with another plan (health organization and program,
+   such as "Kaiser Permanente Medicare Advantage") are abbreviated so the part that tells the plans apart fits. */
+const NAME_ABBR = [["kaiser permanente", "KP"], ["medicare advantage", "MA"], ["medicare", "MCR"], ["medicaid", "MCD"], ["health plan", "HP"], ["blue cross blue shield", "BCBS"], ["blue cross", "BC"], ["blue shield", "BS"], ["unitedhealthcare", "UHC"], ["united healthcare", "UHC"], ["foundation", "Fdn"], ["washington", "WA"]];
+function abbrPrefix(words){
+  const out = []; let run = [];
+  const ini = ws => ws.map(w => w.charAt(0).toUpperCase()).join("");
+  /* a run of other shared words: the organization name (first word) stays, the words after it become initials */
+  const flush = () => {
+    if (run.length > 1 && !out.length){ out.push(run[0]); if (run.length > 2) out.push(ini(run.slice(1))); else out.push(run[1]); }
+    else if (run.length > 1) out.push(ini(run));
+    else out.push.apply(out, run);
+    run = [];
+  };
+  for (let i = 0; i < words.length;){
+    let hit = null;
+    for (let j = 0; j < NAME_ABBR.length && !hit; j++){
+      const k = NAME_ABBR[j][0].split(" ").length;
+      if (words.slice(i, i + k).join(" ").toLowerCase() === NAME_ABBR[j][0]) hit = [k, NAME_ABBR[j][1]];
+    }
+    if (hit){ flush(); out.push(hit[1]); i += hit[0]; } else { run.push(words[i]); i++; }
+  }
+  flush();
+  return out;
+}
+function barNames(evs){
+  const names = evs.map(e => (pn(e.plan) || "(unnamed plan)").trim());
+  const toks = names.map(n => n.split(/\s+/));
+  return names.map((n, i) => {
+    let best = 0;
+    toks.forEach((t, j) => {
+      if (j === i) return;
+      let k = 0; while (k < toks[i].length && k < t.length && toks[i][k].toLowerCase() === t[k].toLowerCase()) k++;
+      if (k < toks[i].length && k < t.length) best = Math.max(best, k);
+    });
+    return best > 0 ? abbrPrefix(toks[i].slice(0, best)).concat(toks[i].slice(best)).join(" ") : n;
+  });
 }
 function shortName(name, max){
   const s = name || "(unnamed plan)";
@@ -1355,6 +1397,20 @@ function syncSel(){
   ensureSel();
   document.querySelectorAll("#bars .brow").forEach(r => r.querySelectorAll(".bsel").forEach(c => { c.checked = r.dataset.pid === String(ui.planId) && c.dataset.scen === ui.scen; }));
 }
+/* x axis: $10k divided by 1, 2, 4 or 5 (times a power of 10 for small or large totals).
+   Picks the finest step that still gives at most 10 positions (0 included). */
+function axisStep(maxV){
+  const c = [];
+  for (let e = -3; e <= 3; e++) [1, 2, 4, 5].forEach(d => c.push(10000 * Math.pow(10, e) / d));
+  c.sort((a, b) => a - b);
+  for (let i = 0; i < c.length; i++) if (Math.floor(maxV / c[i] + 1e-9) + 1 <= 10) return c[i];
+  return c[c.length - 1];
+}
+function axisLabel(v){
+  if (v === 0) return "$0";
+  if (v >= 1000) return "$" + +(v / 1000).toFixed(2) + "k";
+  return "$" + +v.toFixed(2);
+}
 function renderBars(evs){
   const box = $("bars");
   if (!evs.length){ box._sig = ""; box.innerHTML = '<div class="bars-empty">Add at least one plan to see results.</div>'; return; }
@@ -1366,6 +1422,7 @@ function renderBars(evs){
   box.querySelectorAll(".brow").forEach(r => { rows[r.dataset.pid] = r; });
   const keep = {};
   const fresh = [];
+  const shownNames = barNames(evs);
   evs.forEach(e => {
     const id = String(e.plan.id); keep[id] = true;
     let r = rows[id];
@@ -1376,10 +1433,11 @@ function renderBars(evs){
         '<div class="bl"><input type="checkbox" class="bsel" data-scen="stress" aria-label="Show this plan, normal year plus stress scenario, in Line-item detail" data-tip="Show this plan and scenario in Line-item detail"><div class="btrack"><div class="b b2"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div><div class="bd" data-tip="" tabindex="0"></div></div><div class="bm bm2" data-tip="" tabindex="0"><div class="bx bx2" data-tip="" tabindex="0"></div></div></div><span class="bv v2" tabindex="0"></span><span class="bmx bmx2" data-tip="" tabindex="0"></span></div></div>';
       box.appendChild(r); rows[id] = r; fresh.push(r);
     }
-    const nameKey = pn(e.plan) + "|" + (e.isHsa ? 1 : 0);
+    const shownName = shownNames[evs.indexOf(e)];
+    const nameKey = pn(e.plan) + "|" + shownName + "|" + (e.isHsa ? 1 : 0);
     if (r._nameKey !== nameKey){
       r._nameKey = nameKey;
-      r.querySelector(".bn").innerHTML = nameHtml(pn(e.plan)) + (e.isHsa ? '<span class="tag">HSA</span>' : "");
+      r.querySelector(".bn").innerHTML = nameHtml(pn(e.plan), shownName) + (e.isHsa ? '<span class="tag">HSA</span>' : "");
     }
     const v1 = r.querySelector(".v1"), v2 = r.querySelector(".v2");
     v1.dataset.tip = e.tip.net; v2.dataset.tip = e.tip.netStress;
@@ -1415,13 +1473,13 @@ function renderBars(evs){
   let ax = box.querySelector(".baxis");
   if (!ax){ ax = document.createElement("div"); ax.className = "baxis"; ax.innerHTML = '<div></div><div class="ax"></div>'; }
   box.appendChild(ax);
-  const axSig = String(Math.ceil(maxV));
+  const step = axisStep(maxV), axSig = Math.ceil(maxV) + "|" + step;
   if (ax._sig !== axSig){
     ax._sig = axSig;
     let h = "";
-    for (let v = 0; v <= maxV; v += 5000){
-      const left = (v / maxV * 100).toFixed(2) + "%";
-      h += '<span class="tk" style="left:' + left + '"></span><span class="tl" style="left:' + left + '">$' + (v / 1000) + (v ? 'k' : '') + '</span>';
+    for (let i = 0; i * step <= maxV + 1e-6; i++){
+      const v = i * step, left = (v / maxV * 100).toFixed(2) + "%";
+      h += '<span class="tk" style="left:' + left + '"></span><span class="tl" style="left:' + left + '">' + axisLabel(v) + '</span>';
     }
     ax.querySelector(".ax").innerHTML = h;
   }
@@ -1682,29 +1740,41 @@ function downloadFile(){
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   setStatus("Downloaded " + a.download + ". This browser cannot rewrite a chosen file, so each save downloads a new copy (Chrome or Edge can rewrite one file).");
 }
-async function saveAs(){
-  if (!canSavePicker){ downloadFile(); return; }
+/* visual feedback on a Save button: green "Saved ✓" or red "Save failed" for 2 seconds */
+function flashBtn(btn, ok, text){
+  if (!btn._label) btn._label = btn.textContent;
+  clearTimeout(btn._ft);
+  btn.textContent = text || (ok ? "Saved ✓" : "Save failed");
+  btn.classList.remove("flash-ok", "flash-bad"); btn.classList.add(ok ? "flash-ok" : "flash-bad");
+  if (ok){ const f = $("fileName"); f.classList.remove("flash"); void f.offsetWidth; f.classList.add("flash"); }
+  btn._ft = setTimeout(() => { btn.textContent = btn._label; btn.classList.remove("flash-ok", "flash-bad"); }, 2000);
+}
+async function saveAs(btn){
+  btn = btn instanceof Element ? btn : $("btnSaveAs");
+  if (!canSavePicker){ downloadFile(); flashBtn(btn, true, "Downloaded ✓"); return; }
   try {
     const h = await window.showSaveFilePicker({ suggestedName: fileHandle ? fileHandle.name : suggestedName(), types: PICKER_TYPES });
     fileHandle = h; await writeToHandle(); restoreAutoIfSafetyOff(); showFileName();
     setStatus("Saved to " + h.name + ". Save now rewrites this file.");
+    flashBtn(btn, true);
   } catch (e){
     if (e.name === "AbortError") return;
-    if (e.name === "SecurityError"){ downloadFile(); return; }
-    setStatus("Could not save: " + e.message);
+    if (e.name === "SecurityError"){ downloadFile(); flashBtn(btn, true, "Downloaded ✓"); return; }
+    setStatus("Could not save: " + e.message); flashBtn(btn, false);
   }
 }
 async function saveCurrent(){
-  if (!fileHandle){ await saveAs(); return; }
-  try { await writeToHandle(); setStatus("Saved " + fileHandle.name + " at " + new Date().toLocaleTimeString() + "."); }
-  catch (e){ setStatus("Could not save: " + e.message); }
+  const btn = $("btnSave");
+  if (!fileHandle){ await saveAs(btn); return; }
+  try { await writeToHandle(); setStatus("Saved " + fileHandle.name + " at " + new Date().toLocaleTimeString() + "."); flashBtn(btn, true); }
+  catch (e){ setStatus("Could not save: " + e.message); flashBtn(btn, false); }
 }
 function loadText(text, name){
   try { state = normalizeState(JSON.parse(text)); renderAll(); autosave(true); setStatus("Opened " + name + " (" + state.plans.length + " plan" + (state.plans.length === 1 ? "" : "s") + ")."); return true; }
   catch (e){ setStatus("Could not open that file: " + e.message); return false; }
 }
 $("btnSave").addEventListener("click", saveCurrent);
-$("btnSaveAs").addEventListener("click", saveAs);
+$("btnSaveAs").addEventListener("click", () => saveAs($("btnSaveAs")));
 $("btnOpen").addEventListener("click", async () => {
   if (!canOpenPicker){ $("fileIn").click(); return; }
   try {

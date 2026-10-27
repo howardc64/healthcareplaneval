@@ -2,6 +2,31 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.17.1] - 2026-10-27
+
+### Changed
+- Cost bar names: the first word of a shared name that is not a known term (the organization, such as "Ambetter") is kept in full; the words after it become initials ("Ambetter CS Vital Gold").
+
+## [2.17.0] - 2026-10-27
+
+### Changed
+- Cost bars: the leading words a plan name shares with another plan (the health organization and program, such as "Kaiser Permanente Medicare Advantage" or "Ambetter Cascade Select") are abbreviated, so the distinguishing part of the name fits on the two lines. Hover shows the full name. Plan names elsewhere are unchanged.
+
+## [2.16.1] - 2026-10-27
+
+### Changed
+- Cost bar x axis now shows 5 to 10 labelled positions. The step is $10k divided by 1, 2, 4 or 5 (so $10k, $5k, $2.5k or $2k; scaled by powers of 10 for very small or large totals), chosen as the finest step that fits within 10 positions.
+
+## [2.16.0] - 2026-10-27
+
+### Added
+- Save and Save as… give visible feedback: the button turns green and reads "Saved ✓" for two seconds (red "Save failed" on an error, "Downloaded ✓" in browsers that download instead), and the current file name flashes.
+
+## [2.15.1] - 2026-10-27
+
+### Changed
+- Cost bars: plan names wrap onto two lines instead of being cut off after one, so the plan type is visible, not only the organization name. Hover still shows the full name.
+
 ## [2.15.0] - 2026-10-27
 
 ### Changed
