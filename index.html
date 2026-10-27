@@ -8,7 +8,7 @@
 :root{
   --bg:#f4f6f9; --card:#fff; --ink:#1c2430; --muted:#5d6878; --line:#d9dfe7;
   --brand:#1f5fbf; --brand-ink:#fff; --good:#157a45; --good-bg:#e5f5ec;
-  --warn:#8a5a00; --warn-bg:#fff4d6; --bad:#a32121; --bar1:#7fa8e6; --bar2:#e59a59;
+  --warn:#8a5a00; --warn-bg:#fff4d6; --bad:#a32121; --bar1:#7fa8e6; --bar2:#e59a59; --hbar1:#cfe1ff; --hbar2:#ffb878;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
@@ -57,15 +57,25 @@ table.res tr.sub th{padding-left:24px;color:var(--muted)}
 table.res tr.sub td{color:var(--muted)}
 table.res tr.total th,table.res tr.total td{font-weight:700;background:#f7f9fc}
 table.res td.best{background:var(--good-bg);color:var(--good);font-weight:700}
-.bars .brow{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:center;margin:8px 0}
-.bars .bn{font-weight:600}
-.bars .bl{display:flex;align-items:center;gap:8px;margin:2px 0}
-.bars .b{height:14px;border-radius:4px;min-width:2px}
-.bars .b1{background:var(--bar1)}.bars .b2{background:var(--bar2)}
-.bars .bv{font-size:12px;color:var(--muted);white-space:nowrap}
-.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-bottom:6px}
 .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}
-.legend .l1::before{background:var(--bar1)}.legend .l2::before{background:var(--bar2)}
+/* result bars pinned in the header */
+header.top .bars{max-width:1240px;margin:8px auto 0;padding-top:8px;border-top:1px solid rgba(255,255,255,.28);max-height:38vh;overflow-y:auto}
+header.top .legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;color:rgba(255,255,255,.85);margin:0 0 4px}
+header.top .legend .l1::before{background:var(--hbar1)}header.top .legend .l2::before{background:var(--hbar2)}
+header.top .legend .lnote{margin-left:auto;opacity:.8}
+header.top .brow{display:grid;grid-template-columns:190px 1fr;gap:10px;align-items:center;margin:4px 0}
+header.top .bn{display:flex;align-items:center;gap:4px;min-width:0;font-weight:600;font-size:13px;color:#fff}
+header.top .bn .tag{background:rgba(255,255,255,.9);color:var(--brand)}
+header.top .bn .pname{max-width:130px}
+header.top .bl{display:flex;align-items:center;gap:8px;margin:1px 0}
+header.top .btrack{flex:1 1 auto;min-width:0}
+header.top .b{height:10px;border-radius:4px;min-width:2px;width:0;transition:width .7s cubic-bezier(.22,.8,.3,1)}
+header.top .b1{background:var(--hbar1)}header.top .b2{background:var(--hbar2)}
+header.top .bv{flex:0 0 auto;min-width:74px;font-size:12px;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;text-decoration:none;text-underline-offset:3px}
+header.top .bv[data-tip]{text-decoration:underline dotted rgba(255,255,255,.6)}
+header.top .bars-empty{font-size:13px;opacity:.9;margin:2px 0}
+@media(max-width:640px){header.top .brow{grid-template-columns:1fr;gap:2px}}
+@media(prefers-reduced-motion:reduce){header.top .b{transition:none}}
 #status{font-size:13px;color:var(--muted);min-height:18px;margin:0 0 10px}
 footer{color:var(--muted);font-size:12px;text-align:center;padding:0 20px 30px}
 details summary{cursor:pointer;font-weight:600}
@@ -93,8 +103,6 @@ details summary{cursor:pointer;font-weight:600}
 .import-note button{float:right;padding:2px 8px;font-size:12px}
 .pname{display:inline-block;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
 .pname[data-tip]{text-decoration:none}
-.bars .bn{display:flex;align-items:center;gap:4px;min-width:0}
-.bars .brow{grid-template-columns:190px 1fr}
 .viewopts{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin:0 0 10px;font-size:13px}
 .viewopts b{color:var(--muted);font-weight:600}
 .plan-head .actions{flex-wrap:wrap}
@@ -162,6 +170,7 @@ table.det tr.cap td,table.det tr.cap th{color:var(--muted);font-style:italic}
     </div>
   </div>
   <div class="row" style="margin-top:4px;font-size:12px;opacity:.9">Current file: <span id="fileName">none (use Save as… to choose a location and name)</span></div>
+  <div id="bars" class="bars" aria-live="polite"></div>
 </header>
 
 <nav class="tabs no-print" role="tablist">
@@ -224,7 +233,6 @@ table.det tr.cap td,table.det tr.cap th{color:var(--muted);font-style:italic}
     <h2>Results</h2>
     <div id="viewOpts" class="viewopts no-print"></div>
     <div id="notices"></div>
-    <div id="bars" class="bars"></div>
     <div class="tablewrap"><table class="res" id="resTable"></table></div>
     <p class="hint" style="margin-top:10px">Green cells mark the lowest cost in each comparison row. "With deductible" applies each service's own copay or coinsurance, the deductible (only to services where it applies) and the max out-of-pocket cap; services that are not covered are paid in full. "No deductible limit" is every listed price paid in full. Estimates only, not tax, financial or insurance advice.</p>
   </section>
@@ -243,7 +251,7 @@ table.det tr.cap td,table.det tr.cap th{color:var(--muted);font-style:italic}
 
 <script>
 "use strict";
-const APP_VERSION = "2.3.1";
+const APP_VERSION = "2.4.0";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -1106,6 +1114,62 @@ function shortName(name, max){
 }
 function secRow(label, n){ return '<tr class="sec"><th colspan="' + (n + 1) + '">' + label + "</th></tr>"; }
 
+/* ---------- animated result bars (pinned in the blue header) ---------- */
+const REDUCE_MOTION = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function tweenNumber(el, to){
+  const from = el._val == null ? 0 : el._val;
+  el._val = to;
+  if (el._raf) cancelAnimationFrame(el._raf);
+  if (REDUCE_MOTION || from === to){ el.textContent = fmt(to); return; }
+  const t0 = performance.now(), dur = 700;
+  const step = now => {
+    const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = fmt(from + (to - from) * e);
+    if (k < 1) el._raf = requestAnimationFrame(step); else { el._raf = 0; el.textContent = fmt(to); }
+  };
+  el._raf = requestAnimationFrame(step);
+}
+function renderBars(evs){
+  const box = $("bars");
+  if (!evs.length){ box._sig = ""; box.innerHTML = '<div class="bars-empty">Add at least one plan to see results.</div>'; return; }
+  if (!box.querySelector(".legend")){
+    box.innerHTML = '<div class="legend"><span class="l1">Normal year</span><span class="l2">Normal year + stress scenario</span><span class="lnote">Cost after HSA tax savings where applicable</span></div>';
+  }
+  const maxV = Math.max.apply(null, evs.map(e => Math.max(e.net, e.netStress, 1)));
+  const rows = {};
+  box.querySelectorAll(".brow").forEach(r => { rows[r.dataset.pid] = r; });
+  const keep = {};
+  const fresh = [];
+  evs.forEach(e => {
+    const id = String(e.plan.id); keep[id] = true;
+    let r = rows[id];
+    if (!r){
+      r = document.createElement("div"); r.className = "brow"; r.dataset.pid = id;
+      r.innerHTML = '<div class="bn"></div><div>' +
+        '<div class="bl"><div class="btrack"><div class="b b1"></div></div><span class="bv v1" tabindex="0"></span></div>' +
+        '<div class="bl"><div class="btrack"><div class="b b2"></div></div><span class="bv v2" tabindex="0"></span></div></div>';
+      box.appendChild(r); rows[id] = r; fresh.push(r);
+    }
+    const nameKey = pn(e.plan) + "|" + (e.isHsa ? 1 : 0);
+    if (r._nameKey !== nameKey){
+      r._nameKey = nameKey;
+      r.querySelector(".bn").innerHTML = nameHtml(pn(e.plan)) + (e.isHsa ? '<span class="tag">HSA</span>' : "");
+    }
+    const v1 = r.querySelector(".v1"), v2 = r.querySelector(".v2");
+    v1.dataset.tip = e.tip.net; v2.dataset.tip = e.tip.netStress;
+    r._w1 = (e.net / maxV * 100).toFixed(1) + "%"; r._w2 = (e.netStress / maxV * 100).toFixed(1) + "%";
+    tweenNumber(v1, e.net); tweenNumber(v2, e.netStress);
+  });
+  Object.keys(rows).forEach(id => { if (!keep[id]) rows[id].remove(); });
+  /* keep DOM order equal to plan order (only touch the DOM when it differs, so running transitions are not cancelled) */
+  const want = evs.map(e => String(e.plan.id)).join(",");
+  const have = Array.prototype.map.call(box.querySelectorAll(".brow"), r => r.dataset.pid).join(",");
+  if (want !== have) evs.forEach(e => box.appendChild(rows[String(e.plan.id)]));
+  /* new rows start at 0 and grow; existing rows glide from their old width to the new one */
+  const apply = () => evs.forEach(e => { const r = rows[String(e.plan.id)]; r.querySelector(".b1").style.width = r._w1; r.querySelector(".b2").style.width = r._w2; });
+  if (fresh.length){ void box.offsetWidth; requestAnimationFrame(apply); } else apply();
+}
+
 function renderResults(){
   renderResultsMain();
   if (ui.tab === "detail") renderDetail();
@@ -1117,7 +1181,7 @@ function renderResultsMain(){
   const lim = hsaLimit(state);
   if (!n){
     $("notices").innerHTML = '<div class="note info">Add at least one plan to see results.</div>';
-    $("bars").innerHTML = ""; $("resTable").innerHTML = ""; return;
+    renderBars([]); $("resTable").innerHTML = ""; return;
   }
   if (!state.stress.p1 && !state.stress.p2) notices.push(["info", "No one is selected in the stress scenario, so the stress rows equal the normal-year rows."]);
   if (evs.some(e => e.isHsa)){
@@ -1129,13 +1193,7 @@ function renderResultsMain(){
   evs.filter(e => e.missing.length).forEach(e => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> no price is entered for " + esc(e.missing.join(", ")) + ", so " + (e.missing.length === 1 ? "it counts" : "they count") + " as $0. Enter the price in section 2 (Costs) or under “Evaluator prices” on the plan card."]));
   $("notices").innerHTML = notices.map(x => '<div class="note ' + x[0] + '">' + x[1] + "</div>").join("");
 
-  /* bars */
-  const maxV = Math.max.apply(null, evs.map(e => Math.max(e.net, e.netStress, 1)));
-  $("bars").innerHTML = '<div class="legend"><span class="l1">Normal year</span><span class="l2">Normal year + stress scenario</span></div>' +
-    evs.map(e => '<div class="brow"><div class="bn">' + nameHtml(pn(e.plan)) + (e.isHsa ? '<span class="tag">HSA</span>' : "") + '</div><div>' +
-      '<div class="bl"><div class="b b1" style="width:' + (e.net / maxV * 100).toFixed(1) + '%"></div><span class="bv" data-tip="' + esc(e.tip.net) + '" tabindex="0">' + fmt(e.net) + '</span></div>' +
-      '<div class="bl"><div class="b b2" style="width:' + (e.netStress / maxV * 100).toFixed(1) + '%"></div><span class="bv" data-tip="' + esc(e.tip.netStress) + '" tabindex="0">' + fmt(e.netStress) + "</span></div></div></div>").join("") +
-    '<p class="hint">Bars show cost after HSA tax savings where applicable.</p>';
+  renderBars(evs);
 
   const col = f => evs.map(f);
   const T = k => evs.map(e => e.tip[k]);

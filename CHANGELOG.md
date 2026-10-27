@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.4.0] - 2026-10-26
+
+### Changed
+- **Result bar chart now sits in the blue header**, which stays on screen while you scroll, so you can change any input in sections 1 to 4 and see the effect at once.
+- Bars glide from the previous to the new length, and the dollar amounts count up or down, whenever an input changes. Plans added or removed grow in or drop out. Animation is skipped if the system asks for reduced motion.
+- The bar chart was removed from the Results card at the bottom (the table remains). It is not part of the printout.
+
 ## [2.3.1] - 2026-10-26
 
 ### Fixed
