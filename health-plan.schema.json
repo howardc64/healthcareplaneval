@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/health-plan.schema.json",
   "title": "Health plan summary (common schema)",
-  "description": "One health insurance plan as printed in its Summary of Benefits and Coverage (SBC) and marketplace plan-details page. Facts only: record what the documents say, with a short source quote. Anything the documents do not state (for example dollar prices for services charged as coinsurance) is left null here and, if you want the evaluator to use an estimate, goes in evaluator_inputs.prices. Schema 2.0.",
+  "description": "One health insurance plan: a marketplace plan (SBC + plan-details page) or a Medicare Advantage plan (Aetna-style plan-details page, Summary of Benefits, EOC). Facts only: record what the documents say, with a short source quote. Anything the documents do not state (for example dollar prices for services charged as coinsurance) is left null here and, if you want the evaluator to use an estimate, goes in evaluator_inputs.prices. Schema 2.1 is backward compatible with 2.0: every 2.0 file is still valid. New in 2.1: plan.identity.plan_category, out-of-network cost shares (plan.out_of_network_services), per-plan Medicare block (plan.medicare), supplemental benefits (dental, vision, hearing, fitness, transportation, meals), Part D drug deductible and out-of-pocket cap, pharmacy channels, and six more services.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -163,12 +163,247 @@
         "name"
       ],
       "description": "One SBC coverage example (self-only coverage)."
+    },
+    "allowanceBenefit": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A supplemental Medicare Advantage benefit (dental, vision, hearing, fitness, transportation, meals). Not costed by the evaluator; recorded for comparison.",
+      "properties": {
+        "covered": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "true/false as stated; null if the plan page does not mention it."
+        },
+        "in_network": {
+          "$ref": "#/$defs/costShare"
+        },
+        "out_of_network": {
+          "$ref": "#/$defs/costShare"
+        },
+        "annual_allowance": {
+          "$ref": "#/$defs/money",
+          "description": "Dollar allowance, if the benefit is an allowance."
+        },
+        "allowance_basis": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "per_year",
+            "per_ear_per_year",
+            "per_item",
+            null
+          ]
+        },
+        "frequency_limit": {
+          "type": "string",
+          "description": "For example 'one exam per calendar year'."
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Plain-words list of the benefit lines, for example each dental category and its coinsurance."
+        },
+        "source_text": {
+          "type": "string",
+          "maxLength": 300
+        }
+      }
+    },
+    "pharmacyChannel": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Drug cost shares at one kind of pharmacy and supply length. tier1..tier5 are positional (Tier N of the plan's own tier list).",
+      "required": [
+        "channel"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "preferred_retail",
+            "standard_retail",
+            "mail_order",
+            "other"
+          ]
+        },
+        "days_supply": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "tier1": {
+          "$ref": "#/$defs/costShare"
+        },
+        "tier2": {
+          "$ref": "#/$defs/costShare"
+        },
+        "tier3": {
+          "$ref": "#/$defs/costShare"
+        },
+        "tier4": {
+          "$ref": "#/$defs/costShare"
+        },
+        "tier5": {
+          "$ref": "#/$defs/costShare"
+        },
+        "insulin_cap": {
+          "$ref": "#/$defs/money"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "serviceMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "preventive_care": {
+          "$ref": "#/$defs/costShare"
+        },
+        "primary_care_visit": {
+          "$ref": "#/$defs/visitCost"
+        },
+        "specialist_visit": {
+          "$ref": "#/$defs/costShare"
+        },
+        "urgent_care_visit": {
+          "$ref": "#/$defs/costShare"
+        },
+        "virtual_care_visit": {
+          "$ref": "#/$defs/costShare"
+        },
+        "lab_test": {
+          "$ref": "#/$defs/costShare",
+          "description": "Diagnostic test: laboratory and professional services (blood work) at an office or lab."
+        },
+        "xray_diagnostic_imaging": {
+          "$ref": "#/$defs/costShare",
+          "description": "Diagnostic test: x-ray and diagnostic imaging at an office or imaging center."
+        },
+        "diagnostic_test_other_place_of_service": {
+          "$ref": "#/$defs/costShare",
+          "description": "Lab and x-ray billed at hospital, ER or outpatient facility instead of the office."
+        },
+        "imaging_ct_pet_mri": {
+          "$ref": "#/$defs/costShare",
+          "description": "Advanced imaging: MRI, PET, CT and ultrasound share this one cost share."
+        },
+        "outpatient_surgery_facility": {
+          "$ref": "#/$defs/costShare"
+        },
+        "outpatient_surgery_professional": {
+          "$ref": "#/$defs/costShare"
+        },
+        "emergency_room": {
+          "$ref": "#/$defs/costShare"
+        },
+        "emergency_transport": {
+          "$ref": "#/$defs/costShare"
+        },
+        "hospital_facility": {
+          "$ref": "#/$defs/costShare",
+          "description": "Hospital room and facility fee. Use unit day and max_units for per-day copays."
+        },
+        "hospital_professional": {
+          "$ref": "#/$defs/costShare"
+        },
+        "mental_health_outpatient_office": {
+          "$ref": "#/$defs/visitCost"
+        },
+        "mental_health_outpatient_other": {
+          "$ref": "#/$defs/costShare"
+        },
+        "mental_health_inpatient": {
+          "$ref": "#/$defs/costShare"
+        },
+        "maternity_office_visit": {
+          "$ref": "#/$defs/costShare"
+        },
+        "delivery_professional": {
+          "$ref": "#/$defs/costShare"
+        },
+        "delivery_facility": {
+          "$ref": "#/$defs/costShare"
+        },
+        "home_health": {
+          "$ref": "#/$defs/costShare"
+        },
+        "rehabilitation_outpatient": {
+          "$ref": "#/$defs/costShare"
+        },
+        "rehabilitation_inpatient": {
+          "$ref": "#/$defs/costShare"
+        },
+        "habilitation_outpatient": {
+          "$ref": "#/$defs/costShare"
+        },
+        "habilitation_inpatient": {
+          "$ref": "#/$defs/costShare"
+        },
+        "skilled_nursing": {
+          "$ref": "#/$defs/costShare"
+        },
+        "durable_medical_equipment": {
+          "$ref": "#/$defs/costShare"
+        },
+        "hospice": {
+          "$ref": "#/$defs/costShare"
+        },
+        "chiropractic": {
+          "$ref": "#/$defs/visitCost"
+        },
+        "children_eye_exam": {
+          "$ref": "#/$defs/costShare"
+        },
+        "children_glasses": {
+          "$ref": "#/$defs/costShare"
+        },
+        "children_dental_checkup": {
+          "$ref": "#/$defs/costShare"
+        },
+        "annual_physical": {
+          "$ref": "#/$defs/costShare"
+        },
+        "diagnostic_procedure": {
+          "$ref": "#/$defs/costShare",
+          "description": "Diagnostic procedures and tests other than lab, x-ray and advanced imaging (Medicare plans list these separately)."
+        },
+        "mammogram": {
+          "$ref": "#/$defs/costShare"
+        },
+        "colonoscopy_preventive_diagnostic": {
+          "$ref": "#/$defs/costShare",
+          "description": "Preventive or diagnostic colonoscopy at an ambulatory surgery center (often $0 on Medicare plans)."
+        },
+        "diabetic_supplies": {
+          "$ref": "#/$defs/costShare",
+          "description": "Blood glucose meters and medical diabetic supplies. Put brand rules in limits."
+        },
+        "continuous_glucose_monitor": {
+          "$ref": "#/$defs/costShare"
+        }
+      }
     }
   },
   "properties": {
     "schema_version": {
       "type": "string",
-      "const": "2.0"
+      "enum": [
+        "2.0",
+        "2.1"
+      ],
+      "description": "Use 2.1 for any file that uses a 2.1 field (all Medicare files)."
     },
     "plan": {
       "type": "object",
@@ -230,6 +465,8 @@
                 "EPO",
                 "POS",
                 "HDHP",
+                "HMO-POS",
+                "PFFS",
                 null
               ]
             },
@@ -249,6 +486,53 @@
               "items": {
                 "type": "string"
               }
+            },
+            "plan_category": {
+              "type": "string",
+              "enum": [
+                "marketplace",
+                "medicare_advantage"
+              ],
+              "default": "marketplace",
+              "description": "Missing = marketplace. medicare_advantage requires the plan.medicare block."
+            },
+            "plan_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Carrier plan or contract id, for example the Medicare contract-plan id 'H5521-687'."
+            },
+            "medicare_coverage_type": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "MA",
+                "MAPD",
+                null
+              ],
+              "description": "MA = medical only; MAPD = medical plus Part D drug coverage."
+            },
+            "service_area": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "state": {
+                  "type": "string"
+                },
+                "county": {
+                  "type": "string"
+                },
+                "county_fips": {
+                  "type": "string"
+                },
+                "zip": {
+                  "type": "string"
+                }
+              },
+              "description": "Where the quoted premium and benefits apply. Medicare plans vary by county."
             }
           },
           "required": [
@@ -301,6 +585,24 @@
             },
             "note": {
               "type": "string"
+            },
+            "part_b_premium_continues": {
+              "type": [
+                "boolean",
+                "null"
+              ],
+              "description": "Medicare: true when you must keep paying your Part B premium."
+            },
+            "part_b_monthly": {
+              "$ref": "#/$defs/money",
+              "description": "Standard Part B premium for the year, if you want it recorded. Not on a plan page."
+            },
+            "per_person": {
+              "type": [
+                "boolean",
+                "null"
+              ],
+              "description": "true when the premium is per enrolled person (Medicare). A couple pays it twice."
             }
           }
         },
@@ -347,118 +649,56 @@
               "items": {
                 "type": "string"
               }
+            },
+            "deductible_out_of_network": {
+              "$ref": "#/$defs/money"
+            },
+            "oop_max_combined_in_and_out_of_network": {
+              "$ref": "#/$defs/money",
+              "description": "Per person. Medicare PPOs state an in-network maximum and a higher combined maximum."
+            },
+            "individual_only": {
+              "type": [
+                "boolean",
+                "null"
+              ],
+              "description": "true when the plan states only per-person amounts and has no family amounts (Medicare). The family amounts stay null."
+            },
+            "drug_deductible": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "amount": {
+                  "$ref": "#/$defs/money"
+                },
+                "applies_to_tiers": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  }
+                },
+                "tiers_without_deductible": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  }
+                }
+              },
+              "description": "Part D deductible when it is separate from the medical deductible."
+            },
+            "drug_oop_max": {
+              "$ref": "#/$defs/money",
+              "description": "Annual prescription out-of-pocket cap (Part D)."
             }
           }
         },
         "services": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "preventive_care": {
-              "$ref": "#/$defs/costShare"
-            },
-            "primary_care_visit": {
-              "$ref": "#/$defs/visitCost"
-            },
-            "specialist_visit": {
-              "$ref": "#/$defs/costShare"
-            },
-            "urgent_care_visit": {
-              "$ref": "#/$defs/costShare"
-            },
-            "virtual_care_visit": {
-              "$ref": "#/$defs/costShare"
-            },
-            "lab_test": {
-              "$ref": "#/$defs/costShare",
-              "description": "Diagnostic test: laboratory and professional services (blood work) at an office or lab."
-            },
-            "xray_diagnostic_imaging": {
-              "$ref": "#/$defs/costShare",
-              "description": "Diagnostic test: x-ray and diagnostic imaging at an office or imaging center."
-            },
-            "diagnostic_test_other_place_of_service": {
-              "$ref": "#/$defs/costShare",
-              "description": "Lab and x-ray billed at hospital, ER or outpatient facility instead of the office."
-            },
-            "imaging_ct_pet_mri": {
-              "$ref": "#/$defs/costShare",
-              "description": "Advanced imaging: MRI, PET, CT and ultrasound share this one cost share."
-            },
-            "outpatient_surgery_facility": {
-              "$ref": "#/$defs/costShare"
-            },
-            "outpatient_surgery_professional": {
-              "$ref": "#/$defs/costShare"
-            },
-            "emergency_room": {
-              "$ref": "#/$defs/costShare"
-            },
-            "emergency_transport": {
-              "$ref": "#/$defs/costShare"
-            },
-            "hospital_facility": {
-              "$ref": "#/$defs/costShare",
-              "description": "Hospital room and facility fee. Use unit day and max_units for per-day copays."
-            },
-            "hospital_professional": {
-              "$ref": "#/$defs/costShare"
-            },
-            "mental_health_outpatient_office": {
-              "$ref": "#/$defs/visitCost"
-            },
-            "mental_health_outpatient_other": {
-              "$ref": "#/$defs/costShare"
-            },
-            "mental_health_inpatient": {
-              "$ref": "#/$defs/costShare"
-            },
-            "maternity_office_visit": {
-              "$ref": "#/$defs/costShare"
-            },
-            "delivery_professional": {
-              "$ref": "#/$defs/costShare"
-            },
-            "delivery_facility": {
-              "$ref": "#/$defs/costShare"
-            },
-            "home_health": {
-              "$ref": "#/$defs/costShare"
-            },
-            "rehabilitation_outpatient": {
-              "$ref": "#/$defs/costShare"
-            },
-            "rehabilitation_inpatient": {
-              "$ref": "#/$defs/costShare"
-            },
-            "habilitation_outpatient": {
-              "$ref": "#/$defs/costShare"
-            },
-            "habilitation_inpatient": {
-              "$ref": "#/$defs/costShare"
-            },
-            "skilled_nursing": {
-              "$ref": "#/$defs/costShare"
-            },
-            "durable_medical_equipment": {
-              "$ref": "#/$defs/costShare"
-            },
-            "hospice": {
-              "$ref": "#/$defs/costShare"
-            },
-            "chiropractic": {
-              "$ref": "#/$defs/visitCost"
-            },
-            "children_eye_exam": {
-              "$ref": "#/$defs/costShare"
-            },
-            "children_glasses": {
-              "$ref": "#/$defs/costShare"
-            },
-            "children_dental_checkup": {
-              "$ref": "#/$defs/costShare"
-            }
-          }
+          "$ref": "#/$defs/serviceMap",
+          "description": "In-network cost shares (the ones the evaluator uses). For Medicare PPOs these are the in-network amounts."
         },
         "drugs": {
           "type": "object",
@@ -501,8 +741,24 @@
                 "null"
               ],
               "description": "For example 2.5 = mail order costs 2.5 x the retail copay."
+            },
+            "tier_labels": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 5,
+              "items": {
+                "type": "string"
+              },
+              "description": "The plan's own names for Tier 1 to Tier 5, in order."
+            },
+            "pharmacy_channels": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/pharmacyChannel"
+              }
             }
-          }
+          },
+          "description": "tier1_generic .. tier5 are POSITIONAL: each holds Tier 1..Tier 5 of the plan's own tier list, whatever the key name says (Medicare Tier 2 is 'Generic drugs', not 'preferred brand'). Put the plan's best everyday channel (for Medicare, preferred pharmacy retail, 30 days) here and every channel in pharmacy_channels."
         },
         "excluded_services": {
           "type": "array",
@@ -520,6 +776,100 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/coverageExample"
+          }
+        },
+        "out_of_network_services": {
+          "$ref": "#/$defs/serviceMap",
+          "description": "Optional. Cost shares when you use out-of-network providers (PPO and POS plans). Recorded for reference; the evaluator costs in-network use."
+        },
+        "medicare": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Facts that exist only on Medicare Advantage plans. Required when identity.plan_category is medicare_advantage.",
+          "properties": {
+            "includes_part_d": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "star_rating": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 5,
+              "description": "Overall Medicare Star Rating."
+            },
+            "eligibility_note": {
+              "type": "string",
+              "description": "For example: must have Parts A and B and live in the service area."
+            },
+            "extra_help_note": {
+              "type": "string"
+            },
+            "visitor_traveler_program": {
+              "type": "string"
+            },
+            "enrollment": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "agent_phone": {
+                  "type": "string"
+                },
+                "tty": {
+                  "type": "string"
+                },
+                "agent_hours": {
+                  "type": "string"
+                },
+                "plan_page_url": {
+                  "type": "string"
+                }
+              }
+            },
+            "annual_enrollment_period": {
+              "type": "string",
+              "description": "Dates stated in the documents or checked at medicare.gov."
+            }
+          }
+        },
+        "supplemental_benefits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "dental_preventive": {
+              "$ref": "#/$defs/allowanceBenefit"
+            },
+            "dental_comprehensive": {
+              "$ref": "#/$defs/allowanceBenefit"
+            },
+            "eye_exam_routine": {
+              "$ref": "#/$defs/allowanceBenefit"
+            },
+            "eyewear": {
+              "$ref": "#/$defs/allowanceBenefit"
+            },
+            "hearing_exam_routine": {
+              "$ref": "#/$defs/allowanceBenefit"
+            },
+            "hearing_aids": {
+              "$ref": "#/$defs/allowanceBenefit"
+            },
+            "fitness": {
+              "$ref": "#/$defs/allowanceBenefit"
+            },
+            "routine_transportation": {
+              "$ref": "#/$defs/allowanceBenefit"
+            },
+            "meals": {
+              "$ref": "#/$defs/allowanceBenefit"
+            },
+            "worldwide_emergency": {
+              "$ref": "#/$defs/allowanceBenefit"
+            }
           }
         }
       },
@@ -694,5 +1044,42 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "plan": {
+            "properties": {
+              "identity": {
+                "properties": {
+                  "plan_category": {
+                    "const": "medicare_advantage"
+                  }
+                },
+                "required": [
+                  "plan_category"
+                ]
+              }
+            },
+            "required": [
+              "identity"
+            ]
+          }
+        },
+        "required": [
+          "plan"
+        ]
+      },
+      "then": {
+        "properties": {
+          "plan": {
+            "required": [
+              "medicare"
+            ]
+          }
+        }
+      }
+    }
+  ]
 }

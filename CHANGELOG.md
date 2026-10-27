@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.13.0] - 2026-10-27
+
+### Added
+- **Medicare Advantage plans.** New **Plan category** on each plan card. Medicare plans get the sections Medicare facts, Supplemental benefits, Out-of-network cost shares and Pharmacy channels, plus fields for plan id, service area, Part B premium, out-of-network deductible, combined out-of-pocket maximum, Part D deductible and prescription cap.
+- **Schema 2.1** (backward compatible with 2.0): `plan_category`, `out_of_network_services`, `medicare`, `supplemental_benefits`, `drugs.pharmacy_channels`, `drugs.tier_labels`, `limits.drug_deductible`, `limits.drug_oop_max`, and six services (annual physical, diagnostic procedure, mammogram, colonoscopy, diabetic supplies, continuous glucose monitor). Plan type gains HMO-POS and PFFS.
+- Two filled plan files: Aetna Medicare Enhanced (PPO) H5521-687 and Signature (PPO) H5521-431.
+- Notices for Medicare plans (who is counted, what is not modeled).
+
+### Changed
+- The premium on a Medicare plan is counted per enrolled person (plus Part B if entered), and tooltips show the formula.
+- A Medicare plan with a $0 medical deductible uses the per-person Part D deductible as its shared deductible.
+- Version in the code is now 2.13.0 (it still said 2.6.0).
+
 ## [2.12.1] - 2026-10-27
 
 ### Changed

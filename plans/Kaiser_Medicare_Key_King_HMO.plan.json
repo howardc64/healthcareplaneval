@@ -1,0 +1,672 @@
+{
+  "schema_version": "2.1",
+  "plan": {
+    "identity": {
+      "name": "Kaiser Permanente Medicare Advantage Key King (HMO)",
+      "carrier": "Kaiser Foundation Health Plan of Washington",
+      "state": "WA",
+      "plan_year": "2027",
+      "coverage_start": "2027-01-01",
+      "coverage_end": "2027-12-31",
+      "metal_level": null,
+      "plan_type": "HMO",
+      "hsa_eligible": false,
+      "sbc_id": "H5050_27SB024031_M",
+      "plan_category": "medicare_advantage",
+      "plan_id": null,
+      "medicare_coverage_type": "MAPD",
+      "service_area": {
+        "state": "WA",
+        "county": "King",
+        "county_fips": "53033",
+        "zip": "98074"
+      },
+      "source_documents": [
+        "summary-of-benefits-essential-key-wa.pdf (2027 Summary of Benefits)"
+      ]
+    },
+    "network": {
+      "out_of_network_covered": false,
+      "primary_care_provider_required": true,
+      "specialist_referral_required": null,
+      "emergency_out_of_network_pays_in_network_rates": true
+    },
+    "premium": {
+      "monthly": 0,
+      "estimated_yearly_cost": null,
+      "part_b_premium_continues": true,
+      "part_b_monthly": null,
+      "per_person": true,
+      "note": "Plan premium per enrolled person, from the Summary of Benefits. You also keep paying your Medicare premiums. Optional Advantage Plus Option 1 (dental) adds $75 per month and Option 2 (hearing aids, acupuncture/chiropractic/naturopathy) adds $26 per month."
+    },
+    "limits": {
+      "deductible_individual": 0,
+      "deductible_family": null,
+      "deductible_embedded": null,
+      "separate_service_deductibles": null,
+      "deductible_out_of_network": null,
+      "oop_max_individual": 6750,
+      "oop_max_family": null,
+      "oop_max_combined_in_and_out_of_network": null,
+      "individual_only": true,
+      "coinsurance_member_pct": null,
+      "drug_deductible": {
+        "amount": 0,
+        "applies_to_tiers": [],
+        "tiers_without_deductible": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "drug_oop_max": 2400,
+      "not_counted_toward_oop_max": [
+        "Medicare Part D drugs (they have their own $2,400 cap)"
+      ]
+    },
+    "services": {
+      "preventive_care": {
+        "structure": "no_charge",
+        "deductible_applies": false,
+        "source_text": "Preventive care $0 (includes yearly Wellness visit, screenings, shots)"
+      },
+      "annual_physical": {
+        "structure": "no_charge",
+        "deductible_applies": false,
+        "unit": "visit",
+        "limits": "The summary lists the yearly 'Wellness' visit under preventive care; a full physical exam is not separately listed.",
+        "source_text": "Yearly 'Wellness' visit: $0"
+      },
+      "primary_care_visit": {
+        "cost_share": {
+          "structure": "no_charge",
+          "deductible_applies": false,
+          "unit": "visit",
+          "source_text": "Doctor visits: Primary care providers $0"
+        },
+        "first_visits": null
+      },
+      "specialist_visit": {
+        "structure": "copay",
+        "copay_amount": 60,
+        "deductible_applies": false,
+        "unit": "visit",
+        "limits": "Referral may be needed; prior authorization may be required.",
+        "source_text": "Specialists*† $60 per visit"
+      },
+      "urgent_care_visit": {
+        "structure": "copay",
+        "copay_amount": 50,
+        "deductible_applies": false,
+        "unit": "visit",
+        "limits": "Covered anywhere in the world.",
+        "source_text": "Urgently needed services $50 per visit"
+      },
+      "lab_test": {
+        "structure": "no_charge",
+        "deductible_applies": false,
+        "unit": "test",
+        "source_text": "Lab tests $0"
+      },
+      "xray_diagnostic_imaging": {
+        "structure": "copay",
+        "copay_amount": 35,
+        "deductible_applies": false,
+        "unit": "test",
+        "source_text": "X-rays $35 per visit"
+      },
+      "diagnostic_procedure": {
+        "structure": "copay",
+        "copay_amount": 20,
+        "deductible_applies": false,
+        "unit": "test",
+        "limits": "Diagnostic tests and procedures like EKG; prior authorization may be required.",
+        "source_text": "Diagnostic tests and procedures (like EKG)† $20 per visit"
+      },
+      "imaging_ct_pet_mri": {
+        "structure": "copay",
+        "copay_amount": 425,
+        "deductible_applies": false,
+        "unit": "visit",
+        "limits": "MRI, CT, PET and ultrasounds share this one price; prior authorization may be required.",
+        "source_text": "Other imaging procedures (like MRI, CT, and PET) and ultrasounds† $425 per visit"
+      },
+      "mammogram": {
+        "structure": "no_charge",
+        "deductible_applies": false,
+        "unit": "test",
+        "source_text": "Mammograms (screening) listed under preventive care: $0"
+      },
+      "colonoscopy_preventive_diagnostic": {
+        "structure": "no_charge",
+        "deductible_applies": false,
+        "unit": "visit",
+        "limits": "Colorectal cancer screening colonoscopies are $0 under preventive care. Other outpatient hospital or ASC colonoscopy is priced as outpatient surgery.",
+        "source_text": "Colorectal cancer screenings† (Colonoscopies) under preventive care $0"
+      },
+      "outpatient_surgery_facility": {
+        "structure": "copay",
+        "copay_amount": 485,
+        "deductible_applies": false,
+        "unit": "visit",
+        "limits": "Ambulatory Surgical Center. Outpatient hospital services are $0 to $485 per visit.",
+        "source_text": "Ambulatory Surgical Center (ASC)*† $485 per visit"
+      },
+      "outpatient_surgery_professional": {
+        "structure": "unknown",
+        "limits": "Surgeon/professional fee is not listed in the Summary of Benefits. See the Evidence of Coverage."
+      },
+      "emergency_room": {
+        "structure": "copay",
+        "copay_amount": 130,
+        "deductible_applies": false,
+        "unit": "visit",
+        "limits": "Emergency care anywhere in the world.",
+        "source_text": "$130 per Emergency Department visit"
+      },
+      "emergency_transport": {
+        "structure": "copay",
+        "copay_amount": 395,
+        "deductible_applies": false,
+        "unit": "trip",
+        "limits": "Per one-way trip; prior authorization may be required.",
+        "source_text": "Ambulance† $395 per one-way trip"
+      },
+      "hospital_facility": {
+        "structure": "copay",
+        "copay_amount": 550,
+        "deductible_applies": false,
+        "unit": "day",
+        "max_units": 5,
+        "limits": "$550 per day for days 1-5; $0 for the rest of the stay. No limit on medically necessary days.",
+        "source_text": "$550 per day for days 1 through 5 of your stay and $0 for the rest"
+      },
+      "hospital_professional": {
+        "structure": "unknown",
+        "limits": "Physician fees during an inpatient stay are not listed in the Summary of Benefits."
+      },
+      "mental_health_inpatient": {
+        "structure": "copay",
+        "copay_amount": 470,
+        "deductible_applies": false,
+        "unit": "day",
+        "max_units": 5,
+        "limits": "$470 per day for days 1-5; $0 for the rest of the stay.",
+        "source_text": "Inpatient mental health: $470 per day for days 1-5 ($0 for the rest)"
+      },
+      "mental_health_outpatient_office": {
+        "cost_share": {
+          "structure": "copay",
+          "copay_amount": 45,
+          "deductible_applies": false,
+          "unit": "visit",
+          "limits": "Individual therapy.",
+          "source_text": "Outpatient individual therapy $45 per visit"
+        },
+        "first_visits": null
+      },
+      "mental_health_outpatient_other": {
+        "structure": "copay",
+        "copay_amount": 35,
+        "deductible_applies": false,
+        "unit": "visit",
+        "limits": "Group therapy.",
+        "source_text": "Outpatient group therapy $35 per visit"
+      },
+      "skilled_nursing": {
+        "structure": "copay",
+        "copay_amount": 218,
+        "deductible_applies": false,
+        "unit": "day",
+        "max_units": 80,
+        "limits": "Per benefit period, up to 100 days: $0 per day for days 1-20; $218 per day for days 21-100. max_units 80 = the charged days; the evaluator cannot model the free first 20 days exactly.",
+        "source_text": "$0 per day for days 1 through 20; $218 per day for days 21 through 100"
+      },
+      "rehabilitation_outpatient": {
+        "structure": "copay",
+        "copay_amount": 40,
+        "deductible_applies": false,
+        "unit": "visit",
+        "limits": "Physical therapy; prior authorization may be required.",
+        "source_text": "Physical therapy*† $40 per visit"
+      },
+      "chiropractic": {
+        "cost_share": {
+          "structure": "copay",
+          "copay_amount": 15,
+          "deductible_applies": false,
+          "unit": "visit",
+          "limits": "Medicare-covered manual manipulation of the spine. Medicare-covered acupuncture for chronic low back pain is also $15 per visit.",
+          "source_text": "Medicare-covered Chiropractic services $15 per visit"
+        },
+        "first_visits": null
+      },
+      "diabetic_supplies": {
+        "structure": "no_charge",
+        "deductible_applies": false,
+        "unit": "item",
+        "limits": "Glucose monitor, test strips, lancets and control solutions; therapeutic shoes/inserts for severe diabetic foot disease. Prior authorization may be required.",
+        "source_text": "Diabetic supplies, including therapeutic shoes/inserts† $0"
+      }
+    },
+    "drugs": {
+      "tier_labels": [
+        "Preferred generic",
+        "Generic",
+        "Preferred brand-name",
+        "Nonpreferred",
+        "Specialty-tier"
+      ],
+      "tier1_generic": {
+        "structure": "copay",
+        "copay_amount": 3,
+        "deductible_applies": false,
+        "unit": "prescription",
+        "source_text": "Preferred retail pharmacy, up to 30 days: Tier 1 (Preferred generic)"
+      },
+      "tier2_preferred_brand": {
+        "structure": "copay",
+        "copay_amount": 10,
+        "deductible_applies": false,
+        "unit": "prescription",
+        "limits": "Kaiser Tier 2 is 'Generic' (the key name is positional)."
+      },
+      "tier3_non_preferred_brand": {
+        "structure": "copay",
+        "copay_amount": 47,
+        "deductible_applies": false,
+        "unit": "prescription",
+        "limits": "Kaiser Tier 3 is 'Preferred brand-name'. Same price at preferred and standard pharmacies."
+      },
+      "tier4_specialty": {
+        "structure": "copay",
+        "copay_amount": 99,
+        "deductible_applies": false,
+        "unit": "prescription",
+        "limits": "Kaiser Tier 4 is 'Nonpreferred'. Same price at preferred and standard pharmacies."
+      },
+      "tier5": {
+        "structure": "coinsurance",
+        "coinsurance_pct": 29,
+        "deductible_applies": false,
+        "unit": "prescription",
+        "limits": "Kaiser Tier 5 is 'Specialty-tier'. Tier 6 (Part D vaccines) is $0 and is not costed here.",
+        "source_text": "Tier 5 (Specialty-tier) 29%"
+      },
+      "insulin_30_day_cap": 35,
+      "retail_days_supply": 30,
+      "mail_order_days_supply": 100,
+      "mail_order_cost_multiplier": null,
+      "pharmacy_channels": [
+        {
+          "name": "Preferred retail pharmacy, up to 30 days",
+          "channel": "preferred_retail",
+          "days_supply": 30,
+          "tier1": {
+            "structure": "copay",
+            "copay_amount": 3,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 10,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "copay",
+            "copay_amount": 47,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "copay",
+            "copay_amount": 99,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 29,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "insulin_cap": 35
+        },
+        {
+          "name": "Standard retail pharmacy, up to 30 days",
+          "channel": "standard_retail",
+          "days_supply": 30,
+          "tier1": {
+            "structure": "copay",
+            "copay_amount": 15,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 20,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "copay",
+            "copay_amount": 47,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "copay",
+            "copay_amount": 99,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 29,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "insulin_cap": 35
+        },
+        {
+          "name": "Preferred retail pharmacy, 61 to 100 days",
+          "channel": "preferred_retail",
+          "days_supply": 100,
+          "tier1": {
+            "structure": "copay",
+            "copay_amount": 6,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 30,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "copay",
+            "copay_amount": 141,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "copay",
+            "copay_amount": 297,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 29,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "insulin_cap": 105
+        },
+        {
+          "name": "Standard retail pharmacy, 61 to 100 days",
+          "channel": "standard_retail",
+          "days_supply": 100,
+          "tier1": {
+            "structure": "copay",
+            "copay_amount": 45,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 60,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "copay",
+            "copay_amount": 141,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "copay",
+            "copay_amount": 297,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 29,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "insulin_cap": 105
+        },
+        {
+          "name": "Mail-order pharmacy, up to 30 days",
+          "channel": "mail_order",
+          "days_supply": 30,
+          "tier1": {
+            "structure": "no_charge",
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 10,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "copay",
+            "copay_amount": 47,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "copay",
+            "copay_amount": 99,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 29,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "insulin_cap": 35,
+          "note": "Not all drugs can be mailed. Tier 6 (Part D vaccines) is not available by mail."
+        },
+        {
+          "name": "Mail-order pharmacy, 61 to 100 days",
+          "channel": "mail_order",
+          "days_supply": 100,
+          "tier1": {
+            "structure": "no_charge",
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "no_charge",
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "copay",
+            "copay_amount": 117.5,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "copay",
+            "copay_amount": 247.5,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 29,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "insulin_cap": 105,
+          "note": "Not all drugs can be mailed. Tier 6 (Part D vaccines) is not available by mail."
+        }
+      ]
+    },
+    "medicare": {
+      "includes_part_d": true,
+      "star_rating": null,
+      "eligibility_note": "Requires Medicare Parts A and B, US citizen, national or eligible noncitizen, and residence in the service area. The plans are available in King, Pierce, Snohomish and Thurston counties; this file uses the King County versions.",
+      "extra_help_note": "If you get Extra Help paying for drugs, the drug cost sharing here may not apply; see the EOC Rider.",
+      "visitor_traveler_program": "Care from plan providers in another Kaiser Permanente region; emergency care worldwide. The nationwide travel benefit does not apply to Key plans.",
+      "enrollment": {
+        "agent_phone": "1-800-446-8882",
+        "tty": "711",
+        "agent_hours": "8 a.m. to 8 p.m., 7 days a week",
+        "plan_page_url": "kp.org/medicare"
+      },
+      "annual_enrollment_period": "October 15 to December 7 (coverage for plan year 2027 starts January 1, 2027)"
+    },
+    "supplemental_benefits": {
+      "dental_preventive": {
+        "covered": false,
+        "in_network": {
+          "structure": "not_covered"
+        },
+        "source_text": "Dental services: Not Covered"
+      },
+      "dental_comprehensive": {
+        "covered": false,
+        "in_network": {
+          "structure": "not_covered"
+        },
+        "details": [
+          "Not part of the base plan. Optional Advantage Plus Option 1 adds $75 per month: $100 deductible, then 50% coinsurance up to a $1,500 annual maximum (restorative, endodontic, periodontic, prosthodontic, oral surgery)."
+        ]
+      },
+      "eye_exam_routine": {
+        "covered": true,
+        "in_network": {
+          "structure": "copay",
+          "copay_amount": 60,
+          "unit": "visit",
+          "limits": "$0 with an optometrist; $60 per visit with an ophthalmologist."
+        },
+        "frequency_limit": "One routine eye exam per calendar year."
+      },
+      "eyewear": {
+        "covered": true,
+        "in_network": {
+          "structure": "no_charge"
+        },
+        "annual_allowance": 100,
+        "allowance_basis": "per_year",
+        "details": [
+          "Eyewear can be bought from any provider; out-of-network purchases need a claim for reimbursement.",
+          "Eyeglasses or contacts after cataract surgery: $0 up to Medicare's limit."
+        ],
+        "source_text": "$100 allowance per calendar year. If your eyewear costs more than $100, you pay the difference."
+      },
+      "hearing_exam_routine": {
+        "covered": true,
+        "in_network": {
+          "structure": "copay",
+          "copay_amount": 60,
+          "unit": "visit",
+          "limits": "$0 with an audiologist; $60 per visit with other providers. Hearing aid fitting and evaluation exam $0."
+        },
+        "frequency_limit": "One routine hearing exam per calendar year; 2 fitting/evaluation exams per year."
+      },
+      "hearing_aids": {
+        "covered": false,
+        "in_network": {
+          "structure": "not_covered"
+        },
+        "details": [
+          "Not part of the base plan. Optional Advantage Plus Option 2 adds $26 per month: $3,000 allowance for both ears combined every 36 months (not per ear). The summary says this benefit may not be available next year."
+        ]
+      },
+      "fitness": {
+        "covered": true,
+        "in_network": {
+          "structure": "no_charge"
+        },
+        "details": [
+          "One Pass: gym network, digital fitness programs, social clubs, one home fitness kit per year, online brain health training."
+        ],
+        "source_text": "Fitness benefit - One Pass $0"
+      },
+      "routine_transportation": {
+        "covered": false,
+        "in_network": {
+          "structure": "not_covered"
+        },
+        "details": [
+          "Non-routine medically necessary transportation after hospital stays is $0."
+        ],
+        "source_text": "Routine transportation: Not covered"
+      },
+      "meals": {
+        "covered": false,
+        "in_network": {
+          "structure": "not_covered"
+        },
+        "details": [
+          "Member discount on Mom's Meals delivery; not a covered benefit."
+        ]
+      },
+      "worldwide_emergency": {
+        "covered": true,
+        "in_network": {
+          "structure": "copay",
+          "copay_amount": 130,
+          "unit": "visit"
+        },
+        "details": [
+          "Emergency and urgent care are covered anywhere in the world."
+        ],
+        "source_text": "We cover emergency care anywhere in the world."
+      }
+    },
+    "excluded_services": [
+      "Out-of-network care except emergency, urgent, out-of-area dialysis and approved referrals",
+      "Dental (preventive and comprehensive)"
+    ],
+    "other_covered_services": [
+      "Medicare Part B drugs: 0%-20% coinsurance depending on the drug (insulin capped at $35 per month)",
+      "Medicare-covered acupuncture for chronic low back pain: $15 per visit",
+      "Advanced Care at Home: $0 when prescribed as part of a home treatment plan",
+      "One Pass fitness benefit",
+      "Member discounts: Lively Mobile Plus, Comfort Keepers, Mom's Meals"
+    ],
+    "coverage_examples": []
+  },
+  "evaluator_inputs": {
+    "notes": [
+      "Premium is per person. For a couple, each spouse needs a plan, so double the annual premium and the out-of-pocket exposure.",
+      "Medical deductible is $0 and so is the Part D deductible, so every service pays its copay from the first dollar.",
+      "Drug tiers here are the preferred-pharmacy, 30-day amounts. Other pharmacies and supply lengths are in pharmacy_channels.",
+      "Part D drugs have a separate $2,400 out-of-pocket cap and are not part of the medical out-of-pocket maximum.",
+      "HMO: care must come from Kaiser Permanente plan providers except emergency and the listed exceptions."
+    ]
+  },
+  "extraction": {
+    "confidence": "high",
+    "assumptions": [
+      "Quoted for the Key King plan; Key Pierce, Snohomish and Thurston differ on hospital, surgery, imaging, ambulance and some drug prices.",
+      "The drug tier fields hold the preferred retail, up to 30-day amounts.",
+      "Key King and Snohomish share the $550 hospital day, $485 outpatient/ASC, $425 imaging and $395 ambulance amounts."
+    ],
+    "notes": [
+      "Outpatient hospital services are $0 to a per-visit maximum and are not a separate schema field; the ambulatory surgery center price is used for outpatient surgery.",
+      "Surgeon and hospital physician fees are 'unknown' because the Summary of Benefits does not list them.",
+      "The star rating and Part B standard premium are not in the Summary of Benefits, so they are null.",
+      "The booklet covers 8 plans (Essential and Key for King, Pierce, Snohomish and Thurston) under PBP 024-031. It does not say which PBP is King, so plan_id is null.",
+      "Mail-order Tier 2 is $10 for up to 30 days and $0 for longer supplies."
+    ]
+  }
+}

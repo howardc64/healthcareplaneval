@@ -297,7 +297,7 @@ header.top button{background:rgba(255,255,255,.1)}
 
 <script>
 "use strict";
-const APP_VERSION = "2.6.0";
+const APP_VERSION = "2.13.0";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -354,8 +354,18 @@ const SERVICE_DEFS = [
   { k:"hospice", l:"Hospice", g:"svcOther" },
   { k:"children_eye_exam", l:"Children's eye exam", g:"svcOther" },
   { k:"children_glasses", l:"Children's glasses", g:"svcOther" },
-  { k:"children_dental_checkup", l:"Children's dental checkup", g:"svcOther" }
+  { k:"children_dental_checkup", l:"Children's dental checkup", g:"svcOther" },
+  { k:"annual_physical", l:"Annual physical", g:"svcVisits" },
+  { k:"diagnostic_procedure", l:"Diagnostic procedures and tests (other than lab, x-ray, imaging)", g:"svcTests" },
+  { k:"mammogram", l:"Mammogram", g:"svcTests" },
+  { k:"colonoscopy_preventive_diagnostic", l:"Colonoscopy, preventive or diagnostic", g:"svcFacility" },
+  { k:"diabetic_supplies", l:"Diabetic supplies (meters and medical supplies)", g:"svcOther" },
+  { k:"continuous_glucose_monitor", l:"Continuous glucose monitor", g:"svcOther" }
 ];
+/* Medicare Advantage: services recorded with out-of-network cost shares, supplemental benefits */
+const OON_KEYS = ["preventive_care","annual_physical","primary_care_visit","specialist_visit","lab_test","xray_diagnostic_imaging","diagnostic_procedure","imaging_ct_pet_mri","outpatient_surgery_facility","hospital_facility","mental_health_outpatient_office","home_health","skilled_nursing","durable_medical_equipment","emergency_transport"];
+const SUPP_DEFS = [["dental_preventive","Dental, preventive"],["dental_comprehensive","Dental, comprehensive"],["eye_exam_routine","Eye exam, routine"],["eyewear","Eyewear"],["hearing_exam_routine","Hearing exam, routine"],["hearing_aids","Hearing aids"],["fitness","Fitness"],["routine_transportation","Routine transportation"],["meals","Meals"],["worldwide_emergency","Worldwide emergency"]];
+const isMA = p => !!p && !!p.identity && p.identity.plan_category === "medicare_advantage";
 const DRUG_DEFS = [
   { t:5, k:"tier5", l:"Tier 5" }, { t:4, k:"tier4_specialty", l:"Tier 4, specialty" },
   { t:3, k:"tier3_non_preferred_brand", l:"Tier 3, non-preferred brand" }, { t:2, k:"tier2_preferred_brand", l:"Tier 2, preferred brand" },
@@ -375,12 +385,13 @@ const SECTION_DEFS = [
   ["svcVisits","Services: office, urgent and virtual care"], ["svcTests","Services: tests and imaging"],
   ["svcFacility","Services: surgery, emergency and hospital"], ["svcMental","Services: mental health and maternity"],
   ["svcOther","Services: rehab, home care, equipment and children's"],
-  ["drugs","Prescription drugs"], ["prices","Evaluator prices (your estimates)"],
+  ["medicare","Medicare facts"], ["supp","Supplemental benefits (dental, vision, hearing, fitness)"], ["oon","Out-of-network cost shares"],
+  ["drugs","Prescription drugs"], ["channels","Pharmacy channels"], ["prices","Evaluator prices (your estimates)"],
   ["lists","Excluded and other covered services"], ["examples","SBC coverage examples"], ["extraction","Extraction notes"],
   ["hsa","HSA contribution"]
 ];
 /* sections that do not change the computed cost start hidden, so a new plan is not overwhelming */
-const HIDE_DEFAULT = { identity:true, network:true, svcMental:true, svcOther:true, lists:true, examples:true, extraction:true };
+const HIDE_DEFAULT = { supp:true, oon:true, channels:true, identity:true, network:true, svcMental:true, svcOther:true, lists:true, examples:true, extraction:true };
 function defaultHide(){ const h = {}; SECTION_DEFS.forEach(s => { h[s[0]] = !!HIDE_DEFAULT[s[0]]; }); return h; }
 
 function blankCS(){ return { structure:"", copay_amount:"", coinsurance_pct:"", deductible_applies:"", unit:"", max_units:"", limits:"", source_text:"" }; }
@@ -389,15 +400,19 @@ function blankPlan(id){
   SERVICE_DEFS.forEach(d => { services[d.k] = d.visit ? { cost_share:blankCS(), first_count:"", first:blankCS() } : blankCS(); });
   const drugs = {};
   DRUG_DEFS.forEach(d => { drugs[d.k] = blankCS(); });
-  Object.assign(drugs, { insulin_30_day_cap:"", retail_days_supply:"", mail_order_days_supply:"", mail_order_cost_multiplier:"" });
+  const oon = {}; OON_KEYS.forEach(k => { const df = SERVICE_DEFS.find(x => x.k === k); oon[k] = df.visit ? { cost_share:blankCS() } : blankCS(); });
+  const supp = {}; SUPP_DEFS.forEach(d => { supp[d[0]] = { covered:"", annual_allowance:"", frequency_limit:"", details:"" }; });
+  Object.assign(drugs, { tier_labels:"", insulin_30_day_cap:"", retail_days_supply:"", mail_order_days_supply:"", mail_order_cost_multiplier:"" });
   const prices = {};
   PRICE_DEFS.forEach(d => { prices[d[0]] = ""; });
   return { id:id, collapsed:false, hide:defaultHide(), hsaContrib:"",
-    identity:{ name:"New plan", carrier:"", state:"", plan_year:"", coverage_start:"", coverage_end:"", metal_level:"", plan_type:"", hsa_eligible:false, sbc_id:"", source_documents:"" },
+    identity:{ name:"New plan", carrier:"", state:"", plan_year:"", coverage_start:"", coverage_end:"", metal_level:"", plan_type:"", hsa_eligible:false, sbc_id:"", source_documents:"", plan_category:"marketplace", plan_id:"", medicare_coverage_type:"", service_area:"" },
     network:{ out_of_network_covered:"", primary_care_provider_required:"", specialist_referral_required:"", emergency_out_of_network_pays_in_network_rates:"" },
-    premium:{ monthly:"", estimated_yearly_cost:"", note:"" },
-    limits:{ deductible_individual:"", deductible_family:"", deductible_embedded:"", separate_service_deductibles:"", oop_max_individual:"", oop_max_family:"", coinsurance_member_pct:"20", not_counted_toward_oop_max:"" },
-    services:services, drugs:drugs, excluded_services:"", other_covered_services:"", coverage_examples:[],
+    premium:{ monthly:"", estimated_yearly_cost:"", note:"", part_b_monthly:"" },
+    limits:{ deductible_individual:"", deductible_family:"", deductible_embedded:"", separate_service_deductibles:"", oop_max_individual:"", oop_max_family:"", coinsurance_member_pct:"20", not_counted_toward_oop_max:"", deductible_out_of_network:"", oop_max_combined:"", drug_deductible_amount:"", drug_oop_max:"" },
+    services:services, out_of_network_services:oon, supplemental_benefits:supp, pharmacy_channels:[],
+    medicare:{ star_rating:"", includes_part_d:"", eligibility_note:"", extra_help_note:"", visitor_traveler_program:"", agent_phone:"", plan_page_url:"", annual_enrollment_period:"" },
+    drugs:drugs, excluded_services:"", other_covered_services:"", coverage_examples:[],
     prices:prices, evaluator_notes:"", extraction:{ confidence:"", assumptions:"", notes:"" } };
 }
 function blankExample(){ return { name:"", total_example_cost:"", deductible_paid:"", copayments_paid:"", coinsurance_paid:"", limits_or_exclusions:"", patient_total:"" }; }
@@ -455,7 +470,13 @@ const isSingle = h => !!h && h.status === "single";
 function p1Name(h){ const n = (h.p1.name || "").trim(); return isSingle(h) ? (!n || n === "Spouse 1" ? "Person" : n) : (n || "Spouse 1"); }
 function p2Name(h){ return h.p2.name || "Spouse 2"; }
 /* Married: family amount (2 x individual if only that is given). Single: individual amount (half the family amount if only that is given). */
+const drugDed = p => isMA(p) ? Math.max(0, num(p.limits.drug_deductible_amount)) : 0;
+/* Medicare Advantage: the medical deductible is usually $0, so the shared deductible is the per-person Part D deductible (it only touches drug tiers marked "deductible applies") */
 function planDed(p, single){
+  const b = planDedBase(p, single), d = drugDed(p);
+  return d > 0 && b === 0 ? d * (single ? 1 : 2) : b;
+}
+function planDedBase(p, single){
   const f = numOrNull(p.limits.deductible_family), i = numOrNull(p.limits.deductible_individual);
   if (single) return i != null ? Math.max(0, i) : (f != null ? Math.max(0, f) / 2 : 0);
   return f != null ? Math.max(0, f) : (i != null ? 2 * Math.max(0, i) : 0);
@@ -611,11 +632,12 @@ function evaluate(state, plan){
   st.total = st.er + st.erBlood + st.erXray + st.erImg + st.hosp + st.hospTest + st.surg;
   const single = isSingle(h), setBase = settle(plan, N, single), setAll = settle(plan, all, single);
   const isHsa = !!plan.identity.hsa_eligible;
-  const premium = num(plan.premium.monthly) * 12;
+  const enr = isMA(plan) ? (hsaLimit(state).medicare || (single ? 1 : 2)) : 1;
+  const premium = (num(plan.premium.monthly) + (isMA(plan) ? num(plan.premium.part_b_monthly) : 0)) * 12 * enr;
   const oopBase = setBase.total, oopAll = setAll.total;
   const missing = [];
   all.forEach(L => { if (L.noPrice && missing.indexOf(L.label) < 0) missing.push(L.label); });
-  const r = { plan, isHsa, premium, u, st, lines:b, setBase, setAll, oopBase, oopAll, missing,
+  const r = { plan, isHsa, enr, premium, u, st, lines:b, setBase, setAll, oopBase, oopAll, missing,
     completeGross: premium + u.total, complete: premium + oopBase,
     stressGross: premium + u.total + st.total, stress: premium + oopAll,
     stressAdded: oopAll - oopBase, hsa: null };
@@ -650,6 +672,11 @@ function m(n){
   return (n < 0 ? "-" : "") + "$" + Math.abs(n).toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
 }
 /* ---------- tooltips: how each number was calculated ---------- */
+function premText(p, r){
+  const mo = num(p.premium.monthly), pb = num(p.premium.part_b_monthly);
+  if (!isMA(p)) return "Monthly premium " + m(mo) + " × 12 months = " + m(r.premium);
+  return "(Plan premium " + m(mo) + (pb ? " + Part B " + m(pb) : "") + ") × 12 months × " + r.enr + " enrolled " + (r.enr === 1 ? "person" : "people") + " = " + m(r.premium);
+}
 function dedText(c){ return c.ded ? "the deductible applies first" : "the deductible does not apply"; }
 function csText(c){
   switch (c.st){
@@ -690,7 +717,7 @@ function buildTips(state, r){
   const t = Math.min(Math.max(num(h.taxRate), 0), 100);
   const who = [s.p1 ? n1 : null, !single && s.p2 ? n2 : null].filter(Boolean).join(" + ") || "no one selected";
   const T = {};
-  T.prem = "Monthly premium " + m(num(p.premium.monthly)) + " × 12 months = " + m(r.premium);
+  T.prem = premText(p, r);
   T.pcp = catTip(N, ["pcp"]);
   T.spec = catTip(N, ["spec"]);
   T.proc = catTip(N, ["proc"]);
@@ -701,7 +728,7 @@ function buildTips(state, r){
   T.rx = catTip(N, ["rx"]);
   T.totalGross = "PCP " + m(u.pcp) + " + specialist " + m(u.spec) + " + procedures " + m(u.proc) + " + imaging " + m(u.imaging) + " + blood work " + m(u.blood) + " + X-ray " + m(u.xray) + " + urgent care " + m(u.uc) + " + medications " + m(u.rx) + " = " + m(u.total) + "\n(Every listed price paid in full: no deductible, copay, coinsurance or cap.)";
   T.oopBase = insExplain(r.setBase);
-  T.segPrem = "Premium: monthly " + m(num(p.premium.monthly)) + " × 12 months = " + m(r.premium) + "\n(Paid whether or not you use care.)";
+  T.segPrem = "Premium: " + premText(p, r) + "\n(Paid whether or not you use care.)";
   const segOop = (oop, save, label) => "Out of pocket (" + label + "): care costs you pay " + m(oop) + (r.hsa ? " − HSA tax deduction " + m(save) + " = " + m(Math.max(oop - save, 0)) : "") + "\n(Deductible, copays and coinsurance, up to the out-of-pocket maximum.)";
   T.segOop1 = segOop(r.oopBase, r.hsa ? r.hsa.saveOnSpend : 0, "normal year");
   T.segOop2 = segOop(r.oopAll, r.hsa ? r.hsa.saveOnSpendStress : 0, "normal year + stress");
@@ -803,12 +830,18 @@ function planFromSchema(doc, ctx){
   I.name = shortStr(id.name, 120); I.carrier = sStr(id.carrier); I.state = sStr(id.state); I.plan_year = sStr(id.plan_year);
   I.coverage_start = sStr(id.coverage_start); I.coverage_end = sStr(id.coverage_end); I.metal_level = sStr(id.metal_level); I.plan_type = sStr(id.plan_type);
   I.hsa_eligible = id.hsa_eligible === true; I.sbc_id = sStr(id.sbc_id); I.source_documents = sList(id.source_documents);
+  I.plan_category = id.plan_category === "medicare_advantage" ? "medicare_advantage" : "marketplace";
+  I.plan_id = sStr(id.plan_id); I.medicare_coverage_type = sStr(id.medicare_coverage_type);
+  const sa = plainObj(id.service_area) ? id.service_area : {};
+  I.service_area = [sa.county ? sa.county + " County" : "", sa.state, sa.zip].filter(Boolean).join(", ");
   Object.keys(p.network).forEach(k => { p.network[k] = sBool(nw[k]); });
-  p.premium.monthly = sStr(pm.monthly); p.premium.estimated_yearly_cost = sStr(pm.estimated_yearly_cost); p.premium.note = sStr(pm.note);
+  p.premium.monthly = sStr(pm.monthly); p.premium.estimated_yearly_cost = sStr(pm.estimated_yearly_cost); p.premium.note = sStr(pm.note); p.premium.part_b_monthly = sStr(pm.part_b_monthly);
   const L = p.limits;
   ["deductible_individual","deductible_family","oop_max_individual","oop_max_family"].forEach(k => { L[k] = sStr(lim[k]); });
   L.deductible_embedded = sBool(lim.deductible_embedded); L.separate_service_deductibles = sBool(lim.separate_service_deductibles);
   L.coinsurance_member_pct = sStr(lim.coinsurance_member_pct); L.not_counted_toward_oop_max = sList(lim.not_counted_toward_oop_max);
+  L.deductible_out_of_network = sStr(lim.deductible_out_of_network); L.oop_max_combined = sStr(lim.oop_max_combined_in_and_out_of_network);
+  L.drug_deductible_amount = sStr(plainObj(lim.drug_deductible) ? lim.drug_deductible.amount : null); L.drug_oop_max = sStr(lim.drug_oop_max);
   SERVICE_DEFS.forEach(df => {
     const v = sv[df.k];
     if (df.visit){
@@ -816,6 +849,16 @@ function planFromSchema(doc, ctx){
       p.services[df.k] = { cost_share: csFrom(v && v.cost_share), first_count: fv ? sStr(fv.count) : "", first: csFrom(fv && fv.cost_share) };
     } else p.services[df.k] = csFrom(v);
   });
+  const oo = plainObj(d.out_of_network_services) ? d.out_of_network_services : {};
+  OON_KEYS.forEach(k => { const df = SERVICE_DEFS.find(x => x.k === k), v = oo[k]; p.out_of_network_services[k] = df.visit ? { cost_share: csFrom(v && v.cost_share) } : csFrom(v); });
+  const sb = plainObj(d.supplemental_benefits) ? d.supplemental_benefits : {};
+  SUPP_DEFS.forEach(df => { const v = plainObj(sb[df[0]]) ? sb[df[0]] : {}; p.supplemental_benefits[df[0]] = { covered:sBool(v.covered), annual_allowance:sStr(v.annual_allowance), frequency_limit:sStr(v.frequency_limit), details:sList(v.details) }; });
+  const mc = plainObj(d.medicare) ? d.medicare : {}, en = plainObj(mc.enrollment) ? mc.enrollment : {};
+  Object.assign(p.medicare, { star_rating:sStr(mc.star_rating), includes_part_d:sBool(mc.includes_part_d), eligibility_note:sStr(mc.eligibility_note), extra_help_note:sStr(mc.extra_help_note),
+    visitor_traveler_program:sStr(mc.visitor_traveler_program), agent_phone:sStr(en.agent_phone), plan_page_url:sStr(en.plan_page_url), annual_enrollment_period:sStr(mc.annual_enrollment_period) });
+  p.pharmacy_channels = (Array.isArray(dr.pharmacy_channels) ? dr.pharmacy_channels : []).filter(plainObj).slice(0, 6).map(c => ({ name:sStr(c.name), channel:sStr(c.channel), days_supply:sStr(c.days_supply), insulin_cap:sStr(c.insulin_cap),
+    tier1:csFrom(c.tier1), tier2:csFrom(c.tier2), tier3:csFrom(c.tier3), tier4:csFrom(c.tier4), tier5:csFrom(c.tier5) }));
+  p.drugs.tier_labels = sList(dr.tier_labels);
   DRUG_DEFS.forEach(df => { p.drugs[df.k] = csFrom(dr[df.k]); });
   ["insulin_30_day_cap","retail_days_supply","mail_order_days_supply","mail_order_cost_multiplier"].forEach(k => { p.drugs[k] = sStr(dr[k]); });
   p.excluded_services = sList(d.excluded_services); p.other_covered_services = sList(d.other_covered_services);
@@ -857,6 +900,7 @@ function planFromSchema(doc, ctx){
   }
   const hf = p.services.hospital_facility;
   if (numOrNull(hf.max_units) != null && hf.structure === "copay") notes.push("Hospital copay is limited to " + hf.max_units + " " + (hf.unit || "unit") + "(s) per stay; the calculation applies that limit.");
+  if (isMA(p)) notes.push("Medicare plan: premium is counted per enrolled person (those at or above the Medicare age); the Part D deductible applies to drug tiers marked “deductible applies”; out-of-network costs, the Rx out-of-pocket cap and the free first 20 skilled-nursing days are recorded but not costed.");
   if (missing.length) notes.push("Enter the dollar prices in section 2 (Costs) or above under “Evaluator prices” on this card (they are the allowed prices the deductible and coinsurance apply to).");
   const list = a => Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 20).map(x => x.slice(0, 400)) : [];
   p._import = {
@@ -1012,6 +1056,7 @@ function importBanner(p){
     '<div>Check every value against the plan PDF.</div></div>';
 }
 function planCard(p){
+  const ma = isMA(p);
   const pf = (label, path, o) => fieldHtml(label, 'data-plan="' + p.id + '" data-field="' + path + '"', getPath(p, path), o);
   const ps = (label, path, opts, o) => selectHtml(label, 'data-plan="' + p.id + '" data-field="' + path + '"', getPath(p, path), opts, o);
   const pa = (label, path, rows) => areaHtml(label, 'data-plan="' + p.id + '" data-field="' + path + '"', getPath(p, path), rows);
@@ -1050,6 +1095,7 @@ function planCard(p){
     '<label class="chk hidechk plan-hide no-print" title="Collapse this plan to save screen space"><input type="checkbox" data-plan="' + p.id + '" data-collapse="1"' + (p.collapsed ? " checked" : "") + '> Hide</label>' +
     '<div class="plan-head">' +
       pf("Plan name", "identity.name", { text:true }) +
+      ps("Plan category", "identity.plan_category", [["marketplace", "Marketplace"], ["medicare_advantage", "Medicare Advantage"]]) +
       '<label class="chk"><input type="checkbox" data-plan="' + p.id + '" data-field="identity.hsa_eligible"' + (p.identity.hsa_eligible ? " checked" : "") + '> HSA-eligible plan</label>' +
       '<div class="actions no-print"><button type="button" data-act="hideall" data-id="' + p.id + '" title="Hide every section of this plan">Hide all sections</button>' +
       '<button type="button" data-act="showall" data-id="' + p.id + '" title="Show every section of this plan">Show all sections</button>' +
@@ -1060,8 +1106,8 @@ function planCard(p){
       pf("Carrier", "identity.carrier", { text:true }) + pf("State", "identity.state", { text:true }) + pf("Plan year", "identity.plan_year", { text:true }) +
       pf("Coverage start", "identity.coverage_start", { text:true }) + pf("Coverage end", "identity.coverage_end", { text:true }) +
       ps("Metal level", "identity.metal_level", [["", "—"], "Bronze", "Silver", "Gold", "Platinum", "Catastrophic"].map(x => Array.isArray(x) ? x : [x, x])) +
-      ps("Plan type", "identity.plan_type", [["", "—"], "HMO", "PPO", "EPO", "POS", "HDHP"].map(x => Array.isArray(x) ? x : [x, x])) +
-      pf("SBC document id", "identity.sbc_id", { text:true }) + '</div><div class="grid wide">' +
+      ps("Plan type", "identity.plan_type", [["", "—"], "HMO", "PPO", "EPO", "POS", "HDHP", "HMO-POS", "PFFS"].map(x => Array.isArray(x) ? x : [x, x])) +
+      pf("SBC document id", "identity.sbc_id", { text:true }) + (ma ? pf("Medicare plan id", "identity.plan_id", { text:true }) + pf("Service area", "identity.service_area", { text:true }) : "") + '</div><div class="grid wide">' +
       pa("Source documents (one per line)", "identity.source_documents", 3) + "</div>") +
     sec("network", "Network rules", "", '<div class="grid">' +
       ps("Out-of-network care covered?", "network.out_of_network_covered", TRI) +
@@ -1070,22 +1116,40 @@ function planCard(p){
       ps("Emergency out-of-network paid at in-network rates?", "network.emergency_out_of_network_pays_in_network_rates", TRI) + "</div>") +
     sec("premium", "Premium", "Marketplace estimate for the household; an SBC does not list a premium.", '<div class="grid">' +
       pf("Monthly premium", "premium.monthly", dollars()) + pf("Marketplace estimated yearly cost", "premium.estimated_yearly_cost", dollars()) +
-      pf("Premium note", "premium.note", { text:true, cls:"span2" }) + "</div>") +
+      (ma ? pf("Part B premium, monthly per person (optional)", "premium.part_b_monthly", dollars()) : "") + pf("Premium note", "premium.note", { text:true, cls:"span2" }) + "</div>") +
     sec("limits", "Deductible, out-of-pocket maximum and coinsurance", "The calculation uses the <b>family</b> amounts for a married couple (2 × the individual amount if only that is given) and the <b>individual</b> amounts for a single person (half the family amount if only that is given). It does not model per-person embedded deductibles.", '<div class="grid">' +
       pf("Deductible, individual", "limits.deductible_individual", dollars()) + pf("Deductible, family", "limits.deductible_family", dollars()) +
       ps("Embedded family deductible?", "limits.deductible_embedded", TRI) + ps("Separate deductibles for some services?", "limits.separate_service_deductibles", TRI) +
       pf("Max out-of-pocket, individual", "limits.oop_max_individual", dollars()) + pf("Max out-of-pocket, family", "limits.oop_max_family", dollars()) +
-      pf("Your general coinsurance share after the deductible", "limits.coinsurance_member_pct", { min:0, max:100, suf:"%" }) + '</div><div class="grid wide">' +
+      pf("Your general coinsurance share after the deductible", "limits.coinsurance_member_pct", { min:0, max:100, suf:"%" }) +
+      (ma ? pf("Medical deductible, out-of-network", "limits.deductible_out_of_network", dollars()) + pf("Max out-of-pocket, in and out-of-network combined", "limits.oop_max_combined", dollars()) +
+        pf("Part D drug deductible (per person)", "limits.drug_deductible_amount", dollars()) + pf("Prescription out-of-pocket cap (per person)", "limits.drug_oop_max", dollars()) : "") + '</div><div class="grid wide">' +
       pa("Not counted toward the out-of-pocket max (one per line)", "limits.not_counted_toward_oop_max", 3) + "</div>") +
     sec("svcVisits", "Services: office, urgent and virtual care", "Each service has its own cost share. “Used in cost” services feed the results; the others are recorded for reference.", group("svcVisits")) +
     sec("svcTests", "Services: tests and imaging", "", group("svcTests")) +
     sec("svcFacility", "Services: surgery, emergency and hospital", "", group("svcFacility")) +
     sec("svcMental", "Services: mental health and maternity", "Recorded for reference; not used in the cost calculation.", group("svcMental")) +
     sec("svcOther", "Services: rehab, home care, equipment and children's", "Recorded for reference; not used in the cost calculation.", group("svcOther")) +
-    sec("drugs", "Prescription drugs", "Cost share per fill for each tier.",
-      DRUG_DEFS.map(d => costShare("drugs." + d.k, d.l, true)).join("") + '<div class="grid">' +
+
+    (ma ? sec("medicare", "Medicare facts", "Premium and out-of-pocket amounts on a Medicare plan are <b>per person</b>. The calculation counts the premium for each enrolled person.", '<div class="grid">' +
+      pf("Medicare Star Rating (0-5)", "medicare.star_rating", { min:0, max:5, step:0.5 }) + ps("Includes Part D drug coverage?", "medicare.includes_part_d", TRI) +
+      pf("Agent phone", "medicare.agent_phone", { text:true }) + pf("Plan page URL", "medicare.plan_page_url", { text:true }) +
+      pf("Annual enrollment period", "medicare.annual_enrollment_period", { text:true, cls:"span2" }) + pf("Eligibility", "medicare.eligibility_note", { text:true, cls:"span2" }) +
+      pf("Extra Help", "medicare.extra_help_note", { text:true, cls:"span2" }) + pf("Visitor/traveler program", "medicare.visitor_traveler_program", { text:true, cls:"span2" }) + "</div>") : "") +
+    (ma ? sec("supp", "Supplemental benefits (dental, vision, hearing, fitness)", "Recorded for comparison; not part of the cost calculation.", SUPP_DEFS.map(d => '<div class="svc"><div class="svc-t">' + d[1] + '</div><div class="grid sm">' +
+      ps("Covered?", "supplemental_benefits." + d[0] + ".covered", TRI) + pf("Annual allowance", "supplemental_benefits." + d[0] + ".annual_allowance", dollars()) +
+      pf("Frequency limit", "supplemental_benefits." + d[0] + ".frequency_limit", { text:true, cls:"span2" }) + '</div><div class="grid wide">' + pa("Details (one per line)", "supplemental_benefits." + d[0] + ".details", 3) + "</div></div>").join("")) : "") +
+    (ma ? sec("oon", "Out-of-network cost shares", "What you pay with out-of-network providers (PPO plans). Recorded for reference; the calculation uses in-network costs.", OON_KEYS.map(k => {
+      const df = SERVICE_DEFS.find(x => x.k === k); return costShare("out_of_network_services." + k + (df.visit ? ".cost_share" : ""), df.l, false); }).join("")) : "") +
+    sec("drugs", "Prescription drugs", ma ? "Tiers are positional: the tier number matters, not the key name. These amounts are the plan's best everyday channel (see Pharmacy channels). Tiers marked “deductible applies” use the Part D deductible." : "Cost share per fill for each tier.",
+      DRUG_DEFS.map(d => costShare("drugs." + d.k, ma && textLines(p.drugs.tier_labels)[d.t - 1] ? "Tier " + d.t + ", " + textLines(p.drugs.tier_labels)[d.t - 1] : d.l, true)).join("") + '<div class="grid">' +
       pf("Insulin 30-day cap", "drugs.insulin_30_day_cap", dollars()) + pf("Retail days supply", "drugs.retail_days_supply", { min:0, step:1 }) +
       pf("Mail-order days supply", "drugs.mail_order_days_supply", { min:0, step:1 }) + pf("Mail-order cost multiplier (× retail copay)", "drugs.mail_order_cost_multiplier", { min:0 }) + "</div>") +
+
+    (ma ? sec("channels", "Pharmacy channels", "Drug costs at each kind of pharmacy and supply length (read-only summary of the plan file).", p.pharmacy_channels.length ? p.pharmacy_channels.map(c => {
+      const sum = x => x.structure === "copay" ? m(num(x.copay_amount)) + " copay" : x.structure === "coinsurance" ? num(x.coinsurance_pct) + "%" : x.structure === "no_charge" ? "$0" : x.structure === "not_covered" ? "not covered" : x.structure === "not_applicable" ? "n/a" : "—";
+      return '<div class="svc"><div class="svc-t">' + esc(c.name || c.channel) + (c.days_supply ? " (" + esc(c.days_supply) + "-day supply)" : "") + '</div><p class="hint">' +
+        [1,2,3,4,5].map(t => "Tier " + t + ": " + sum(c["tier" + t])).join(" · ") + (c.insulin_cap ? " · Insulin max " + m(num(c.insulin_cap)) : "") + "</p></div>"; }).join("") : '<p class="hint">None recorded.</p>') : "") +
     sec("prices", "Evaluator prices (your estimates)", "The <b>allowed price</b> per unit that the deductible and coinsurance apply to. A number here overrides the price in section 2 (Costs) for this plan; if both are blank the app uses the copay amount. Services that are only coinsurance need a price here, or they count as $0.",
       '<div class="grid">' + PRICE_DEFS.map(d => pf(d[1], "prices." + d[0], dollars())).join("") + '</div><div class="grid wide">' +
       pa("Notes on your estimates (one per line)", "evaluator_notes", 3) + "</div>") +
@@ -1188,7 +1252,7 @@ function renderDetail(){
     '<div class="detsum"><div><b>' + esc(pn(plan) || "Plan") + "</b>" + (r.isHsa ? " (HSA-eligible)" : "") + "</div>" +
       "<div>Deductible: " + (x.D > 0 ? m(x.dedPart) + " used of " + m(x.D) : "none entered") + "</div>" +
       "<div>Max out-of-pocket: " + (x.M > 0 ? m(x.M) : "none entered") + "</div>" +
-      "<div data-tip=\"" + esc("Monthly premium " + m(num(plan.premium.monthly)) + " × 12 months = " + m(prem)) + "\" tabindex=\"0\">Premium: " + m(prem) + " / yr</div>" +
+      "<div data-tip=\"" + esc(premText(plan, r)) + "\" tabindex=\"0\">Premium: " + m(prem) + " / yr</div>" +
       "<div data-tip=\"" + esc("Premium " + m(prem) + " + what you pay " + m(you) + " = " + m(prem + you)) + "\" tabindex=\"0\">You pay + premium: <b>" + m(prem + you) + "</b></div></div>" +
     '<div class="tablewrap"><table class="res det"><thead><tr><th class="l">Service / medication</th><th>Units</th><th>Base cost each</th><th>Base cost total</th><th class="l">Insurance coverage</th><th>Deductible used</th><th>You pay</th><th>Insurance pays</th></tr></thead><tbody>' +
     rows + foot + "</tbody></table></div>" +
@@ -1339,6 +1403,12 @@ function renderResultsMain(){
     evs.filter(e => e.isHsa).forEach(e => e.hsa.warnings.forEach(w => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> " + esc(w)])));
     evs.filter(e => e.isHsa && e.hsa.overLimit).forEach(e => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> planned contribution exceeds the maximum; the maximum is used."]));
   }
+  const maEvs = evs.filter(e => isMA(e.plan));
+  if (maEvs.length){
+    notices.push(["info", lim.medicare ? "Medicare plan premiums are counted for " + lim.medicare + " enrolled " + (lim.medicare === 1 ? "person" : "people") + " (those at or above the Medicare age)." :
+      "No one in the household is at or above the Medicare age, so Medicare Advantage plans may not be available yet. Premiums are counted for every person."]);
+    maEvs.forEach(e => notices.push(["info", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> Part B premium counts only if entered. Out-of-network costs, the prescription out-of-pocket cap and the free first 20 skilled-nursing days are not modeled."]));
+  }
   if (isSingle(state.household)) evs.filter(e => singleEstimates(e.plan).length).forEach(e => notices.push(["info", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> no " + esc(singleEstimates(e.plan).join(" or ")) + " is entered, so half the family amount is used for a single person. Enter the individual amount on the plan card for an exact result."]));
   evs.filter(e => e.missing.length).forEach(e => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> no price is entered for " + esc(e.missing.join(", ")) + ", so " + (e.missing.length === 1 ? "it counts" : "they count") + " as $0. Enter the price in section 2 (Costs) or under “Evaluator prices” on the plan card."]));
   $("notices").innerHTML = notices.map(x => '<div class="note ' + x[0] + '">' + x[1] + "</div>").join("");
@@ -1453,6 +1523,7 @@ document.addEventListener("input", ev => {
       autosave(); return;
     }
     setPath(p, el.dataset.field, val);
+    if (el.dataset.field === "identity.plan_category"){ renderPlans(); renderResults(); autosave(); return; }
     if (el.dataset.field === "identity.hsa_eligible"){
       const card = el.closest(".plan"); if (card) card.classList.toggle("is-hsa", !!val);
     }

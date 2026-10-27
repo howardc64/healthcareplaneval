@@ -1,7 +1,7 @@
 {
   "app": "health-plan-evaluator",
-  "version": "2.6.0",
-  "savedAt": "2026-10-27T05:03:46.055Z",
+  "version": "2.13.0",
+  "savedAt": "2026-10-27T06:39:20.098Z",
   "state": {
     "household": {
       "status": "married",
@@ -18,10 +18,10 @@
       "pcp2": "2",
       "spec": "15",
       "proc": "4",
-      "us": "6",
-      "mri": "2",
+      "us": "5",
+      "mri": "1",
       "ct": "",
-      "bloodWork": "10",
+      "bloodWork": "50",
       "xray": "",
       "ucVisits": "2",
       "ucBlood": "2",
@@ -37,7 +37,7 @@
     },
     "plans": [
       {
-        "id": "plmvq802m310",
+        "id": "plmvqbeujx6",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -49,7 +49,11 @@
           "svcFacility": false,
           "svcMental": true,
           "svcOther": true,
+          "medicare": false,
+          "supp": true,
+          "oon": true,
           "drugs": false,
+          "channels": true,
           "prices": false,
           "lists": true,
           "examples": true,
@@ -68,7 +72,11 @@
           "plan_type": "HMO",
           "hsa_eligible": false,
           "sbc_id": "SBC-61836WA0050016-01-2027",
-          "source_documents": "AB_Vital_Gold_61836WA0050016-01.pdf (Summary of Benefits and Coverage)\nAB_Vital_Gold_Compare_Plans___Washington_Healthplanfinder.pdf (plan details page)"
+          "source_documents": "AB_Vital_Gold_61836WA0050016-01.pdf (Summary of Benefits and Coverage)\nAB_Vital_Gold_Compare_Plans___Washington_Healthplanfinder.pdf (plan details page)",
+          "plan_category": "marketplace",
+          "plan_id": "",
+          "medicare_coverage_type": "",
+          "service_area": ""
         },
         "network": {
           "out_of_network_covered": "false",
@@ -79,7 +87,8 @@
         "premium": {
           "monthly": "2318.8",
           "estimated_yearly_cost": "33976",
-          "note": "Washington Healthplanfinder estimate for this household; the SBC does not list a premium."
+          "note": "Washington Healthplanfinder estimate for this household; the SBC does not list a premium.",
+          "part_b_monthly": ""
         },
         "limits": {
           "deductible_individual": "2200",
@@ -89,7 +98,11 @@
           "oop_max_individual": "11000",
           "oop_max_family": "22000",
           "coinsurance_member_pct": "20",
-          "not_counted_toward_oop_max": "Premiums\nBalance-billing charges\nHealth care this plan doesn't cover\nPenalties for failure to obtain preauthorization\nCosts for non-covered services\nServices provided by out-of-network providers"
+          "not_counted_toward_oop_max": "Premiums\nBalance-billing charges\nHealth care this plan doesn't cover\nPenalties for failure to obtain preauthorization\nCosts for non-covered services\nServices provided by out-of-network providers",
+          "deductible_out_of_network": "",
+          "oop_max_combined": "",
+          "drug_deductible_amount": "",
+          "drug_oop_max": ""
         },
         "services": {
           "preventive_care": {
@@ -460,7 +473,296 @@
             "max_units": "",
             "limits": "",
             "source_text": "Children's dental check-up: Not covered"
+          },
+          "annual_physical": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "diagnostic_procedure": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "mammogram": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "colonoscopy_preventive_diagnostic": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "diabetic_supplies": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "continuous_glucose_monitor": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
           }
+        },
+        "out_of_network_services": {
+          "preventive_care": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "annual_physical": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "primary_care_visit": {
+            "cost_share": {
+              "structure": "",
+              "copay_amount": "",
+              "coinsurance_pct": "",
+              "deductible_applies": "",
+              "unit": "",
+              "max_units": "",
+              "limits": "",
+              "source_text": ""
+            }
+          },
+          "specialist_visit": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "lab_test": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "xray_diagnostic_imaging": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "diagnostic_procedure": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "imaging_ct_pet_mri": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "outpatient_surgery_facility": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "hospital_facility": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "mental_health_outpatient_office": {
+            "cost_share": {
+              "structure": "",
+              "copay_amount": "",
+              "coinsurance_pct": "",
+              "deductible_applies": "",
+              "unit": "",
+              "max_units": "",
+              "limits": "",
+              "source_text": ""
+            }
+          },
+          "home_health": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "skilled_nursing": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "durable_medical_equipment": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "emergency_transport": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          }
+        },
+        "supplemental_benefits": {
+          "dental_preventive": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "dental_comprehensive": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "eye_exam_routine": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "eyewear": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "hearing_exam_routine": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "hearing_aids": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "fitness": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "routine_transportation": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "meals": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "worldwide_emergency": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          }
+        },
+        "pharmacy_channels": [],
+        "medicare": {
+          "star_rating": "",
+          "includes_part_d": "",
+          "eligibility_note": "",
+          "extra_help_note": "",
+          "visitor_traveler_program": "",
+          "agent_phone": "",
+          "plan_page_url": "",
+          "annual_enrollment_period": ""
         },
         "drugs": {
           "tier5": {
@@ -513,6 +815,7 @@
             "limits": "",
             "source_text": "Generic drugs (Tier 1) Retail: $10 Copay / prescription; deductible does not apply"
           },
+          "tier_labels": "",
           "insulin_30_day_cap": "35",
           "retail_days_supply": "30",
           "mail_order_days_supply": "90",
@@ -576,7 +879,7 @@
         }
       },
       {
-        "id": "plmvq802m312",
+        "id": "plmvqbeujx8",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -588,7 +891,11 @@
           "svcFacility": false,
           "svcMental": true,
           "svcOther": true,
+          "medicare": false,
+          "supp": true,
+          "oon": true,
           "drugs": false,
+          "channels": true,
           "prices": false,
           "lists": true,
           "examples": true,
@@ -607,7 +914,11 @@
           "plan_type": "HMO",
           "hsa_eligible": true,
           "sbc_id": "SBC-61836WA0050036-01-2027",
-          "source_documents": "AB_Select_Bronze_61836WA0050036-01.pdf (Summary of Benefits and Coverage)\nAB_Select_Bronze_HSA_Compare_Plans___Washington_Healthplanfinder.pdf (plan details page)"
+          "source_documents": "AB_Select_Bronze_61836WA0050036-01.pdf (Summary of Benefits and Coverage)\nAB_Select_Bronze_HSA_Compare_Plans___Washington_Healthplanfinder.pdf (plan details page)",
+          "plan_category": "marketplace",
+          "plan_id": "",
+          "medicare_coverage_type": "",
+          "service_area": ""
         },
         "network": {
           "out_of_network_covered": "false",
@@ -618,7 +929,8 @@
         "premium": {
           "monthly": "1839.7",
           "estimated_yearly_cost": "31907",
-          "note": "Washington Healthplanfinder estimate for this household; the SBC does not list a premium."
+          "note": "Washington Healthplanfinder estimate for this household; the SBC does not list a premium.",
+          "part_b_monthly": ""
         },
         "limits": {
           "deductible_individual": "7000",
@@ -628,7 +940,11 @@
           "oop_max_individual": "11800",
           "oop_max_family": "23600",
           "coinsurance_member_pct": "40",
-          "not_counted_toward_oop_max": "Premiums\nBalance-billing charges\nHealth care this plan doesn't cover\nPenalties for failure to obtain preauthorization\nCosts for non-covered services\nServices provided by out-of-network providers"
+          "not_counted_toward_oop_max": "Premiums\nBalance-billing charges\nHealth care this plan doesn't cover\nPenalties for failure to obtain preauthorization\nCosts for non-covered services\nServices provided by out-of-network providers",
+          "deductible_out_of_network": "",
+          "oop_max_combined": "",
+          "drug_deductible_amount": "",
+          "drug_oop_max": ""
         },
         "services": {
           "preventive_care": {
@@ -999,7 +1315,296 @@
             "max_units": "",
             "limits": "",
             "source_text": "Children's dental check-up: Not covered"
+          },
+          "annual_physical": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "diagnostic_procedure": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "mammogram": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "colonoscopy_preventive_diagnostic": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "diabetic_supplies": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "continuous_glucose_monitor": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
           }
+        },
+        "out_of_network_services": {
+          "preventive_care": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "annual_physical": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "primary_care_visit": {
+            "cost_share": {
+              "structure": "",
+              "copay_amount": "",
+              "coinsurance_pct": "",
+              "deductible_applies": "",
+              "unit": "",
+              "max_units": "",
+              "limits": "",
+              "source_text": ""
+            }
+          },
+          "specialist_visit": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "lab_test": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "xray_diagnostic_imaging": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "diagnostic_procedure": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "imaging_ct_pet_mri": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "outpatient_surgery_facility": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "hospital_facility": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "mental_health_outpatient_office": {
+            "cost_share": {
+              "structure": "",
+              "copay_amount": "",
+              "coinsurance_pct": "",
+              "deductible_applies": "",
+              "unit": "",
+              "max_units": "",
+              "limits": "",
+              "source_text": ""
+            }
+          },
+          "home_health": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "skilled_nursing": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "durable_medical_equipment": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "emergency_transport": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          }
+        },
+        "supplemental_benefits": {
+          "dental_preventive": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "dental_comprehensive": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "eye_exam_routine": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "eyewear": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "hearing_exam_routine": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "hearing_aids": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "fitness": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "routine_transportation": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "meals": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          },
+          "worldwide_emergency": {
+            "covered": "",
+            "annual_allowance": "",
+            "frequency_limit": "",
+            "details": ""
+          }
+        },
+        "pharmacy_channels": [],
+        "medicare": {
+          "star_rating": "",
+          "includes_part_d": "",
+          "eligibility_note": "",
+          "extra_help_note": "",
+          "visitor_traveler_program": "",
+          "agent_phone": "",
+          "plan_page_url": "",
+          "annual_enrollment_period": ""
         },
         "drugs": {
           "tier5": {
@@ -1052,6 +1657,7 @@
             "limits": "",
             "source_text": "Generic drugs (Tier 1) Retail: $32 Copay / prescription; deductible does not apply"
           },
+          "tier_labels": "",
           "insulin_30_day_cap": "35",
           "retail_days_supply": "30",
           "mail_order_days_supply": "90",
@@ -1134,14 +1740,14 @@
     },
     "costs": {
       "er_visit": "5000",
-      "specialist_procedure": "375",
-      "blood_work": "200",
+      "specialist_procedure": "650",
+      "blood_work": "30",
       "xray": "200",
-      "ultrasound": "300",
-      "mri": "300",
-      "ct": "300",
+      "ultrasound": "500",
+      "mri": "500",
+      "ct": "500",
       "hospital_day": "10000",
-      "surgery": "6000"
+      "surgery": "8000"
     },
     "view": {
       "hide": {

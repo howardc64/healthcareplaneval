@@ -23,9 +23,10 @@ Everything runs locally in your browser. No server, no build step, no dependenci
 | `index.html` | The whole app (HTML, CSS, JavaScript) |
 | `README.md` | This file |
 | `CHANGELOG.md` | Version history |
-| `health-plan.schema.json` | Common JSON Schema (2.0) for one health plan, built from an SBC and a marketplace plan-details page |
-| `fill-health-plan-prompt.md` | Prompt for the LLM (must be updated to schema 2.0 before use) |
+| `health-plan.schema.json` | Common JSON Schema (2.1) for one health plan: marketplace (SBC + plan-details page) or Medicare Advantage (plan-details page, Summary of Benefits) |
+| `fill-health-plan-prompt.md` | Prompt for the LLM to fill a plan file (schema 2.1, marketplace and Medicare) |
 | `plans/AB_Vital_Gold.plan.json`, `plans/AB_Select_Bronze_HSA.plan.json` | Filled plan files (Ambetter Cascade Select Vital Gold and Select Bronze HSA, 2027) |
+| `plans/Aetna_Medicare_Enhanced_PPO.plan.json`, `plans/Aetna_Medicare_Signature_PPO.plan.json` | Filled Medicare Advantage plan files (Aetna Enhanced H5521-687 and Signature H5521-431, King County WA, 2027) |
 
 ## How to use
 
@@ -90,6 +91,23 @@ Everything in the schema is loaded onto the card. Ultrasound, MRI, PET and CT al
 - **Save as…** opens your system's file window so you choose the folder and file name. **Save** then rewrites that same file, and **Auto-save to file** (on by default) rewrites it after every change. **Open file** only loads a saved file (it writes nothing) and makes it the current file. **Load example** and **Reset** turn auto-save off and forget the current file so a real file is never overwritten. Rewriting a chosen file needs Chrome or Edge; Firefox and Safari fall back to downloading a copy each time.
 - Your last session is also kept automatically in your browser's local storage.
 - **Print** prints the whole page; **Print results only** prints just the comparison.
+
+## Medicare Advantage plans
+
+Set **Plan category** to *Medicare Advantage* at the top of a plan card (loading a plan file with `plan_category: medicare_advantage` does it for you). The card then shows extra sections and fields:
+
+- **Medicare facts**: star rating, Part D, enrollment contacts, eligibility, Extra Help, traveler program.
+- **Supplemental benefits**: dental, eye exam, eyewear, hearing exam, hearing aids, fitness, transportation, meals, worldwide emergency (allowances and details, not costed).
+- **Out-of-network cost shares** for 15 services (reference only; the results use in-network costs).
+- **Pharmacy channels**: preferred retail, standard retail and mail order (read-only summary of the file). The tier fields hold the plan's best everyday channel, and tier numbers are positional (Medicare Tier 2 is generic).
+- Extra fields: Medicare plan id, service area, Part B premium, out-of-network deductible, combined in/out-of-network out-of-pocket maximum, Part D deductible and prescription out-of-pocket cap.
+
+How the numbers change for a Medicare plan:
+
+- **Premium** = (plan premium + optional Part B premium) × 12 × the number of enrolled people. Enrolled people are those at or above the Medicare age in section 1; if nobody is, every person is counted and a notice says so.
+- **Deductible and maximum out-of-pocket** are per person; a couple uses 2 × the individual amounts (Medicare plans have no family amounts).
+- **Part D deductible**: when the medical deductible is $0, the deductible shared by the services is the per-person Part D deductible, so it only affects drug tiers marked "deductible applies".
+- **Not modeled**: out-of-network use, the prescription out-of-pocket cap, free first 20 skilled-nursing days, and Medigap or employer coverage interaction. A notice lists these.
 
 ## How the numbers are calculated
 
