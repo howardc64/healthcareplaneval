@@ -1,0 +1,697 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/health-plan.schema.json",
+  "title": "Health plan summary (common schema)",
+  "description": "One health insurance plan as printed in its Summary of Benefits and Coverage (SBC) and marketplace plan-details page. Facts only: record what the documents say, with a short source quote. Anything the documents do not state (for example dollar prices for services charged as coinsurance) is left null here and, if you want the evaluator to use an estimate, goes in evaluator_inputs.prices. Schema 2.0.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "plan"
+  ],
+  "$defs": {
+    "money": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "Dollars. null = not stated in the documents."
+    },
+    "costShare": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "structure": {
+          "type": "string",
+          "enum": [
+            "copay",
+            "coinsurance",
+            "no_charge",
+            "not_covered",
+            "not_applicable",
+            "unknown"
+          ],
+          "description": "copay = flat dollar amount; coinsurance = percentage of the allowed amount; no_charge = you pay $0; not_covered = excluded; not_applicable = the plan has no such service or tier; unknown = the documents are unclear."
+        },
+        "copay_amount": {
+          "$ref": "#/$defs/money",
+          "description": "Flat amount per unit when structure is copay."
+        },
+        "coinsurance_pct": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100,
+          "description": "YOUR share in percent (not the plan's share) when structure is coinsurance."
+        },
+        "deductible_applies": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "true = you pay the full allowed amount until the deductible is met, then the copay or coinsurance (documents say 'up to the deductible / $X copay after you meet your deductible'). false = copay or coinsurance applies from the first dollar ('deductible does not apply'). null = not stated."
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "visit",
+            "day",
+            "prescription",
+            "trip",
+            "test",
+            "stay",
+            "item",
+            null
+          ],
+          "description": "What one copay or coinsurance charge covers."
+        },
+        "max_units": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "Cap on charged units, for example 5 (copays per hospital stay)."
+        },
+        "limits": {
+          "type": "string",
+          "description": "Coverage limits or exceptions in plain words, for example '25 visits per year'."
+        },
+        "source_text": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Short quote from the document that supports this entry."
+        }
+      },
+      "required": [
+        "structure"
+      ],
+      "description": "How you pay for one kind of service."
+    },
+    "visitCost": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cost_share": {
+          "$ref": "#/$defs/costShare",
+          "description": "Cost per visit after any discounted first visits."
+        },
+        "first_visits": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "count": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "cost_share": {
+                  "$ref": "#/$defs/costShare"
+                }
+              },
+              "required": [
+                "count",
+                "cost_share"
+              ]
+            }
+          ],
+          "description": "Plans that charge less for the first N visits of the year (for example the first 2 visits are $1). null if there is no such rule."
+        }
+      },
+      "required": [
+        "cost_share"
+      ],
+      "description": "A visit type that may have a different price for the first visits of the year."
+    },
+    "coverageExample": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "total_example_cost": {
+          "$ref": "#/$defs/money"
+        },
+        "deductible_paid": {
+          "$ref": "#/$defs/money"
+        },
+        "copayments_paid": {
+          "$ref": "#/$defs/money"
+        },
+        "coinsurance_paid": {
+          "$ref": "#/$defs/money"
+        },
+        "limits_or_exclusions": {
+          "$ref": "#/$defs/money"
+        },
+        "patient_total": {
+          "$ref": "#/$defs/money"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "description": "One SBC coverage example (self-only coverage)."
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "2.0"
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Full plan name as printed, for example 'Ambetter Cascade Select Vital Gold: Standard Gold On Exchange Plan'."
+            },
+            "carrier": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "plan_year": {
+              "type": "string"
+            },
+            "coverage_start": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "coverage_end": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "metal_level": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "Bronze",
+                "Silver",
+                "Gold",
+                "Platinum",
+                "Catastrophic",
+                null
+              ]
+            },
+            "plan_type": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "HMO",
+                "PPO",
+                "EPO",
+                "POS",
+                "HDHP",
+                null
+              ]
+            },
+            "hsa_eligible": {
+              "type": "boolean",
+              "description": "As stated on the plan-details page."
+            },
+            "sbc_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Document id printed at the bottom of the SBC."
+            },
+            "source_documents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "hsa_eligible"
+          ]
+        },
+        "network": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "out_of_network_covered": {
+              "type": [
+                "boolean",
+                "null"
+              ],
+              "description": "false when out-of-network care is not covered (except emergencies)."
+            },
+            "primary_care_provider_required": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "specialist_referral_required": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "emergency_out_of_network_pays_in_network_rates": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            }
+          }
+        },
+        "premium": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "monthly": {
+              "$ref": "#/$defs/money",
+              "description": "Monthly premium for the household (marketplace estimate; SBCs do not list it)."
+            },
+            "estimated_yearly_cost": {
+              "$ref": "#/$defs/money",
+              "description": "Marketplace 'estimated yearly cost' if shown."
+            },
+            "note": {
+              "type": "string"
+            }
+          }
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "deductible_individual": {
+              "$ref": "#/$defs/money"
+            },
+            "deductible_family": {
+              "$ref": "#/$defs/money"
+            },
+            "deductible_embedded": {
+              "type": [
+                "boolean",
+                "null"
+              ],
+              "description": "true if each family member must meet the individual deductible until the family total is met."
+            },
+            "separate_service_deductibles": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "oop_max_individual": {
+              "$ref": "#/$defs/money"
+            },
+            "oop_max_family": {
+              "$ref": "#/$defs/money"
+            },
+            "coinsurance_member_pct": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Your general share after the deductible (the SBC coverage examples call it 'Other coinsurance')."
+            },
+            "not_counted_toward_oop_max": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "services": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "preventive_care": {
+              "$ref": "#/$defs/costShare"
+            },
+            "primary_care_visit": {
+              "$ref": "#/$defs/visitCost"
+            },
+            "specialist_visit": {
+              "$ref": "#/$defs/costShare"
+            },
+            "urgent_care_visit": {
+              "$ref": "#/$defs/costShare"
+            },
+            "virtual_care_visit": {
+              "$ref": "#/$defs/costShare"
+            },
+            "lab_test": {
+              "$ref": "#/$defs/costShare",
+              "description": "Diagnostic test: laboratory and professional services (blood work) at an office or lab."
+            },
+            "xray_diagnostic_imaging": {
+              "$ref": "#/$defs/costShare",
+              "description": "Diagnostic test: x-ray and diagnostic imaging at an office or imaging center."
+            },
+            "diagnostic_test_other_place_of_service": {
+              "$ref": "#/$defs/costShare",
+              "description": "Lab and x-ray billed at hospital, ER or outpatient facility instead of the office."
+            },
+            "imaging_ct_pet_mri": {
+              "$ref": "#/$defs/costShare"
+            },
+            "outpatient_surgery_facility": {
+              "$ref": "#/$defs/costShare"
+            },
+            "outpatient_surgery_professional": {
+              "$ref": "#/$defs/costShare"
+            },
+            "emergency_room": {
+              "$ref": "#/$defs/costShare"
+            },
+            "emergency_transport": {
+              "$ref": "#/$defs/costShare"
+            },
+            "hospital_facility": {
+              "$ref": "#/$defs/costShare",
+              "description": "Hospital room and facility fee. Use unit day and max_units for per-day copays."
+            },
+            "hospital_professional": {
+              "$ref": "#/$defs/costShare"
+            },
+            "mental_health_outpatient_office": {
+              "$ref": "#/$defs/visitCost"
+            },
+            "mental_health_outpatient_other": {
+              "$ref": "#/$defs/costShare"
+            },
+            "mental_health_inpatient": {
+              "$ref": "#/$defs/costShare"
+            },
+            "maternity_office_visit": {
+              "$ref": "#/$defs/costShare"
+            },
+            "delivery_professional": {
+              "$ref": "#/$defs/costShare"
+            },
+            "delivery_facility": {
+              "$ref": "#/$defs/costShare"
+            },
+            "home_health": {
+              "$ref": "#/$defs/costShare"
+            },
+            "rehabilitation_outpatient": {
+              "$ref": "#/$defs/costShare"
+            },
+            "rehabilitation_inpatient": {
+              "$ref": "#/$defs/costShare"
+            },
+            "habilitation_outpatient": {
+              "$ref": "#/$defs/costShare"
+            },
+            "habilitation_inpatient": {
+              "$ref": "#/$defs/costShare"
+            },
+            "skilled_nursing": {
+              "$ref": "#/$defs/costShare"
+            },
+            "durable_medical_equipment": {
+              "$ref": "#/$defs/costShare"
+            },
+            "hospice": {
+              "$ref": "#/$defs/costShare"
+            },
+            "chiropractic": {
+              "$ref": "#/$defs/visitCost"
+            },
+            "children_eye_exam": {
+              "$ref": "#/$defs/costShare"
+            },
+            "children_glasses": {
+              "$ref": "#/$defs/costShare"
+            },
+            "children_dental_checkup": {
+              "$ref": "#/$defs/costShare"
+            }
+          }
+        },
+        "drugs": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "tier1_generic": {
+              "$ref": "#/$defs/costShare"
+            },
+            "tier2_preferred_brand": {
+              "$ref": "#/$defs/costShare"
+            },
+            "tier3_non_preferred_brand": {
+              "$ref": "#/$defs/costShare"
+            },
+            "tier4_specialty": {
+              "$ref": "#/$defs/costShare"
+            },
+            "tier5": {
+              "$ref": "#/$defs/costShare",
+              "description": "Use not_applicable if the plan has only four tiers."
+            },
+            "insulin_30_day_cap": {
+              "$ref": "#/$defs/money"
+            },
+            "retail_days_supply": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "mail_order_days_supply": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "mail_order_cost_multiplier": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "For example 2.5 = mail order costs 2.5 x the retail copay."
+            }
+          }
+        },
+        "excluded_services": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "other_covered_services": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "coverage_examples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/coverageExample"
+          }
+        }
+      },
+      "required": [
+        "identity",
+        "limits",
+        "services"
+      ]
+    },
+    "evaluator_inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "prices": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "primary_care_visit": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "specialist_visit": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "urgent_care_visit": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "specialist_procedure": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "ultrasound": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "mri": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "ct": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "blood_work": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "xray": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "er_visit": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "hospital_day": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "surgery": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "rx_tier1": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "rx_tier2": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "rx_tier3": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "rx_tier4": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "rx_tier5": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "description": "Your own price estimates for the Health Plan Evaluator. A number here wins over a price derived from services. Use it for services the documents price only as coinsurance, services with a copay after the deductible (the full allowed price is what counts toward the deductible), and anything the documents do not list (for example specialist_procedure). primary_care_visit, specialist_visit and urgent_care_visit are allowed prices per visit; surgery is facility plus surgeon per procedure. null or missing = derive from services."
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Optional. Estimates and choices that are not facts from the plan documents."
+    },
+    "extraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

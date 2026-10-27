@@ -23,17 +23,38 @@ Everything runs locally in your browser. No server, no build step, no dependenci
 | `index.html` | The whole app (HTML, CSS, JavaScript) |
 | `README.md` | This file |
 | `CHANGELOG.md` | Version history |
+| `health-plan.schema.json` | Common JSON Schema (2.0) for one health plan, built from an SBC and a marketplace plan-details page |
+| `fill-health-plan-prompt.md` | Prompt for the LLM (must be updated to schema 2.0 before use) |
+| `plans/AB_Vital_Gold.plan.json`, `plans/AB_Select_Bronze_HSA.plan.json` | Filled plan files (Ambetter Cascade Select Vital Gold and Select Bronze HSA, 2027) |
 
 ## How to use
 
-**1. Household annual health needs**
-Names and ages of both spouses, your combined federal tax rate (include NIIT, e.g. 24 + 3.8 = 27.8), and your expected annual use: PCP visits per spouse, specialist visits, specialist procedures, ultrasounds, MRIs, CTs, and medication fills by tier (tier 5 to tier 1).
+Sections 1, 2 and 3 each have a **Hide** checkbox in the upper right (hidden by default; the choice is saved with your file).
 
-**2. Health plans**
-Add as many plans as you like (add, duplicate, delete). Each plan has: name, HSA checkbox, monthly premium, deductible, your coinsurance share after the deductible, max out-of-pocket, PCP copays (1st annual visit, 2nd visit, each visit after 2), specialist copay, specialist procedure cost, imaging (US, MRI, CT), medication costs by tier, ER cost per visit, hospital cost per day, and surgery cost per procedure.
+**1. Household annual health needs**
+Names and ages of both spouses, your combined federal tax rate (include NIIT, e.g. 24 + 3.8 = 27.8), and your expected annual use: PCP visits per spouse, specialist visits, specialist procedures, blood work, X-rays, ultrasounds, MRIs, CTs, urgent care (visits per year, with blood work, X-rays, ultrasounds, MRIs and CTs per visit), and medication fills by tier (tier 5 to tier 1).
+
+**2. Costs**
+Your estimate of the allowed price per unit for ER visit, specialist procedure, labs (blood work), X-ray, ultrasound, MRI, CT, hospital cost per day and surgery (facility + surgeon, per procedure). The deductible and coinsurance are applied to these prices for every plan. A price in a plan's *Evaluator prices* overrides it for that plan; with neither, the app uses the copay.
 
 **3. Stress scenario**
-Tick one spouse or both, then enter ER visits, imaging per ER visit (US, MRI, CT), days hospitalized, and surgeries.
+Tick one spouse or both, then enter ER visits, blood work, X-ray and imaging per ER visit (blood work, X-ray, US, MRI, CT), days hospitalized, and surgeries.
+
+**4. Health plans**
+Add as many plans as you like (add, duplicate, delete). Tick **Hide** in the upper right corner of a plan to collapse it to its name. Each plan card holds every field of `health-plan.schema.json`, grouped into sections:
+
+- Identity and source documents, network rules, premium, deductible / out-of-pocket maximum / coinsurance
+- Five groups of services (office and urgent care; tests and imaging; surgery, emergency and hospital; mental health and maternity; rehab, home care, equipment and children's). Every service has its own **cost share**: how you pay (copay, coinsurance, no charge, not covered, not applicable, unknown), copay amount, your coinsurance %, whether the deductible applies first, unit, max units charged, limits and a source quote. Primary care, chiropractic and outpatient mental health also have "discounted first visits" (count + cost share).
+- Prescription drugs (tiers 1 to 5, insulin cap, days supply, mail-order multiplier)
+- **Evaluator prices**: your allowed price per unit for each service the calculation uses
+- Excluded and other covered services, SBC coverage examples, extraction notes, and (HSA plans) the planned HSA contribution
+
+Every section has a **Hide** checkbox so a plan is never overwhelming; **Hide all sections** / **Show all sections** sit next to Duplicate and Delete. Sections that do not change the cost (identity, network, mental health and maternity, rehab and other services, the text lists, coverage examples, extraction notes) start hidden. Hidden sections keep their values and still count; the choice is saved with your file.
+
+Services tagged **used in cost** feed the results (primary care, specialist, urgent care, lab / blood work, X-ray and ultrasound, CT / MRI, outpatient surgery, ER, hospital, drug tiers 1 to 5). The others are recorded for reference only.
+
+**Line-item detail tab**
+Click the **Line-item detail** tab (next to **Evaluator**) and pick a plan (and, if you like, the normal year or the normal year plus the stress scenario). Every service and medication in your annual needs is listed with its units, base (allowed) cost, how the plan covers it, how much of the deductible it uses, what you pay and what the insurer pays. Subtotals, the out-of-pocket maximum reduction and the totals match the results table. Rows are one per kind of service (not one per visit), because the deductible is shared across services in proportion to their allowed price.
 
 **Results** (one column per plan)
 
@@ -45,32 +66,54 @@ Tick one spouse or both, then enter ER visits, imaging per ER visit (US, MRI, CT
 6. For HSA plans, an explicit block: complete cost − tax reduction, and complete cost with stress − tax reduction
 7. Net cost after HSA tax savings
 
-The lowest cost in each comparison row is highlighted green.
+Long plan names are truncated; hover or tap a name to see it in full. The "Hide rows" checkboxes above the table collapse sections 1, 2, 3, 4, HSA details and HSA plans (all shown by default). The lowest cost in each comparison row is highlighted green. Hover over (or tap) any dollar amount to see exactly how it was calculated.
+
+**Load a plan from plan documents**
+
+1. Give an LLM that reads PDFs `health-plan.schema.json`, the plan's Summary of Benefits and Coverage (SBC) and, if you have it, the marketplace plan-details page (it has the premium).
+2. Save its JSON answer as a `.json` file (a reply wrapped in a code fence still loads). Two filled examples are in `plans/`.
+3. Click **Load health plan** (next to **Add plan**) and pick one or more files. Loaded plans are added to your list; nothing is replaced and no save file is written to by the load itself.
+4. Each loaded plan shows a yellow import note listing fields to enter by hand, estimated values to verify, and notes.
+
+The plan file records **facts from the documents**: for every service a cost share (copay amount, coinsurance percentage, whether the deductible applies, limits) with a source quote. The optional `evaluator_inputs.prices` block holds **your own dollar estimates** and is kept separate from the facts. The app picks each price like this:
+
+- A number in `evaluator_inputs.prices` wins over the section 2 cost (use it for services the documents price only as coinsurance, for copays charged after the deductible, and for anything not listed, such as specialist procedures).
+- Otherwise a copay is used as the allowed price, and "no charge" is $0.
+- Coinsurance has no dollar price in an SBC, so the price is left empty and listed in the import note.
+
+Everything in the schema is loaded onto the card. Ultrasound uses the plan's "x-ray and diagnostic imaging" cost share, MRI and CT use "imaging (CT/PET scans, MRIs)", surgery is the facility fee plus the surgeon fee, and the hospital price is per day. Premiums are not in an SBC; take them from the marketplace page. Plan files from schema 1.x are not read; the app says so when you load one.
 
 **Save, restore and print**
 
-- **Save as…** opens your system's file window so you choose the folder and file name. **Save** then rewrites that same file, and **Auto-save to file** (on by default) rewrites it after every change. **Open file** restores a saved file and makes it the current file. Rewriting a chosen file needs Chrome or Edge; Firefox and Safari fall back to downloading a copy each time.
+- **Save as…** opens your system's file window so you choose the folder and file name. **Save** then rewrites that same file, and **Auto-save to file** (on by default) rewrites it after every change. **Open file** only loads a saved file (it writes nothing) and makes it the current file. **Load example** and **Reset** turn auto-save off and forget the current file so a real file is never overwritten. Rewriting a chosen file needs Chrome or Edge; Firefox and Safari fall back to downloading a copy each time.
 - Your last session is also kept automatically in your browser's local storage.
 - **Print** prints the whole page; **Print results only** prints just the comparison.
 
 ## How the numbers are calculated
 
-All deductible and out-of-pocket amounts are **family** (household) amounts.
+Deductible and out-of-pocket amounts are **family** (household) amounts; if only the individual amount is given, 2 × that is used.
 
 - **Annual premium** = monthly premium × 12.
-- **PCP cost (per spouse)** = 1st-visit copay (if ≥ 1 visit) + 2nd-visit copay (if ≥ 2) + (visits − 2) × later-visit copay.
-- **Other items** = count × per-item cost (specialist visits, procedures, imaging, medication fills).
-- **No deductible limit total** = every listed price paid in full, with no deductible, coinsurance, or cap.
-- **With deductible total**:
-  - Non-HSA plans: PCP and specialist copays are flat amounts outside the deductible. Medications are also flat if the plan's "flat copays" box is ticked. Everything else is subject to the deductible.
-  - HSA plans: everything is subject to the deductible (typical for HDHPs).
-  - Subject amounts: you pay 100% up to the deductible, then your coinsurance share of the rest.
-  - The total is capped at the max out-of-pocket (a blank or 0 max means no cap).
-- **Stress scenario**: counts apply to each selected spouse. Imaging counts are per ER visit. The stress charges are added to the normal-year charges **before** the deductible and cap are applied, so the deductible is never counted twice. "Extra cost the stress adds" is the difference.
+- **Allowed price per unit** = your number in the plan's *Evaluator prices* if there is one, otherwise your cost in section 2, otherwise the copay amount. A service that is only coinsurance and has no price counts as $0, and the results show a notice naming it.
+- **Each service line** (units × allowed price) goes into one bucket according to its cost share:
+  - *No charge / not applicable*: you pay $0.
+  - *Deductible does not apply*: you pay the copay (per charged unit) or your coinsurance % of the allowed price from the first dollar. It counts toward the max out-of-pocket but not toward the deductible.
+  - *Deductible applies*: the allowed price counts toward the deductible. You pay 100% of it until the deductible is met, then the copay or coinsurance. When several services share the deductible it is spread across them in proportion to their allowed price.
+  - *Not covered*: you pay the full price, outside the max out-of-pocket.
+  - *Not entered / unknown*: treated as your general coinsurance % after the deductible (this is also how specialist procedures are costed).
+- **Max units charged** limits how many copays are charged (for example 5 hospital days per stay, per person).
+- **Primary care** = the discounted first visits per person per year, then the regular cost share.
+- **Surgery** = facility fee + surgeon fee. A surgery price in *Evaluator prices* is split evenly between the two.
+- **Urgent care** = visits × visit cost + visits × (blood work, X-rays and imaging per visit × their costs).
+- **No deductible limit total** = every listed price paid in full, with no deductible, copay, coinsurance or cap.
+- **With deductible total** = first-dollar copays and coinsurance + the deductible part + the after-deductible copays/coinsurance, capped at the max out-of-pocket (a blank or 0 max means no cap), plus anything not covered.
+- **Stress scenario**: counts apply to each selected spouse. Blood work, X-ray and imaging counts are per ER visit. The stress charges are added to the normal-year charges **before** the deductible and cap are applied, so the deductible is never counted twice. "Extra cost the stress adds" is the difference.
 - **HSA maximum** = family limit + the catch-up amount for each spouse at or above the catch-up age and below the Medicare age.
 - **Real contribution after tax** = contribution × (1 − tax rate). **Tax savings** = contribution × tax rate.
 - **Tax reduction from HSA** = tax rate × the amount of care paid from the HSA (the smaller of your contribution and your out-of-pocket spending). Tick "Count tax savings on the full HSA contribution" in the HSA panel to use the whole contribution instead.
 - **Net cost after HSA tax savings** = complete cost − tax reduction. Unspent contributions stay in your account and are shown as the unspent balance rather than counted as a cost.
+
+Hover over (or tap) any dollar amount to see the calculation. For services the tooltip lists each line: units × price, where the price came from, and the cost share applied; the "with deductible" total shows the first-dollar amount, the deductible part, the after-deductible part, the cap and anything not covered.
 
 ### HSA limits (defaults: calendar year 2027)
 
@@ -87,12 +130,13 @@ The app warns if an HSA plan falls outside the HDHP deductible or out-of-pocket 
 
 ## Save file format
 
-A JSON object: `{ "app": "health-plan-evaluator", "version": "...", "savedAt": "...", "state": { "household": {...}, "plans": [...], "stress": {...}, "settings": {...} } }`. Missing fields are filled with defaults when a file is opened, so older saves keep working.
+A JSON object: `{ "app": "health-plan-evaluator", "version": "...", "savedAt": "...", "state": { "household": {...}, "plans": [...], "stress": {...}, "settings": {...} } }`. `costs` holds the section 2 prices and `view.secHide` the hide state of sections 1 to 3. Each plan mirrors the schema (`identity`, `network`, `premium`, `limits`, `services`, `drugs`, `prices`, ...) plus `hide`, `collapsed` and `hsaContrib`. Missing fields are filled with defaults when a file is opened. Saves from 2.0.0 and earlier (one flat price per service) are converted on open; their primary care copays become flat copays.
 
 ## Limitations
 
 - Models family coverage for one married couple. Two separate self-only plans are not modeled.
 - Federal tax only; no state tax, FICA savings through payroll HSA contributions, or employer HSA contributions.
-- Uses the prices you enter. It does not model separate in-network/out-of-network rates, per-person deductibles, or copays that count toward the deductible on non-HSA plans.
+- Uses the prices you enter. It does not model separate in-network/out-of-network rates, embedded per-person deductibles, separate service deductibles, or mail-order pricing.
+- Services without a household usage input (mental health, maternity, rehab, home health and so on) are recorded on the card but not costed.
 - Medication tiers use one price per fill; combination or specialty-pharmacy rules are not modeled.
 - Estimates only. This is not tax, financial, or insurance advice; confirm figures with your plan documents and a tax professional.
