@@ -7,7 +7,7 @@ Everything runs locally in your browser. No server, no build step, no dependenci
 ## Quick start
 
 1. Download or clone this repo.
-2. Open `index.html` in any modern browser.
+2. Open `index.html` in a current browser (Chrome or Edge 112, Safari 16.5, Firefox 117 or newer; the page uses CSS nesting).
 3. Click **Load example** to see it working, then replace the numbers with your own.
 
 ### Host on GitHub Pages
@@ -59,6 +59,8 @@ Services tagged **used in cost** feed the results (primary care, specialist, urg
 **Line-item detail tab**
 Click the **Line-item detail** tab (next to **Evaluator**) and pick a plan (and, if you like, the normal year or the normal year plus the stress scenario). Every service and medication in your annual needs is listed with its units, base (allowed) cost, how the plan covers it, how much of the deductible it uses, what you pay and what the insurer pays. Subtotals, the out-of-pocket maximum reduction and the totals match the results table. Rows are one per kind of service (not one per visit), because the deductible is shared across services in proportion to their allowed price.
 
+Both this table and the Annual cost table scroll inside their own frame. The frame is sized to fit below the blue top pane, so you can scroll to the last row with the column headers still in view. In a very short window the frame keeps a minimum height of 220 px.
+
 **Results** (one column per plan)
 
 1. Annual premium
@@ -107,7 +109,8 @@ How the numbers change for a Medicare plan:
 - **Premium** = (plan premium + optional Part B premium) × 12 × the number of enrolled people. Enrolled people are those at or above the Medicare age in section 1; if nobody is, every person is counted and a notice says so.
 - **Deductible and maximum out-of-pocket** are per person; a couple uses 2 × the individual amounts (Medicare plans have no family amounts).
 - **Separate deductibles**: a Medicare plan has a medical deductible (often $0) and a separate per-person Part D drug deductible. The medical deductible applies only to medical services; the drug deductible applies only to drug tiers marked "deductible applies". Marketplace plans keep one deductible shared by medical and drugs.
-- **Not modeled**: out-of-network use, the prescription out-of-pocket cap, free first 20 skilled-nursing days, and Medigap or employer coverage interaction. A notice lists these.
+- **Prescription out-of-pocket cap**: if a Medicare plan has a prescription out-of-pocket cap (per person, field on the plan card), what you pay for medications is limited to it (a couple uses 2 × the amount). The cap is applied to the medication cost share first; the combined out-of-pocket maximum then applies to what is left. Line-item detail shows the reduction as its own row. If no cap is entered, medication costs are not capped and a notice says so.
+- **Not modeled**: out-of-network use, free first 20 skilled-nursing days, and Medigap or employer coverage interaction. A notice lists these.
 
 ## How the numbers are calculated
 

@@ -2,6 +2,63 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.19.2] - 2026-10-27
+
+### Changed
+- Line-item detail no longer adds a "Prescription out-of-pocket cap … not reached" row to the table. The table shows the cap row only when the cap reduces what you pay; the cap and what you pay for medications stay in the "Max out-of-pocket, drugs" line above the table.
+
+## [2.19.1] - 2026-10-27
+
+### Added
+- Line-item detail for Medicare plans shows the drug out-of-pocket maximum: a "Max out-of-pocket, drugs" line in the summary above the table (the cap and what you pay for medications), and a table row that says the cap is not reached and how much is left, or shows the reduction when it is reached.
+
+## [2.19.0] - 2026-10-27
+
+### Added
+- **Prescription out-of-pocket cap is now costed.** For Medicare Advantage plans, the "Prescription out-of-pocket cap (per person)" you enter (or import) limits what you pay for medications; a couple uses 2 × the amount, like the Part D deductible. The cap is applied to the medication cost share first, then the combined out-of-pocket maximum applies to the remainder.
+- Line-item detail shows a "Prescription out-of-pocket cap reached: reduction" row when the cap applies, and the tooltips on the totals explain it. The cost bars' medication segment shows the capped amount.
+- A notice appears for a Medicare plan with no cap entered, saying medication costs are not capped.
+
+### Changed
+- The "not modeled" notice and the plan import note no longer list the prescription out-of-pocket cap.
+- Results are unchanged when the cap is blank or not reached.
+
+## [2.18.6] - 2026-10-27
+
+### Changed
+- The Medicare Advantage notice no longer says "Part B premium counts only if entered" once a Part B premium (including 0) is entered for that plan; the note about what is not modeled stays.
+
+## [2.18.5] - 2026-10-27
+
+### Fixed
+- In the blue top pane, the current file name now sits right next to "Current file:" instead of at the far right edge of the window.
+
+## [2.18.4] - 2026-10-27
+
+### Changed
+- CSS cleanup with no change in appearance: the rules for the blue top pane are nested inside one `header.top { … }` block instead of repeating the `header.top` prefix 60 times, and the white overlays used there (12, 25, 28, 35, 55 and 60 % opacity) are shared `--w12` … `--w60` variables.
+- The page now needs a browser with CSS nesting: Chrome and Edge 112, Safari 16.5 or Firefox 117 or newer. Older browsers lose the top pane styling.
+- Comment on `renderResults` saying what it redraws.
+
+## [2.18.3] - 2026-10-27
+
+### Changed
+- Code cleanup with no change in results or appearance. The deductible and out-of-pocket maximum lookups share one helper. The HSA check reads each of them once. An unused argument was removed from the out-of-pocket remainder helper.
+- CSS: merged the split cost-bar and table-header rules (the table header's duplicate first-column background was dropped), moved the bar animation timing into one `--bar-anim` variable, and replaced repeated inline `margin` styles with `.m0` and `.mt10` classes.
+
+## [2.18.2] - 2026-10-27
+
+### Fixed
+- The Annual cost table and the Line-item detail table can now be scrolled to their last row with the column headers still visible. Before, the table frame was a fixed share of the window height and ignored the sticky blue pane, so scrolling to the bottom pushed the table, headers included, behind the pane.
+
+### Changed
+- Table frames are sized to the space left below the blue pane (its height is measured and follows the number of result bars; never less than 220 px). Scrolling a table into view stops just below the pane.
+
+## [2.18.1] - 2026-10-27
+
+### Changed
+- The Annual cost table (Evaluator tab) and the Line-item detail table scroll vertically inside their own frame, and the column headers stay visible while you scroll.
+
 ## [2.18.0] - 2026-10-27
 
 ### Changed

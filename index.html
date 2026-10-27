@@ -12,18 +12,76 @@
   --warn:#8a5a00; --warn-bg:#fff4d6; --bad:#a32121; --bar1:#7fa8e6; --bar2:#e59a59; --hbar1:#cfe1ff; --hbar2:#ffb878; --hbar1d:#8fb2ea; --hbar2d:#e8934c; --hbar1p:#4f82cc; --hbar2p:#c4651f; --hbar1m:#d9e7ff; --hbar2m:#ffd2a6;
   --head:#1f5fbf; --field:#fff; --hover:#eef3fb; --primary-hover:#184c99; --tint:#eef3fb; --tint2:#dde7f6; --tint3:#f7f9fc;
   --plan-bg:#fbfcfe; --svc-visit:#f6f9fe; --tabbg:#e9eef6; --info-bg:#e8f0fc; --info-ink:#1b4a94; --note-line:#ecd28a; --note-ink:#4d3600;
-  --dot:#9aa7b8; --link:#1f5fbf; color-scheme:light;
+  --dot:#9aa7b8; --link:#1f5fbf; --bar-anim:.7s cubic-bezier(.22,.8,.3,1);
+  /* white overlays used on the blue pane (the number is the opacity in %) */
+  --w12:rgba(255,255,255,.12); --w25:rgba(255,255,255,.25); --w28:rgba(255,255,255,.28); --w35:rgba(255,255,255,.35); --w55:rgba(255,255,255,.55); --w60:rgba(255,255,255,.6);
+  color-scheme:light;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
-header.top{background:var(--head);color:var(--brand-ink);padding:14px 20px;position:sticky;top:0;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,.15)}
-header.top .row{max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
-header.top h1{margin:0;font-size:20px}
+/* Sticky blue top pane; every rule inside is scoped to it (CSS nesting). */
+header.top{
+  background:var(--head);color:var(--brand-ink);padding:14px 20px;position:sticky;top:0;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,.15);
+  & .row{max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+  & .row.filerow{justify-content:flex-start;gap:6px;margin-top:4px;font-size:12px;opacity:.9}
+  & h1{margin:0;font-size:20px}
+  & button{border-color:rgba(255,255,255,.5);background:var(--w12);color:#fff}
+  & button:hover{background:var(--w25)}
+  & .bars{max-width:1240px;margin:8px auto 0;padding-top:8px;border-top:1px solid var(--w28);max-height:38vh;overflow-y:auto}
+  & .legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;color:rgba(255,255,255,.85);margin:0 0 4px}
+  & .legend .l1::before{background:var(--hbar1)}
+  & .legend .l2::before{background:var(--hbar2)}
+  & .legend .lnote{margin-left:auto;opacity:.8}
+  & .brow{display:grid;grid-template-columns:190px 1fr;gap:10px;align-items:center;margin:4px 0}
+  & .bn{display:flex;align-items:center;gap:4px;min-width:0;font-weight:600;font-size:13px;color:#fff}
+  & .bn .tag{background:rgba(255,255,255,.9);color:var(--head)}
+  & .bn .pname{max-width:150px;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;vertical-align:baseline}
+  & .bl{display:flex;align-items:center;gap:8px;margin:1px 0}
+  & .bsel{flex:0 0 auto;width:14px;height:14px;margin:0;accent-color:#fff;cursor:pointer}
+  & .btrack{flex:1 1 auto;min-width:0;display:flex;align-items:center}
+  & .bx{position:absolute;left:0;top:0;bottom:0;width:0;transition:width var(--bar-anim);--hc:var(--w55);background-image:radial-gradient(circle,var(--hc) 0 1.3px,transparent 1.6px);background-size:7px 100%;background-position:0 center;background-repeat:repeat-x;cursor:help}
+  & .bm{position:relative;height:10px;box-sizing:border-box;width:0;flex:0 0 auto;border:1px dashed var(--w28);border-left:0;border-radius:0 4px 4px 0;transition:width var(--bar-anim);cursor:help}
+  & .bm.off{visibility:hidden}
+  & .bmx{flex:0 0 auto;width:84px;font-size:11px;color:var(--w60);white-space:nowrap;font-variant-numeric:tabular-nums}
+  & .bx.off{visibility:hidden}
+  & .bx1{--hc:var(--hbar1)}
+  & .bx2{--hc:var(--hbar2)}
+  & .legend .l3::before{background:radial-gradient(circle,var(--w60) 0 1.3px,transparent 1.6px) center/100% 100% no-repeat;border:0}
+  & .legend .l5::before{background:transparent;opacity:.5;border:1px dashed rgba(255,255,255,.4);box-sizing:border-box}
+  & .b{display:flex;overflow:hidden;height:10px;border-radius:4px;min-width:2px;width:0;transition:width var(--bar-anim)}
+  & .b1{background:var(--hbar1)}
+  & .b2{background:var(--hbar2)}
+  & .bp,& .bo{height:100%;flex:0 0 auto;transition:width var(--bar-anim);text-decoration:none!important;cursor:help}
+  & .b1 .bp{background:var(--hbar1p)}
+  & .b2 .bp{background:var(--hbar2p)}
+  & .bo{background:transparent}
+  & .bd{height:100%;flex:0 0 auto;transition:width var(--bar-anim);cursor:help}
+  & .b1 .bd{background:repeating-linear-gradient(135deg,var(--hbar1d) 0 3px,var(--hbar1m) 3px 6px)}
+  & .b2 .bd{background:repeating-linear-gradient(135deg,var(--hbar2d) 0 3px,var(--hbar2m) 3px 6px)}
+  & .legend .l4::before{background:linear-gradient(90deg,var(--hbar1p) 50%,var(--hbar2p) 50%)}
+  & .legend .l6::before{background:linear-gradient(90deg,var(--hbar1) 50%,var(--hbar2) 50%)}
+  & .legend .l7::before{background:repeating-linear-gradient(135deg,var(--hbar1d) 0 2px,var(--hbar1m) 2px 4px)}
+  & .bv{flex:0 0 auto;width:74px;font-size:12px;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;text-decoration:none;text-underline-offset:3px}
+  & .bv[data-tip]{text-decoration:underline dotted var(--w60)}
+  & .baxis{position:sticky;bottom:0;background:var(--head);display:grid;grid-template-columns:190px 1fr;gap:10px;margin-top:2px;padding-top:2px}
+  & .baxis .ax{position:relative;height:22px;margin-right:174px;margin-left:22px;border-top:1px solid var(--w35)}
+  & .baxis .tk{position:absolute;top:0;width:1px;height:5px;background:var(--w55)}
+  & .baxis .tl{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.7);white-space:nowrap;font-variant-numeric:tabular-nums}
+  & .bars-empty{font-size:13px;opacity:.9;margin:2px 0}
+  @media(max-width:640px){& .brow{grid-template-columns:1fr;gap:2px}& .baxis{grid-template-columns:1fr}}
+  @media(prefers-reduced-motion:reduce){& .b{transition:none}}
+  & button.flash-ok{background:#1f9d5c!important;border-color:#7be0a8!important;color:#fff!important}
+  & button.flash-bad{background:#c0392b!important;border-color:#ff9d92!important;color:#fff!important}
+  & #fileName.flash{animation:fnflash 1.8s ease-out}
+  @media (prefers-reduced-motion:reduce){& #fileName.flash{animation:none}}
+  & .tabs{max-width:1240px;margin:8px auto 0;padding:0;display:flex;gap:6px;border-bottom:1px solid var(--w35)}
+  & .tabs button{border:1px solid var(--w35);border-bottom:0;border-radius:8px 8px 0 0;background:var(--w12);color:#fff;padding:6px 16px;margin-bottom:-1px}
+  & .tabs button:hover{background:var(--w25)}
+  & .tabs button.active{background:var(--card);font-weight:700;color:var(--brand);border-color:var(--card)}
+}
 .toolbar{display:flex;flex-wrap:wrap;gap:8px}
 button,.btn{font:inherit;border:1px solid var(--line);background:var(--field);color:var(--ink);padding:7px 12px;border-radius:7px;cursor:pointer}
 button:hover{background:var(--hover)}
-header.top button{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.12);color:#fff}
-header.top button:hover{background:rgba(255,255,255,.25)}
 button.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
 button.primary:hover{background:var(--primary-hover)}
 button.danger{color:var(--bad)}
@@ -31,6 +89,8 @@ main{max-width:1240px;margin:0 auto;padding:18px 20px 60px}
 section.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}
 section.card>h2{margin:0 0 4px;font-size:18px}
 .hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+.m0{margin:0}
+.mt10{margin-top:10px}
 h3{font-size:14px;margin:14px 0 8px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px 14px}
 .grid.wide{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
@@ -56,12 +116,14 @@ h3{font-size:14px;margin:14px 0 8px;text-transform:uppercase;letter-spacing:.04e
 .tag{display:inline-block;padding:1px 8px;border-radius:99px;font-size:12px;background:var(--good-bg);color:var(--good);margin-left:6px}
 #notices .note{background:var(--warn-bg);color:var(--warn);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:14px}
 #notices .note.info{background:var(--info-bg);color:var(--info-ink)}
-.tablewrap{overflow-x:auto}
+/* Table frames fit the space left under the sticky blue panel (--hdr is set by script), so a whole table,
+   header row included, can be on screen at once and its header never slides behind the panel. */
+.tablewrap{--avail:calc(100vh - var(--hdr,160px) - 28px);overflow:auto;max-height:max(220px,var(--avail));scroll-margin-top:calc(var(--hdr,160px) + 8px)}
+@supports (height:100dvh){.tablewrap{--avail:calc(100dvh - var(--hdr,160px) - 28px)}}
 table.res{border-collapse:collapse;width:100%;min-width:520px}
 table.res th,table.res td{padding:6px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
 table.res th:first-child{text-align:left;font-weight:500;white-space:normal}
-table.res thead th{background:var(--tint);position:sticky;top:0}
-table.res thead th:first-child{background:var(--tint)}
+table.res thead th{background:var(--tint);position:sticky;top:0;z-index:2;box-shadow:0 1px 0 var(--line)}
 table.res tr.sec th{background:var(--tint2);text-align:left;font-weight:700;padding-top:9px}
 table.res tr.sub th{padding-left:24px;color:var(--muted)}
 table.res tr.sub td{color:var(--muted)}
@@ -69,54 +131,7 @@ table.res tr.total th,table.res tr.total td{font-weight:700;background:var(--tin
 table.res td.best{background:var(--good-bg);color:var(--good);font-weight:700}
 .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}
 /* result bars pinned in the header */
-header.top .bars{max-width:1240px;margin:8px auto 0;padding-top:8px;border-top:1px solid rgba(255,255,255,.28);max-height:38vh;overflow-y:auto}
-header.top .legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;color:rgba(255,255,255,.85);margin:0 0 4px}
-header.top .legend .l1::before{background:var(--hbar1)}header.top .legend .l2::before{background:var(--hbar2)}
-header.top .legend .lnote{margin-left:auto;opacity:.8}
-header.top .brow{display:grid;grid-template-columns:190px 1fr;gap:10px;align-items:center;margin:4px 0}
-header.top .bn{display:flex;align-items:center;gap:4px;min-width:0;font-weight:600;font-size:13px;color:#fff}
-header.top .bn .tag{background:rgba(255,255,255,.9);color:var(--head)}
-header.top .bn .pname{max-width:150px;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;vertical-align:baseline}
-header.top .bl{display:flex;align-items:center;gap:8px;margin:1px 0}
-header.top .bsel{flex:0 0 auto;width:14px;height:14px;margin:0;accent-color:#fff;cursor:pointer}
-header.top .btrack{flex:1 1 auto;min-width:0;display:flex;align-items:center}
-header.top .bx{position:absolute;left:0;top:0;bottom:0;width:0;transition:width .7s cubic-bezier(.22,.8,.3,1);--hc:rgba(255,255,255,.55);background-image:radial-gradient(circle,var(--hc) 0 1.3px,transparent 1.6px);background-size:7px 100%;background-position:0 center;background-repeat:repeat-x;cursor:help}
-header.top .bm{position:relative;height:10px;box-sizing:border-box;width:0;flex:0 0 auto;border:1px dashed rgba(255,255,255,.28);border-left:0;border-radius:0 4px 4px 0;transition:width .7s cubic-bezier(.22,.8,.3,1);cursor:help}
-header.top .bm.off{visibility:hidden}
-
-
-header.top .bmx{flex:0 0 auto;width:84px;font-size:11px;color:rgba(255,255,255,.6);white-space:nowrap;font-variant-numeric:tabular-nums}
-header.top .bx.off{visibility:hidden}
-header.top .bx1{--hc:var(--hbar1)}header.top .bx2{--hc:var(--hbar2)}
-header.top .legend .l3::before{background:radial-gradient(circle,rgba(255,255,255,.6) 0 1.3px,transparent 1.6px) center/100% 100% no-repeat;border:0}
-header.top .legend .l5::before{background:transparent;opacity:.5;border:1px dashed rgba(255,255,255,.4);box-sizing:border-box}
-header.top .b{height:10px;border-radius:4px;min-width:2px;width:0;transition:width .7s cubic-bezier(.22,.8,.3,1)}
-header.top .b{display:flex;overflow:hidden}
-header.top .b1{background:var(--hbar1)}header.top .b2{background:var(--hbar2)}
-header.top .bp,header.top .bo{height:100%;flex:0 0 auto;transition:width .7s cubic-bezier(.22,.8,.3,1);text-decoration:none!important;cursor:help}
-header.top .b1 .bp{background:var(--hbar1p)}header.top .b2 .bp{background:var(--hbar2p)}
-header.top .bo{background:transparent}
-header.top .bd{height:100%;flex:0 0 auto;transition:width .7s cubic-bezier(.22,.8,.3,1);cursor:help}
-header.top .b1 .bd{background:repeating-linear-gradient(135deg,var(--hbar1d) 0 3px,var(--hbar1m) 3px 6px)}
-header.top .b2 .bd{background:repeating-linear-gradient(135deg,var(--hbar2d) 0 3px,var(--hbar2m) 3px 6px)}
-
-header.top .legend .l4::before{background:linear-gradient(90deg,var(--hbar1p) 50%,var(--hbar2p) 50%)}
-header.top .legend .l6::before{background:linear-gradient(90deg,var(--hbar1) 50%,var(--hbar2) 50%)}
-header.top .legend .l7::before{background:repeating-linear-gradient(135deg,var(--hbar1d) 0 2px,var(--hbar1m) 2px 4px)}
-header.top .bv{flex:0 0 auto;width:74px;font-size:12px;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;text-decoration:none;text-underline-offset:3px}
-header.top .bv[data-tip]{text-decoration:underline dotted rgba(255,255,255,.6)}
-header.top .baxis{position:sticky;bottom:0;background:var(--head);display:grid;grid-template-columns:190px 1fr;gap:10px;margin-top:2px;padding-top:2px}
-header.top .baxis .ax{position:relative;height:22px;margin-right:174px;margin-left:22px;border-top:1px solid rgba(255,255,255,.35)}
-header.top .baxis .tk{position:absolute;top:0;width:1px;height:5px;background:rgba(255,255,255,.55)}
-header.top .baxis .tl{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.7);white-space:nowrap;font-variant-numeric:tabular-nums}
-header.top .bars-empty{font-size:13px;opacity:.9;margin:2px 0}
-@media(max-width:640px){header.top .brow{grid-template-columns:1fr;gap:2px}header.top .baxis{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){header.top .b{transition:none}}
-header.top button.flash-ok{background:#1f9d5c!important;border-color:#7be0a8!important;color:#fff!important}
-header.top button.flash-bad{background:#c0392b!important;border-color:#ff9d92!important;color:#fff!important}
-header.top #fileName.flash{animation:fnflash 1.8s ease-out}
 @keyframes fnflash{0%,35%{background:rgba(123,224,168,.55);box-shadow:0 0 0 4px rgba(123,224,168,.55);border-radius:3px}100%{background:transparent;box-shadow:0 0 0 4px transparent}}
-@media (prefers-reduced-motion:reduce){header.top #fileName.flash{animation:none}}
 #status{font-size:13px;color:var(--muted);min-height:18px;margin:0 0 10px}
 footer{color:var(--muted);font-size:12px;text-align:center;padding:0 20px 30px}
 details summary{cursor:pointer;font-weight:600}
@@ -132,7 +147,7 @@ details summary{cursor:pointer;font-weight:600}
   .inp{border-color:#999}
   table.res thead th{position:static}
   table.res{min-width:0}
-  .tablewrap{overflow:visible}
+  .tablewrap{overflow:visible;max-height:none}
   body.print-results-only .not-results{display:none!important}
   details>*:not(summary){display:block}
 }
@@ -171,10 +186,6 @@ section.is-hidden .sec-body{display:none}
 section.is-hidden .sec-head h2::after{content:" (hidden)";font-weight:400;font-size:14px;color:var(--muted)}
 section.is-hidden{padding-bottom:10px}
 section.is-hidden .sec-head h2{margin-bottom:0}
-header.top .tabs{max-width:1240px;margin:8px auto 0;padding:0;display:flex;gap:6px;border-bottom:1px solid rgba(255,255,255,.35)}
-header.top .tabs button{border:1px solid rgba(255,255,255,.35);border-bottom:0;border-radius:8px 8px 0 0;background:rgba(255,255,255,.12);color:#fff;padding:6px 16px;margin-bottom:-1px}
-header.top .tabs button:hover{background:rgba(255,255,255,.25)}
-header.top .tabs button.active{background:var(--card);font-weight:700;color:var(--brand);border-color:var(--card)}
 table.det td.l,table.det th.l{text-align:left;white-space:normal}
 table.det td.cov{text-align:left;white-space:normal;color:var(--muted);font-size:13px;min-width:200px}
 table.det td.unk{color:var(--bad)}
@@ -200,10 +211,9 @@ a{color:var(--link)}
   --info-bg:#1a2c47; --info-ink:#a9c8f5; --note-line:#6b5720; --note-ink:#f3dfa6; --dot:#6f7c8e; --link:#8db8f7;
   color-scheme:dark;
 }
-header.top{box-shadow:0 2px 8px rgba(0,0,0,.5)}
 button.primary{background:#2f6fd0;border-color:#2f6fd0}
 button.primary:hover{background:#3b7fe0}
-header.top button{background:rgba(255,255,255,.1)}
+header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,255,.1)}}
 #tip{background:#e6ebf2;color:#10161e}
 }
 </style>
@@ -224,7 +234,7 @@ header.top button{background:rgba(255,255,255,.1)}
       <input type="file" id="fileIn" accept="application/json,.json" hidden>
     </div>
   </div>
-  <div class="row" style="margin-top:4px;font-size:12px;opacity:.9">Current file: <span id="fileName">none (use Save as… to choose a location and name)</span></div>
+  <div class="row filerow">Current file: <span id="fileName">none (use Save as… to choose a location and name)</span></div>
   <nav class="tabs no-print" role="tablist">
   <button type="button" class="active" role="tab" data-tab="main" id="tabBtnMain">Evaluator</button>
   <button type="button" role="tab" data-tab="detail" id="tabBtnDetail">Line-item detail</button>
@@ -233,7 +243,7 @@ header.top button{background:rgba(255,255,255,.1)}
 </header>
 
 <main>
-  <div class="printhead"><h1 style="margin:0">Health Plan Evaluator</h1><div id="printDate"></div></div>
+  <div class="printhead"><h1 class="m0">Health Plan Evaluator</h1><div id="printDate"></div></div>
   <p id="status" role="status" aria-live="polite"></p>
 
   <div id="tabMain">
@@ -272,7 +282,7 @@ header.top button{background:rgba(255,255,255,.1)}
       <button type="button" class="primary" id="btnAddPlan">+ Add plan</button>
       <button type="button" id="btnLoadPlan" title="Load one or more plan files filled from a plan summary PDF">Load health plan</button>
       <input type="file" id="planIn" accept="application/json,.json,text/plain" multiple hidden>
-      <span class="hint" style="margin:0">Have an LLM fill <a href="health-plan.schema.json" target="_blank" rel="noopener">health-plan.schema.json</a> from a plan summary PDF (prompt: <a href="fill-health-plan-prompt.md" target="_blank" rel="noopener">fill-health-plan-prompt.md</a>), then load the result here. Loaded plans are added to your list.</span>
+      <span class="hint m0">Have an LLM fill <a href="health-plan.schema.json" target="_blank" rel="noopener">health-plan.schema.json</a> from a plan summary PDF (prompt: <a href="fill-health-plan-prompt.md" target="_blank" rel="noopener">fill-health-plan-prompt.md</a>), then load the result here. Loaded plans are added to your list.</span>
     </div>
   </section>
 
@@ -289,7 +299,7 @@ header.top button{background:rgba(255,255,255,.1)}
     <div id="viewOpts" class="viewopts no-print"></div>
     <div id="notices"></div>
     <div class="tablewrap"><table class="res" id="resTable"></table></div>
-    <p class="hint" style="margin-top:10px">Green cells mark the lowest cost in each comparison row. "With deductible" applies each service's own copay or coinsurance, the deductible (only to services where it applies) and the max out-of-pocket cap; services that are not covered are paid in full. "No deductible limit" is every listed price paid in full. Estimates only, not tax, financial or insurance advice.</p>
+    <p class="hint mt10">Green cells mark the lowest cost in each comparison row. "With deductible" applies each service's own copay or coinsurance, the deductible (only to services where it applies) and the max out-of-pocket cap; services that are not covered are paid in full. "No deductible limit" is every listed price paid in full. Estimates only, not tax, financial or insurance advice.</p>
   </section>
   </div>
 
@@ -306,7 +316,7 @@ header.top button{background:rgba(255,255,255,.1)}
 
 <script>
 "use strict";
-const APP_VERSION = "2.18.0";
+const APP_VERSION = "2.19.2";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -479,21 +489,20 @@ const isSingle = h => !!h && h.status === "single";
 function p1Name(h){ const n = (h.p1.name || "").trim(); return isSingle(h) ? (!n || n === "Spouse 1" ? "Person" : n) : (n || "Spouse 1"); }
 function p2Name(h){ return h.p2.name || "Spouse 2"; }
 /* Married: family amount (2 x individual if only that is given). Single: individual amount (half the family amount if only that is given). */
-const drugDed = p => isMA(p) ? Math.max(0, num(p.limits.drug_deductible_amount)) : 0;
+function famLimit(p, famKey, indKey, single){
+  const f = numOrNull(p.limits[famKey]), i = numOrNull(p.limits[indKey]);
+  if (single) return i != null ? Math.max(0, i) : (f != null ? Math.max(0, f) / 2 : 0);
+  return f != null ? Math.max(0, f) : (i != null ? 2 * Math.max(0, i) : 0);
+}
+function planDed(p, single){ return famLimit(p, "deductible_family", "deductible_individual", single); }
+function planOop(p, single){ return famLimit(p, "oop_max_family", "oop_max_individual", single); }
 /* Medicare Advantage plans have two separate deductibles: the medical deductible (often $0) and the per-person Part D drug deductible
    (it only touches drug tiers marked "deductible applies"). Every other plan has one deductible shared by medical and drugs. */
-function planDed(p, single){ return planDedBase(p, single); }
+const drugDed = p => isMA(p) ? Math.max(0, num(p.limits.drug_deductible_amount)) : 0;
 const drugDedTotal = (p, single) => drugDed(p) * (single ? 1 : 2);
-function planDedBase(p, single){
-  const f = numOrNull(p.limits.deductible_family), i = numOrNull(p.limits.deductible_individual);
-  if (single) return i != null ? Math.max(0, i) : (f != null ? Math.max(0, f) / 2 : 0);
-  return f != null ? Math.max(0, f) : (i != null ? 2 * Math.max(0, i) : 0);
-}
-function planOop(p, single){
-  const f = numOrNull(p.limits.oop_max_family), i = numOrNull(p.limits.oop_max_individual);
-  if (single) return i != null ? Math.max(0, i) : (f != null ? Math.max(0, f) / 2 : 0);
-  return f != null ? Math.max(0, f) : (i != null ? 2 * Math.max(0, i) : 0);
-}
+/* Part D prescription out-of-pocket cap, per person (0 = none entered). It limits what you pay for medications only. */
+const drugCap = p => isMA(p) ? Math.max(0, num(p.limits.drug_oop_max)) : 0;
+const drugCapTotal = (p, single) => drugCap(p) * (single ? 1 : 2);
 function singleEstimates(p){
   const L = [];
   if (numOrNull(p.limits.deductible_individual) == null && numOrNull(p.limits.deductible_family) != null) L.push("individual deductible");
@@ -551,20 +560,23 @@ function mkLine(p, o){
    The deductible is shared by the "ded" lines in proportion to their allowed price. */
 function settle(p, lines, single){
   const split = isMA(p);
-  const Dm = planDed(p, single), Dr = split ? drugDedTotal(p, single) : 0, M = planOop(p, single);
-  let first = 0, Sm = 0, Qm = 0, Sr = 0, Qr = 0, nc = 0, gross = 0;
+  const Dm = planDed(p, single), Dr = split ? drugDedTotal(p, single) : 0, M = planOop(p, single), R = split ? drugCapTotal(p, single) : 0;
+  let first = 0, firstRx = 0, Sm = 0, Qm = 0, Sr = 0, Qr = 0, nc = 0, gross = 0;
   lines.forEach(L => {
     gross += L.S;
-    if (L.cls === "first") first += L.first;
+    if (L.cls === "first"){ first += L.first; if (L.tag === "rx") firstRx += L.first; }
     else if (L.cls === "ded"){ if (split && L.tag === "rx"){ Sr += L.S; Qr += L.Q; } else { Sm += L.S; Qm += L.Q; } }
     else if (L.cls === "nc") nc += L.S;
   });
   const fm = Sm > 0 ? Math.min(1, Dm / Sm) : 0, fr = Sr > 0 ? Math.min(1, Dr / Sr) : 0;
   const S = Sm + Sr, Q = Qm + Qr, D = Dm + Dr;
   const dedPart = fm * Sm + fr * Sr, after = (1 - fm) * Qm + (1 - fr) * Qr;
-  const raw = first + dedPart + after;
+  const rawPre = first + dedPart + after;
+  /* Prescription cap first (it limits drug cost share only), then the combined out-of-pocket maximum on what is left. */
+  const rxRaw = firstRx + fr * Sr + (1 - fr) * Qr, rxPaid = R > 0 ? Math.min(rxRaw, R) : rxRaw, rxOver = rxRaw - rxPaid, kr = rxRaw > 0 ? rxPaid / rxRaw : 1;
+  const raw = rawPre - rxOver;
   const capped = M > 0 ? Math.min(raw, M) : raw;
-  return { split:split, D:D, Dm:Dm, Dr:Dr, M:M, first:first, S:S, Sm:Sm, Sr:Sr, Q:Q, fm:fm, fr:fr, f:fm, dedPart:dedPart, dedMed:fm * Sm, dedRx:fr * Sr, after:after, raw:raw, capped:capped, nc:nc, total:capped + nc, gross:gross };
+  return { split:split, D:D, Dm:Dm, Dr:Dr, M:M, first:first, S:S, Sm:Sm, Sr:Sr, Q:Q, fm:fm, fr:fr, f:fm, dedPart:dedPart, dedMed:fm * Sm, dedRx:fr * Sr, after:after, rawPre:rawPre, R:R, rxRaw:rxRaw, rxOver:rxOver, kr:kr, raw:raw, capped:capped, nc:nc, total:capped + nc, gross:gross };
 }
 /* How much of what you pay (after the out-of-pocket cap) is for medications, and per medication tier. */
 const fOf = (set, L) => set.split && L.tag === "rx" ? set.fr : set.fm;
@@ -574,8 +586,8 @@ function rxShare(set, lines){
   lines.forEach(L => {
     if (L.tag !== "rx") return;
     let v = 0;
-    if (L.cls === "first") v = L.first * k;
-    else if (L.cls === "ded") v = (fOf(set, L) * L.S + (1 - fOf(set, L)) * L.Q) * k;
+    if (L.cls === "first") v = L.first * set.kr * k;
+    else if (L.cls === "ded") v = (fOf(set, L) * L.S + (1 - fOf(set, L)) * L.Q) * set.kr * k;
     else if (L.cls === "nc") v = L.S;
     total += v; rows.push({ label:L.label, n:L.n, S:L.S, pay:v });
   });
@@ -681,8 +693,9 @@ function evaluate(state, plan){
     r.net = r.complete - r.hsa.saveOnSpend;
     r.netStress = r.stress - r.hsa.saveOnSpendStress;
     const minD = num(single ? state.settings.minDedSelf : state.settings.minDed), maxO = num(single ? state.settings.maxOopSelf : state.settings.maxOop);
-    if (planDed(plan, single) < minD) r.hsa.warnings.push("Deductible is below the HDHP minimum of " + fmt(minD) + (single ? " (self-only)" : "") + ", so the plan may not be HSA-eligible.");
-    if (!(planOop(plan, single) > 0) || planOop(plan, single) > maxO) r.hsa.warnings.push("Max out-of-pocket is missing or above the HDHP cap of " + fmt(maxO) + (single ? " (self-only)" : "") + ".");
+    const ded = planDed(plan, single), oop = planOop(plan, single);
+    if (ded < minD) r.hsa.warnings.push("Deductible is below the HDHP minimum of " + fmt(minD) + (single ? " (self-only)" : "") + ", so the plan may not be HSA-eligible.");
+    if (!(oop > 0) || oop > maxO) r.hsa.warnings.push("Max out-of-pocket is missing or above the HDHP cap of " + fmt(maxO) + (single ? " (self-only)" : "") + ".");
   }
   const seg = (netv, rx) => {
     const tot = Math.max(netv, 0), prem = Math.min(premium, tot), rest = tot - prem, rxS = Math.min(rx.total, rest);
@@ -737,6 +750,7 @@ function insExplain(x){
     L.push("Medications where the deductible applies: " + m(x.Sr) + " allowed. You pay 100% of the first " + m(Math.min(x.Sr, x.Dr)) + " (separate drug deductible " + m(x.Dr) + ") = " + m(x.dedRx));
   } else L.push("Services where the deductible applies: " + m(x.S) + " allowed. You pay 100% of the first " + m(Math.min(x.S, x.D)) + " (deductible " + m(x.D) + ") = " + m(x.dedPart));
   L.push("Then your copay or coinsurance on the other " + m(x.S - x.dedPart) + " = " + m(x.after));
+  if (x.R > 0) L.push(x.rxOver > 0 ? "Medications: you would pay " + m(x.rxRaw) + ", capped at the prescription out-of-pocket cap of " + m(x.R) + " (" + m(x.rxOver) + " less)" : "Medications: you pay " + m(x.rxRaw) + ", below the prescription out-of-pocket cap of " + m(x.R) + ", so no cap applies");
   L.push("Subtotal: " + m(x.raw));
   if (x.M > 0) L.push(x.raw > x.M ? "Capped at the max out-of-pocket of " + m(x.M) : "Below the max out-of-pocket of " + m(x.M) + ", so no cap applies");
   else L.push("No max out-of-pocket entered, so no cap");
@@ -943,7 +957,7 @@ function planFromSchema(doc, ctx){
   }
   const hf = p.services.hospital_facility;
   if (numOrNull(hf.max_units) != null && hf.structure === "copay") notes.push("Hospital copay is limited to " + hf.max_units + " " + (hf.unit || "unit") + "(s) per stay; the calculation applies that limit.");
-  if (isMA(p)) notes.push("Medicare plan: premium is counted per enrolled person (those at or above the Medicare age); the medical deductible and the Part D drug deductible are separate (the drug deductible applies to drug tiers marked “deductible applies”); out-of-network costs, the Rx out-of-pocket cap and the free first 20 skilled-nursing days are recorded but not costed.");
+  if (isMA(p)) notes.push("Medicare plan: premium is counted per enrolled person (those at or above the Medicare age); the medical deductible and the Part D drug deductible are separate (the drug deductible applies to drug tiers marked “deductible applies”); the prescription out-of-pocket cap limits what you pay for medications; out-of-network costs and the free first 20 skilled-nursing days are recorded but not costed.");
   if (missing.length) notes.push("Enter the dollar prices in section 2 (Costs) or above under “Evaluator prices” on this card (they are the allowed prices the deductible and coinsurance apply to).");
   const list = a => Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 20).map(x => x.slice(0, 400)) : [];
   p._import = {
@@ -1055,10 +1069,10 @@ function renderStress(){
   $("stressBox").innerHTML =
     '<div class="grid" style="margin-bottom:10px">' +
     (isSingle(h)
-      ? chk("stress.p1", s.p1, '<span class="nm1">' + esc(p1Name(h)) + "</span> has the stress event") + '<span class="hint" style="margin:0">Uncheck to leave the stress scenario out.</span></div>'
+      ? chk("stress.p1", s.p1, '<span class="nm1">' + esc(p1Name(h)) + "</span> has the stress event") + '<span class="hint m0">Uncheck to leave the stress scenario out.</span></div>'
       : chk("stress.p1", s.p1, '<span class="nm1">' + esc(h.p1.name) + "</span>") +
         chk("stress.p2", s.p2, '<span class="nm2">' + esc(h.p2.name) + "</span>") +
-        '<span class="hint" style="margin:0">Check both for a household-wide event.</span></div>') +
+        '<span class="hint m0">Check both for a household-wide event.</span></div>') +
     '<div class="grid">' +
     pathField("ER visits", "stress.er", { min:0, step:1 }) +
     pathField("Blood work per ER visit", "stress.erBlood", { min:0, step:1 }) +
@@ -1086,7 +1100,7 @@ function renderSettings(){
     pathField("HDHP minimum self-only deductible", "settings.minDedSelf", dollars()) +
     pathField("HDHP maximum family out-of-pocket", "settings.maxOop", dollars()) +
     pathField("HDHP maximum self-only out-of-pocket", "settings.maxOopSelf", dollars()) + "</div>" +
-    '<label class="chk" style="margin-top:10px"><input type="checkbox" data-path="settings.taxFull"' + (state.settings.taxFull ? " checked" : "") +
+    '<label class="chk mt10"><input type="checkbox" data-path="settings.taxFull"' + (state.settings.taxFull ? " checked" : "") +
     '> Count tax savings on the full HSA contribution (default: only on care paid from the HSA)</label>';
 }
 function importBanner(p){
@@ -1287,18 +1301,20 @@ function renderDetail(){
   });
   if (!nrows) rows = '<tr><td colspan="8" class="l">No services or medications are planned. Enter your annual needs in section 1 of the Evaluator tab.</td></tr>';
   const adj = x.capped - x.raw;
-  const foot = (x.M > 0 && adj < 0 ? '<tr class="cap"><th class="l">Out-of-pocket maximum of ' + m(x.M) + ' reached: reduction</th><td></td><td></td><td></td><td></td><td></td>' + cell(m(adj), "", "Your payments before the cap " + m(x.raw) + " − out-of-pocket maximum " + m(x.M) + " = " + m(x.raw - x.M) + " over the cap.\nYou pay only " + m(x.capped) + " (plus anything not covered), so " + m(-adj) + " moves to the insurer.") + cell("+" + m(-adj), "", "Amount over the out-of-pocket maximum that insurance picks up instead of you = " + m(-adj)) + "</tr>" : "") +
-    '<tr class="total"><th class="l">Total (excluding premium)</th><td></td><td></td>' + cell(m(x.gross), "", "Sum of all base costs = " + m(x.gross)) + "<td></td>" + cell(m(x.dedPart), "", "Deductible used = " + m(x.dedPart) + (x.split ? " (medical " + m(x.dedMed) + " of " + m(x.Dm) + " + drugs " + m(x.dedRx) + " of " + m(x.Dr) + ", separate deductibles)" : " of " + m(x.D) + " (the lesser of the deductible and the allowed price of services it applies to, " + m(x.S) + ")")) + cell(m(x.total), "", "Copays and coinsurance from the first dollar " + m(x.first) + " + deductible used " + m(x.dedPart) + " + cost share after the deductible " + m(x.after) + " = " + m(x.raw) + (x.M > 0 ? "\nLimited to the out-of-pocket maximum " + m(x.M) + " = " + m(x.capped) : "") + (x.nc > 0 ? "\n+ not covered, paid in full " + m(x.nc) + " = " + m(x.total) : "")) + cell(m(x.gross - x.total), "", "Total base cost " + m(x.gross) + " − you pay " + m(x.total) + " = " + m(x.gross - x.total)) + "</tr>";
+  const rxRow = x.rxOver > 0 ? '<tr class="cap"><th class="l">Prescription out-of-pocket cap of ' + m(x.R) + ' reached: reduction</th><td></td><td></td><td></td><td></td><td></td>' + cell(m(-x.rxOver), "", "What you would pay for medications " + m(x.rxRaw) + " − prescription out-of-pocket cap " + m(x.R) + " = " + m(x.rxOver) + " over the cap.\nYou pay only " + m(x.rxRaw - x.rxOver) + " for medications, so " + m(x.rxOver) + " moves to the insurer.") + cell("+" + m(x.rxOver), "", "Amount over the prescription out-of-pocket cap that insurance picks up instead of you = " + m(x.rxOver)) + "</tr>" : "";
+  const foot = rxRow + (x.M > 0 && adj < 0 ? '<tr class="cap"><th class="l">Out-of-pocket maximum of ' + m(x.M) + ' reached: reduction</th><td></td><td></td><td></td><td></td><td></td>' + cell(m(adj), "", "Your payments before the cap " + m(x.raw) + " − out-of-pocket maximum " + m(x.M) + " = " + m(x.raw - x.M) + " over the cap.\nYou pay only " + m(x.capped) + " (plus anything not covered), so " + m(-adj) + " moves to the insurer.") + cell("+" + m(-adj), "", "Amount over the out-of-pocket maximum that insurance picks up instead of you = " + m(-adj)) + "</tr>" : "") +
+    '<tr class="total"><th class="l">Total (excluding premium)</th><td></td><td></td>' + cell(m(x.gross), "", "Sum of all base costs = " + m(x.gross)) + "<td></td>" + cell(m(x.dedPart), "", "Deductible used = " + m(x.dedPart) + (x.split ? " (medical " + m(x.dedMed) + " of " + m(x.Dm) + " + drugs " + m(x.dedRx) + " of " + m(x.Dr) + ", separate deductibles)" : " of " + m(x.D) + " (the lesser of the deductible and the allowed price of services it applies to, " + m(x.S) + ")")) + cell(m(x.total), "", "Copays and coinsurance from the first dollar " + m(x.first) + " + deductible used " + m(x.dedPart) + " + cost share after the deductible " + m(x.after) + " = " + m(x.rawPre) + (x.rxOver > 0 ? "\nLess the prescription out-of-pocket cap reduction " + m(x.rxOver) + " = " + m(x.raw) : "") + (x.M > 0 ? "\nLimited to the out-of-pocket maximum " + m(x.M) + " = " + m(x.capped) : "") + (x.nc > 0 ? "\n+ not covered, paid in full " + m(x.nc) + " = " + m(x.total) : "")) + cell(m(x.gross - x.total), "", "Total base cost " + m(x.gross) + " − you pay " + m(x.total) + " = " + m(x.gross - x.total)) + "</tr>";
   const prem = r.premium, you = x.total;
   box.innerHTML =
     '<div class="detsum"><div><b>' + esc(pn(plan) || "Plan") + "</b>" + (r.isHsa ? " (HSA-eligible)" : "") + " · " + (stress ? "Normal year + stress scenario" : "Normal year") + "</div>" +
       "<div>" + (x.split ? "Deductibles: medical " + (x.Dm > 0 ? m(x.dedMed) + " used of " + m(x.Dm) : "none") + " · drugs " + (x.Dr > 0 ? m(x.dedRx) + " used of " + m(x.Dr) : "none") : "Deductible: " + (x.D > 0 ? m(x.dedPart) + " used of " + m(x.D) : "none entered")) + "</div>" +
       "<div>Max out-of-pocket: " + (x.M > 0 ? m(x.M) : "none entered") + "</div>" +
+      (x.split ? "<div>Max out-of-pocket, drugs: " + (x.R > 0 ? m(x.R) + " (you pay " + m(x.rxRaw - x.rxOver) + ")" : "none entered") + "</div>" : "") +
       "<div data-tip=\"" + esc(premText(plan, r)) + "\" tabindex=\"0\">Premium: " + m(prem) + " / yr</div>" +
       "<div data-tip=\"" + esc("Premium " + m(prem) + " + what you pay " + m(you) + " = " + m(prem + you)) + "\" tabindex=\"0\">You pay + premium: <b>" + m(prem + you) + "</b></div></div>" +
     '<div class="tablewrap"><table class="res det"><thead><tr><th class="l">Service / medication</th><th>Units</th><th>Base cost each</th><th>Base cost total</th><th class="l">Insurance coverage</th><th>Deductible used</th><th>You pay</th><th>Insurance pays</th></tr></thead><tbody>' +
     rows + foot + "</tbody></table></div>" +
-    '<p class="hint" style="margin-top:10px">Base cost is the allowed price: the plan\'s own Evaluator price, else your cost in section 2, else the copay. “Deductible used” is the part of your payment that goes toward the deductible. Services that are not covered are paid in full and sit outside the out-of-pocket maximum.</p>';
+    '<p class="hint mt10">Base cost is the allowed price: the plan\'s own Evaluator price, else your cost in section 2, else the copay. “Deductible used” is the part of your payment that goes toward the deductible. Services that are not covered are paid in full and sit outside the out-of-pocket maximum.</p>';
 }
 const tabScroll = { main:0, detail:0 };
 function setTab(t){
@@ -1394,7 +1410,7 @@ function tweenNumber(el, to){
   };
   el._raf = requestAnimationFrame(step);
 }
-const mr = (e, set) => set.M > 0 ? Math.max(set.M - set.capped, 0) : 0, mr1 = e => mr(e, e.setBase), mr2 = e => mr(e, e.setAll);
+const mr = set => set.M > 0 ? Math.max(set.M - set.capped, 0) : 0, mr1 = e => mr(e.setBase), mr2 = e => mr(e.setAll);
 const sv1 = e => e.isHsa ? e.hsa.saveOnSpend : 0, sv2 = e => e.isHsa ? e.hsa.saveOnSpendStress : 0;
 function ensureSel(){
   if (!state.plans.some(p => String(p.id) === String(ui.planId))) ui.planId = state.plans.length ? String(state.plans[0].id) : "";
@@ -1455,7 +1471,7 @@ function renderBars(evs){
       r.querySelector(".b" + a[0] + " .bo").dataset.tip = a[4];
       r.querySelector(".b" + a[0] + " .bd").dataset.tip = a[7];
       r.querySelector(".bx" + a[0]).dataset.tip = a[5] || "";
-      const set = a[0] === "1" ? e.setBase : e.setAll, rem = mr(e, set);
+      const set = a[0] === "1" ? e.setBase : e.setAll, rem = mr(set);
       const mx = r.querySelector(".bmx" + a[0]);
       mx.textContent = set.M > 0 ? "max " + fmt(e.premium + set.nc + set.M) : "no max";
       mx.dataset.tip = set.M > 0 ? "Maximum possible cost for the year: premium " + fmt(e.premium) + " + out-of-pocket maximum " + fmt(set.M) + (set.nc > 0 ? " + not-covered costs " + fmt(set.nc) : "") + " = " + fmt(e.premium + set.nc + set.M) + (e.isHsa ? "\n(Before HSA tax savings.)" : "") : "No out-of-pocket maximum is entered for this plan.";
@@ -1494,6 +1510,7 @@ function renderBars(evs){
   if (fresh.length){ void box.offsetWidth; requestAnimationFrame(apply); } else apply();
 }
 
+/* Redraw everything that depends on the results: the Evaluator tab and header bars always, the Line-item detail only while its tab is open. */
 function renderResults(){
   renderResultsMain();
   if (ui.tab === "detail") renderDetail();
@@ -1518,7 +1535,9 @@ function renderResultsMain(){
   if (maEvs.length){
     notices.push(["info", lim.medicare ? "Medicare plan premiums are counted for " + lim.medicare + " enrolled " + (lim.medicare === 1 ? "person" : "people") + " (those at or above the Medicare age)." :
       "No one in the household is at or above the Medicare age, so Medicare Advantage plans may not be available yet. Premiums are counted for every person."]);
-    maEvs.forEach(e => notices.push(["info", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> Part B premium counts only if entered. Out-of-network costs, the prescription out-of-pocket cap and the free first 20 skilled-nursing days are not modeled."]));
+    maEvs.forEach(e => notices.push(["info", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> " + (numOrNull(e.plan.premium.part_b_monthly) == null ? "Part B premium counts only if entered. " : "") +
+      (drugCap(e.plan) > 0 ? "" : "No prescription out-of-pocket cap is entered, so medication costs are not capped. ") +
+      "Out-of-network costs and the free first 20 skilled-nursing days are not modeled."]));
   }
   if (isSingle(state.household)) evs.filter(e => singleEstimates(e.plan).length).forEach(e => notices.push(["info", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> no " + esc(singleEstimates(e.plan).join(" or ")) + " is entered, so half the family amount is used for a single person. Enter the individual amount on the plan card for an exact result."]));
   evs.filter(e => e.missing.length).forEach(e => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> no price is entered for " + esc(e.missing.join(", ")) + ", so " + (e.missing.length === 1 ? "it counts" : "they count") + " as $0. Enter the price in section 2 (Costs) or under “Evaluator prices” on the plan card."]));
@@ -1906,6 +1925,17 @@ $("ver").textContent = APP_VERSION;
   } catch (e) {}
   state = defaultState(); renderAll();
   setStatus("Start with the household details, or click “Load example” to see how it works.");
+})();
+
+// Publish the sticky blue panel's height as --hdr (it changes with the number of result bars); the CSS uses it
+// to size the table frames and to offset scrolling into view.
+(function(){
+  const hdr = document.querySelector("header.top");
+  if (!hdr) return;
+  const publish = () => document.documentElement.style.setProperty("--hdr", hdr.offsetHeight + "px");
+  publish();
+  if (window.ResizeObserver) new ResizeObserver(publish).observe(hdr);
+  window.addEventListener("resize", publish);
 })();
 </script>
 </body>
