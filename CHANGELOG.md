@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.14.0] - 2026-10-27
+
+### Changed
+- Evaluator and Line-item detail tab selection moved from below the header into the sticky blue top pane, so you can change tabs at any scroll position without scrolling back up to find the tab handles.
+- Leaving and returning to a tab keeps its scrolled position (Evaluator and Line-item detail each remember their own). A tab you have not visited yet opens at the top.
+- The plan and scenario checkboxes in the blue pane's bars still choose what Line-item detail shows; they work the same as before.
+
 ## [2.13.0] - 2026-10-27
 
 ### Added

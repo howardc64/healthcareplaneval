@@ -1,7 +1,7 @@
 {
   "app": "health-plan-evaluator",
   "version": "2.13.0",
-  "savedAt": "2026-10-27T06:55:01.529Z",
+  "savedAt": "2026-10-27T15:43:04.712Z",
   "state": {
     "household": {
       "status": "single",
@@ -31,28 +31,28 @@
       "ucCT": "",
       "rx5": "",
       "rx4": "",
-      "rx3": "",
+      "rx3": "12",
       "rx2": "",
-      "rx1": "10"
+      "rx1": "20"
     },
     "plans": [
       {
-        "id": "plmvqbg37713",
+        "id": "plmvquobne12",
         "collapsed": true,
         "hide": {
           "identity": true,
           "network": true,
-          "premium": false,
-          "limits": false,
-          "svcVisits": false,
-          "svcTests": false,
-          "svcFacility": false,
+          "premium": true,
+          "limits": true,
+          "svcVisits": true,
+          "svcTests": true,
+          "svcFacility": true,
           "svcMental": true,
           "svcOther": true,
-          "medicare": false,
+          "medicare": true,
           "supp": true,
           "oon": true,
-          "drugs": false,
+          "drugs": true,
           "channels": true,
           "prices": false,
           "lists": true,
@@ -956,7 +956,7 @@
           },
           "tier3_non_preferred_brand": {
             "structure": "coinsurance",
-            "copay_amount": "",
+            "copay_amount": "0",
             "coinsurance_pct": "17",
             "deductible_applies": "true",
             "unit": "prescription",
@@ -1008,7 +1008,7 @@
           "surgery": "",
           "rx_tier1": "",
           "rx_tier2": "",
-          "rx_tier3": "",
+          "rx_tier3": "250",
           "rx_tier4": "",
           "rx_tier5": ""
         },
@@ -1020,22 +1020,22 @@
         }
       },
       {
-        "id": "plmvqbgi1k14",
+        "id": "plmvquobnf14",
         "collapsed": true,
         "hide": {
           "identity": true,
           "network": true,
-          "premium": false,
-          "limits": false,
-          "svcVisits": false,
-          "svcTests": false,
-          "svcFacility": false,
+          "premium": true,
+          "limits": true,
+          "svcVisits": true,
+          "svcTests": true,
+          "svcFacility": true,
           "svcMental": true,
           "svcOther": true,
-          "medicare": false,
+          "medicare": true,
           "supp": true,
           "oon": true,
-          "drugs": false,
+          "drugs": true,
           "channels": true,
           "prices": false,
           "lists": true,
@@ -1991,7 +1991,7 @@
           "surgery": "",
           "rx_tier1": "",
           "rx_tier2": "",
-          "rx_tier3": "",
+          "rx_tier3": "250",
           "rx_tier4": "",
           "rx_tier5": ""
         },
@@ -2003,16 +2003,16 @@
         }
       },
       {
-        "id": "plmvqbvesp15",
+        "id": "plmvquobnf16",
         "collapsed": true,
         "hide": {
           "identity": true,
           "network": true,
-          "premium": false,
-          "limits": false,
-          "svcVisits": false,
-          "svcTests": false,
-          "svcFacility": false,
+          "premium": true,
+          "limits": true,
+          "svcVisits": true,
+          "svcTests": true,
+          "svcFacility": true,
           "svcMental": true,
           "svcOther": true,
           "medicare": false,
@@ -3154,7 +3154,7 @@
         }
       },
       {
-        "id": "plmvqbvpl516",
+        "id": "plmvquobnf18",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -4305,7 +4305,7 @@
         }
       },
       {
-        "id": "plmvqbvy7717",
+        "id": "plmvquobnf20",
         "collapsed": true,
         "hide": {
           "identity": true,

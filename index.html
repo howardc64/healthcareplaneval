@@ -78,6 +78,7 @@ header.top .bn{display:flex;align-items:center;gap:4px;min-width:0;font-weight:6
 header.top .bn .tag{background:rgba(255,255,255,.9);color:var(--head)}
 header.top .bn .pname{max-width:130px}
 header.top .bl{display:flex;align-items:center;gap:8px;margin:1px 0}
+header.top .bsel{flex:0 0 auto;width:14px;height:14px;margin:0;accent-color:#fff;cursor:pointer}
 header.top .btrack{flex:1 1 auto;min-width:0;display:flex;align-items:center}
 header.top .bx{position:absolute;left:0;top:0;bottom:0;width:0;transition:width .7s cubic-bezier(.22,.8,.3,1);--hc:rgba(255,255,255,.55);background-image:radial-gradient(circle,var(--hc) 0 1.3px,transparent 1.6px);background-size:7px 100%;background-position:0 center;background-repeat:repeat-x;cursor:help}
 header.top .bm{position:relative;height:10px;box-sizing:border-box;width:0;flex:0 0 auto;border:1px dashed rgba(255,255,255,.28);border-left:0;border-radius:0 4px 4px 0;transition:width .7s cubic-bezier(.22,.8,.3,1);cursor:help}
@@ -100,7 +101,7 @@ header.top .legend .l4::before{background:var(--hbar1d)}
 header.top .bv{flex:0 0 auto;width:74px;font-size:12px;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;text-decoration:none;text-underline-offset:3px}
 header.top .bv[data-tip]{text-decoration:underline dotted rgba(255,255,255,.6)}
 header.top .baxis{position:sticky;bottom:0;background:var(--head);display:grid;grid-template-columns:190px 1fr;gap:10px;margin-top:2px;padding-top:2px}
-header.top .baxis .ax{position:relative;height:22px;margin-right:174px;border-top:1px solid rgba(255,255,255,.35)}
+header.top .baxis .ax{position:relative;height:22px;margin-right:174px;margin-left:22px;border-top:1px solid rgba(255,255,255,.35)}
 header.top .baxis .tk{position:absolute;top:0;width:1px;height:5px;background:rgba(255,255,255,.55)}
 header.top .baxis .tl{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.7);white-space:nowrap;font-variant-numeric:tabular-nums}
 header.top .bars-empty{font-size:13px;opacity:.9;margin:2px 0}
@@ -160,12 +161,10 @@ section.is-hidden .sec-body{display:none}
 section.is-hidden .sec-head h2::after{content:" (hidden)";font-weight:400;font-size:14px;color:var(--muted)}
 section.is-hidden{padding-bottom:10px}
 section.is-hidden .sec-head h2{margin-bottom:0}
-.tabs{max-width:1240px;margin:14px auto 0;padding:0 20px;display:flex;gap:6px;border-bottom:1px solid var(--line)}
-.tabs button{border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;background:var(--tabbg);padding:8px 16px;margin-bottom:-1px}
-.tabs button.active{background:var(--card);font-weight:700;color:var(--brand)}
-.detailbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;margin:6px 0 12px}
-.detailbar .fld{min-width:240px}
-.detailbar select{border:1px solid var(--line);border-radius:7px;padding:7px 8px;font:inherit;background:var(--field);color:var(--ink)}
+header.top .tabs{max-width:1240px;margin:8px auto 0;padding:0;display:flex;gap:6px;border-bottom:1px solid rgba(255,255,255,.35)}
+header.top .tabs button{border:1px solid rgba(255,255,255,.35);border-bottom:0;border-radius:8px 8px 0 0;background:rgba(255,255,255,.12);color:#fff;padding:6px 16px;margin-bottom:-1px}
+header.top .tabs button:hover{background:rgba(255,255,255,.25)}
+header.top .tabs button.active{background:var(--card);font-weight:700;color:var(--brand);border-color:var(--card)}
 table.det td.l,table.det th.l{text-align:left;white-space:normal}
 table.det td.cov{text-align:left;white-space:normal;color:var(--muted);font-size:13px;min-width:200px}
 table.det td.unk{color:var(--bad)}
@@ -216,13 +215,13 @@ header.top button{background:rgba(255,255,255,.1)}
     </div>
   </div>
   <div class="row" style="margin-top:4px;font-size:12px;opacity:.9">Current file: <span id="fileName">none (use Save as… to choose a location and name)</span></div>
+  <nav class="tabs no-print" role="tablist">
+  <button type="button" class="active" role="tab" data-tab="main" id="tabBtnMain">Evaluator</button>
+  <button type="button" role="tab" data-tab="detail" id="tabBtnDetail">Line-item detail</button>
+  </nav>
   <div id="bars" class="bars" aria-live="polite"></div>
 </header>
 
-<nav class="tabs no-print" role="tablist">
-  <button type="button" class="active" role="tab" data-tab="main" id="tabBtnMain">Evaluator</button>
-  <button type="button" role="tab" data-tab="detail" id="tabBtnDetail">Line-item detail</button>
-</nav>
 <main>
   <div class="printhead"><h1 style="margin:0">Health Plan Evaluator</h1><div id="printDate"></div></div>
   <p id="status" role="status" aria-live="polite"></p>
@@ -287,7 +286,7 @@ header.top button{background:rgba(255,255,255,.1)}
   <div id="tabDetail" hidden>
     <section class="card" id="secDetail">
       <h2>Line-item detail</h2>
-      <p class="hint">Every service and medication in your annual needs for one plan: the base (allowed) cost, how the plan covers it, how much of the deductible it uses, what you pay and what the insurer pays. Each row is one kind of service with its number of units; the deductible is shared across rows in proportion to their allowed price, as in the results.</p>
+      <p class="hint">Tick the checkbox at the start of a bar in the header to choose the plan and scenario shown here. Every service and medication in your annual needs for one plan: the base (allowed) cost, how the plan covers it, how much of the deductible it uses, what you pay and what the insurer pays. Each row is one kind of service with its number of units; the deductible is shared across rows in proportion to their allowed price, as in the results.</p>
       <div id="detailBox"></div>
     </section>
   </div>
@@ -297,7 +296,7 @@ header.top button{background:rgba(255,255,255,.1)}
 
 <script>
 "use strict";
-const APP_VERSION = "2.13.0";
+const APP_VERSION = "2.14.0";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -1212,8 +1211,8 @@ function detTips(L, x, d){
 function renderDetail(){
   const box = $("detailBox");
   if (!state.plans.length){ box.innerHTML = '<p class="hint">No plans yet. Add a plan or load the example, then come back here.</p>'; return; }
-  let plan = state.plans.find(p => p.id === ui.planId);
-  if (!plan){ plan = state.plans[0]; ui.planId = plan.id; }
+  syncSel();
+  const plan = state.plans.find(p => String(p.id) === String(ui.planId)) || state.plans[0];
   const r = evaluate(state, plan);
   const stress = ui.scen === "stress";
   const lines = stress ? r.lines.normal.concat(r.lines.stress) : r.lines.normal;
@@ -1246,10 +1245,7 @@ function renderDetail(){
     '<tr class="total"><th class="l">Total (excluding premium)</th><td></td><td></td>' + cell(m(x.gross), "", "Sum of all base costs = " + m(x.gross)) + "<td></td>" + cell(m(x.dedPart), "", "Deductible used = " + m(x.dedPart) + " of " + m(x.D) + " (the lesser of the deductible and the allowed price of services it applies to, " + m(x.S) + ")") + cell(m(x.total), "", "Copays and coinsurance from the first dollar " + m(x.first) + " + deductible used " + m(x.dedPart) + " + cost share after the deductible " + m(x.after) + " = " + m(x.raw) + (x.M > 0 ? "\nLimited to the out-of-pocket maximum " + m(x.M) + " = " + m(x.capped) : "") + (x.nc > 0 ? "\n+ not covered, paid in full " + m(x.nc) + " = " + m(x.total) : "")) + cell(m(x.gross - x.total), "", "Total base cost " + m(x.gross) + " − you pay " + m(x.total) + " = " + m(x.gross - x.total)) + "</tr>";
   const prem = r.premium, you = x.total;
   box.innerHTML =
-    '<div class="detailbar no-print"><label class="fld"><span>Plan</span><select id="detPlan">' +
-      state.plans.map(p => '<option value="' + esc(p.id) + '"' + (p.id === plan.id ? " selected" : "") + ">" + esc(pn(p) || "Unnamed plan") + "</option>").join("") + '</select></label>' +
-      '<label class="fld"><span>Scenario</span><select id="detScen"><option value="normal"' + (stress ? "" : " selected") + '>Annual needs (normal year)</option><option value="stress"' + (stress ? " selected" : "") + ">Annual needs + stress scenario</option></select></label></div>" +
-    '<div class="detsum"><div><b>' + esc(pn(plan) || "Plan") + "</b>" + (r.isHsa ? " (HSA-eligible)" : "") + "</div>" +
+    '<div class="detsum"><div><b>' + esc(pn(plan) || "Plan") + "</b>" + (r.isHsa ? " (HSA-eligible)" : "") + " · " + (stress ? "Normal year + stress scenario" : "Normal year") + "</div>" +
       "<div>Deductible: " + (x.D > 0 ? m(x.dedPart) + " used of " + m(x.D) : "none entered") + "</div>" +
       "<div>Max out-of-pocket: " + (x.M > 0 ? m(x.M) : "none entered") + "</div>" +
       "<div data-tip=\"" + esc(premText(plan, r)) + "\" tabindex=\"0\">Premium: " + m(prem) + " / yr</div>" +
@@ -1258,17 +1254,24 @@ function renderDetail(){
     rows + foot + "</tbody></table></div>" +
     '<p class="hint" style="margin-top:10px">Base cost is the allowed price: the plan\'s own Evaluator price, else your cost in section 2, else the copay. “Deductible used” is the part of your payment that goes toward the deductible. Services that are not covered are paid in full and sit outside the out-of-pocket maximum.</p>';
 }
+const tabScroll = { main:0, detail:0 };
 function setTab(t){
+  if (t === ui.tab) return;
+  tabScroll[ui.tab] = window.scrollY;
   ui.tab = t;
   $("tabMain").hidden = t !== "main"; $("tabDetail").hidden = t !== "detail";
   $("tabBtnMain").classList.toggle("active", t === "main"); $("tabBtnDetail").classList.toggle("active", t === "detail");
   if (t === "detail") renderDetail();
-  window.scrollTo(0, 0);
+  window.scrollTo(0, tabScroll[t] || 0);
 }
 document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest("button[data-tab]"); if (b) setTab(b.dataset.tab); });
 document.addEventListener("change", e => {
-  if (e.target.id === "detPlan"){ ui.planId = e.target.value; renderDetail(); }
-  else if (e.target.id === "detScen"){ ui.scen = e.target.value; renderDetail(); }
+  const c = e.target.closest && e.target.closest("#bars .bsel");
+  if (!c) return;
+  const row = c.closest(".brow");
+  ui.planId = row.dataset.pid; ui.scen = c.dataset.scen;
+  syncSel();
+  if (ui.tab === "detail") renderDetail();
 });
 
 /* ---------- results ---------- */
@@ -1310,6 +1313,14 @@ function tweenNumber(el, to){
 }
 const mr = (e, set) => set.M > 0 ? Math.max(set.M - set.capped, 0) : 0, mr1 = e => mr(e, e.setBase), mr2 = e => mr(e, e.setAll);
 const sv1 = e => e.isHsa ? e.hsa.saveOnSpend : 0, sv2 = e => e.isHsa ? e.hsa.saveOnSpendStress : 0;
+function ensureSel(){
+  if (!state.plans.some(p => String(p.id) === String(ui.planId))) ui.planId = state.plans.length ? String(state.plans[0].id) : "";
+  if (ui.scen !== "stress") ui.scen = "normal";
+}
+function syncSel(){
+  ensureSel();
+  document.querySelectorAll("#bars .brow").forEach(r => r.querySelectorAll(".bsel").forEach(c => { c.checked = r.dataset.pid === String(ui.planId) && c.dataset.scen === ui.scen; }));
+}
 function renderBars(evs){
   const box = $("bars");
   if (!evs.length){ box._sig = ""; box.innerHTML = '<div class="bars-empty">Add at least one plan to see results.</div>'; return; }
@@ -1327,8 +1338,8 @@ function renderBars(evs){
     if (!r){
       r = document.createElement("div"); r.className = "brow"; r.dataset.pid = id;
       r.innerHTML = '<div class="bn"></div><div>' +
-        '<div class="bl"><div class="btrack"><div class="b b1"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div></div><div class="bm bm1" data-tip="" tabindex="0"><div class="bx bx1" data-tip="" tabindex="0"></div></div></div><span class="bv v1" tabindex="0"></span><span class="bmx bmx1" data-tip="" tabindex="0"></span></div>' +
-        '<div class="bl"><div class="btrack"><div class="b b2"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div></div><div class="bm bm2" data-tip="" tabindex="0"><div class="bx bx2" data-tip="" tabindex="0"></div></div></div><span class="bv v2" tabindex="0"></span><span class="bmx bmx2" data-tip="" tabindex="0"></span></div></div>';
+        '<div class="bl"><input type="checkbox" class="bsel" data-scen="normal" aria-label="Show this plan, normal year, in Line-item detail" data-tip="Show this plan and scenario in Line-item detail"><div class="btrack"><div class="b b1"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div></div><div class="bm bm1" data-tip="" tabindex="0"><div class="bx bx1" data-tip="" tabindex="0"></div></div></div><span class="bv v1" tabindex="0"></span><span class="bmx bmx1" data-tip="" tabindex="0"></span></div>' +
+        '<div class="bl"><input type="checkbox" class="bsel" data-scen="stress" aria-label="Show this plan, normal year plus stress scenario, in Line-item detail" data-tip="Show this plan and scenario in Line-item detail"><div class="btrack"><div class="b b2"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div></div><div class="bm bm2" data-tip="" tabindex="0"><div class="bx bx2" data-tip="" tabindex="0"></div></div></div><span class="bv v2" tabindex="0"></span><span class="bmx bmx2" data-tip="" tabindex="0"></span></div></div>';
       box.appendChild(r); rows[id] = r; fresh.push(r);
     }
     const nameKey = pn(e.plan) + "|" + (e.isHsa ? 1 : 0);
@@ -1380,6 +1391,7 @@ function renderBars(evs){
     }
     ax.querySelector(".ax").innerHTML = h;
   }
+  syncSel();
   if (fresh.length){ void box.offsetWidth; requestAnimationFrame(apply); } else apply();
 }
 
