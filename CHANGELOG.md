@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.18.0] - 2026-10-27
+
+### Changed
+- Medicare Advantage plans now have separate deductibles for medical care and medications. The medical deductible (often $0) applies only to medical services, and the Part D drug deductible (per person) applies only to drug tiers marked "deductible applies". Before, one deductible was shared by both, so a $0 medical deductible let the drug deductible be used up by medical services, and a nonzero medical deductible hid the drug deductible.
+- Line-item detail, the header summary and the tooltips show the medical and drug deductibles and how much of each is used.
+- Marketplace (non-Medicare) plans are unchanged: one deductible shared by medical and drugs.
+- The out-of-pocket maximum is still one combined cap; the separate Part D drug out-of-pocket cap is still recorded but not costed.
+
 ## [2.17.1] - 2026-10-27
 
 ### Changed

@@ -306,7 +306,7 @@ header.top button{background:rgba(255,255,255,.1)}
 
 <script>
 "use strict";
-const APP_VERSION = "2.17.1";
+const APP_VERSION = "2.18.0";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -480,11 +480,10 @@ function p1Name(h){ const n = (h.p1.name || "").trim(); return isSingle(h) ? (!n
 function p2Name(h){ return h.p2.name || "Spouse 2"; }
 /* Married: family amount (2 x individual if only that is given). Single: individual amount (half the family amount if only that is given). */
 const drugDed = p => isMA(p) ? Math.max(0, num(p.limits.drug_deductible_amount)) : 0;
-/* Medicare Advantage: the medical deductible is usually $0, so the shared deductible is the per-person Part D deductible (it only touches drug tiers marked "deductible applies") */
-function planDed(p, single){
-  const b = planDedBase(p, single), d = drugDed(p);
-  return d > 0 && b === 0 ? d * (single ? 1 : 2) : b;
-}
+/* Medicare Advantage plans have two separate deductibles: the medical deductible (often $0) and the per-person Part D drug deductible
+   (it only touches drug tiers marked "deductible applies"). Every other plan has one deductible shared by medical and drugs. */
+function planDed(p, single){ return planDedBase(p, single); }
+const drugDedTotal = (p, single) => drugDed(p) * (single ? 1 : 2);
 function planDedBase(p, single){
   const f = numOrNull(p.limits.deductible_family), i = numOrNull(p.limits.deductible_individual);
   if (single) return i != null ? Math.max(0, i) : (f != null ? Math.max(0, f) / 2 : 0);
@@ -551,21 +550,24 @@ function mkLine(p, o){
 /* Deductible and max out-of-pocket are family amounts for a couple, individual amounts for a single person.
    The deductible is shared by the "ded" lines in proportion to their allowed price. */
 function settle(p, lines, single){
-  const D = planDed(p, single), M = planOop(p, single);
-  let first = 0, S = 0, Q = 0, nc = 0, gross = 0;
+  const split = isMA(p);
+  const Dm = planDed(p, single), Dr = split ? drugDedTotal(p, single) : 0, M = planOop(p, single);
+  let first = 0, Sm = 0, Qm = 0, Sr = 0, Qr = 0, nc = 0, gross = 0;
   lines.forEach(L => {
     gross += L.S;
     if (L.cls === "first") first += L.first;
-    else if (L.cls === "ded"){ S += L.S; Q += L.Q; }
+    else if (L.cls === "ded"){ if (split && L.tag === "rx"){ Sr += L.S; Qr += L.Q; } else { Sm += L.S; Qm += L.Q; } }
     else if (L.cls === "nc") nc += L.S;
   });
-  const f = S > 0 ? Math.min(1, D / S) : 0;
-  const dedPart = f * S, after = (1 - f) * Q;
+  const fm = Sm > 0 ? Math.min(1, Dm / Sm) : 0, fr = Sr > 0 ? Math.min(1, Dr / Sr) : 0;
+  const S = Sm + Sr, Q = Qm + Qr, D = Dm + Dr;
+  const dedPart = fm * Sm + fr * Sr, after = (1 - fm) * Qm + (1 - fr) * Qr;
   const raw = first + dedPart + after;
   const capped = M > 0 ? Math.min(raw, M) : raw;
-  return { D:D, M:M, first:first, S:S, Q:Q, f:f, dedPart:dedPart, after:after, raw:raw, capped:capped, nc:nc, total:capped + nc, gross:gross };
+  return { split:split, D:D, Dm:Dm, Dr:Dr, M:M, first:first, S:S, Sm:Sm, Sr:Sr, Q:Q, fm:fm, fr:fr, f:fm, dedPart:dedPart, dedMed:fm * Sm, dedRx:fr * Sr, after:after, raw:raw, capped:capped, nc:nc, total:capped + nc, gross:gross };
 }
 /* How much of what you pay (after the out-of-pocket cap) is for medications, and per medication tier. */
+const fOf = (set, L) => set.split && L.tag === "rx" ? set.fr : set.fm;
 function rxShare(set, lines){
   const k = set.raw > 0 ? set.capped / set.raw : 1;
   let total = 0; const rows = [];
@@ -573,7 +575,7 @@ function rxShare(set, lines){
     if (L.tag !== "rx") return;
     let v = 0;
     if (L.cls === "first") v = L.first * k;
-    else if (L.cls === "ded") v = (set.f * L.S + (1 - set.f) * L.Q) * k;
+    else if (L.cls === "ded") v = (fOf(set, L) * L.S + (1 - fOf(set, L)) * L.Q) * k;
     else if (L.cls === "nc") v = L.S;
     total += v; rows.push({ label:L.label, n:L.n, S:L.S, pay:v });
   });
@@ -730,7 +732,10 @@ function insExplain(x){
   const L = [];
   L.push("Listed prices (everything except the premium): " + m(x.gross));
   L.push("Copays and coinsurance that skip the deductible: " + m(x.first));
-  L.push("Services where the deductible applies: " + m(x.S) + " allowed. You pay 100% of the first " + m(Math.min(x.S, x.D)) + " (deductible " + m(x.D) + ") = " + m(x.dedPart));
+  if (x.split){
+    L.push("Medical services where the deductible applies: " + m(x.Sm) + " allowed. You pay 100% of the first " + m(Math.min(x.Sm, x.Dm)) + " (medical deductible " + m(x.Dm) + ") = " + m(x.dedMed));
+    L.push("Medications where the deductible applies: " + m(x.Sr) + " allowed. You pay 100% of the first " + m(Math.min(x.Sr, x.Dr)) + " (separate drug deductible " + m(x.Dr) + ") = " + m(x.dedRx));
+  } else L.push("Services where the deductible applies: " + m(x.S) + " allowed. You pay 100% of the first " + m(Math.min(x.S, x.D)) + " (deductible " + m(x.D) + ") = " + m(x.dedPart));
   L.push("Then your copay or coinsurance on the other " + m(x.S - x.dedPart) + " = " + m(x.after));
   L.push("Subtotal: " + m(x.raw));
   if (x.M > 0) L.push(x.raw > x.M ? "Capped at the max out-of-pocket of " + m(x.M) : "Below the max out-of-pocket of " + m(x.M) + ", so no cap applies");
@@ -938,7 +943,7 @@ function planFromSchema(doc, ctx){
   }
   const hf = p.services.hospital_facility;
   if (numOrNull(hf.max_units) != null && hf.structure === "copay") notes.push("Hospital copay is limited to " + hf.max_units + " " + (hf.unit || "unit") + "(s) per stay; the calculation applies that limit.");
-  if (isMA(p)) notes.push("Medicare plan: premium is counted per enrolled person (those at or above the Medicare age); the Part D deductible applies to drug tiers marked “deductible applies”; out-of-network costs, the Rx out-of-pocket cap and the free first 20 skilled-nursing days are recorded but not costed.");
+  if (isMA(p)) notes.push("Medicare plan: premium is counted per enrolled person (those at or above the Medicare age); the medical deductible and the Part D drug deductible are separate (the drug deductible applies to drug tiers marked “deductible applies”); out-of-network costs, the Rx out-of-pocket cap and the free first 20 skilled-nursing days are recorded but not costed.");
   if (missing.length) notes.push("Enter the dollar prices in section 2 (Costs) or above under “Evaluator prices” on this card (they are the allowed prices the deductible and coinsurance apply to).");
   const list = a => Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 20).map(x => x.slice(0, 400)) : [];
   p._import = {
@@ -1219,7 +1224,7 @@ const ui = { tab:"main", planId:"", scen:"normal" };
 function lineDetail(L, x){
   let ded = 0, pay = 0;
   if (L.cls === "first") pay = L.first;
-  else if (L.cls === "ded"){ ded = x.f * L.S; pay = ded + (1 - x.f) * L.Q; }
+  else if (L.cls === "ded"){ const f = fOf(x, L); ded = f * L.S; pay = ded + (1 - f) * L.Q; }
   else if (L.cls === "nc") pay = L.S;
   return { ded:ded, pay:pay, ins:L.S - pay };
 }
@@ -1230,8 +1235,10 @@ function detTips(L, x, d){
   T.total = L.n + " units × " + m(L.A) + " = " + m(L.S);
   const share = c.st === "copay" ? L.charged + " charged unit(s) × " + m(c.cop == null ? 0 : c.cop) + " copay = " + m(c.cop == null ? 0 : c.cop * L.charged)
     : c.st === "coinsurance" || c.st === "unknown" || c.st === "not_stated" ? c.pct + "% × " + m(L.S) + " = " + m(c.pct / 100 * L.S) : "";
-  const pct = Math.round(x.f * 10000) / 100;
-  const dedLine = "Deductible " + m(x.D) + " is shared by every line where it applies, in proportion to its allowed price:\nmin(100%, " + m(x.D) + " ÷ " + m(x.S) + " allowed) = " + pct + "%";
+  const rxSide = x.split && L.tag === "rx";
+  const gD = rxSide ? x.Dr : x.Dm, gS = rxSide ? x.Sr : x.Sm, gf = rxSide ? x.fr : x.fm;
+  const pct = Math.round(gf * 10000) / 100;
+  const dedLine = (x.split ? (rxSide ? "Drug deductible " : "Medical deductible ") : "Deductible ") + m(gD) + " is shared by every " + (x.split ? (rxSide ? "medication " : "medical ") : "") + "line where it applies, in proportion to its allowed price" + (x.split ? " (medical and drug deductibles are separate)" : "") + ":\nmin(100%, " + m(gD) + " ÷ " + m(gS) + " allowed) = " + pct + "%";
   if (L.cls === "ded"){
     T.ded = dedLine + "\n× this line's " + m(L.S) + " = " + m(d.ded);
     T.pay = "Deductible used " + m(d.ded) + " + (1 − " + pct + "%) × your cost share " + m(L.Q) + (share ? " (" + share + ")" : "") + " = " + m(d.pay) + "\n(Before the out-of-pocket maximum is applied.)";
@@ -1281,11 +1288,11 @@ function renderDetail(){
   if (!nrows) rows = '<tr><td colspan="8" class="l">No services or medications are planned. Enter your annual needs in section 1 of the Evaluator tab.</td></tr>';
   const adj = x.capped - x.raw;
   const foot = (x.M > 0 && adj < 0 ? '<tr class="cap"><th class="l">Out-of-pocket maximum of ' + m(x.M) + ' reached: reduction</th><td></td><td></td><td></td><td></td><td></td>' + cell(m(adj), "", "Your payments before the cap " + m(x.raw) + " − out-of-pocket maximum " + m(x.M) + " = " + m(x.raw - x.M) + " over the cap.\nYou pay only " + m(x.capped) + " (plus anything not covered), so " + m(-adj) + " moves to the insurer.") + cell("+" + m(-adj), "", "Amount over the out-of-pocket maximum that insurance picks up instead of you = " + m(-adj)) + "</tr>" : "") +
-    '<tr class="total"><th class="l">Total (excluding premium)</th><td></td><td></td>' + cell(m(x.gross), "", "Sum of all base costs = " + m(x.gross)) + "<td></td>" + cell(m(x.dedPart), "", "Deductible used = " + m(x.dedPart) + " of " + m(x.D) + " (the lesser of the deductible and the allowed price of services it applies to, " + m(x.S) + ")") + cell(m(x.total), "", "Copays and coinsurance from the first dollar " + m(x.first) + " + deductible used " + m(x.dedPart) + " + cost share after the deductible " + m(x.after) + " = " + m(x.raw) + (x.M > 0 ? "\nLimited to the out-of-pocket maximum " + m(x.M) + " = " + m(x.capped) : "") + (x.nc > 0 ? "\n+ not covered, paid in full " + m(x.nc) + " = " + m(x.total) : "")) + cell(m(x.gross - x.total), "", "Total base cost " + m(x.gross) + " − you pay " + m(x.total) + " = " + m(x.gross - x.total)) + "</tr>";
+    '<tr class="total"><th class="l">Total (excluding premium)</th><td></td><td></td>' + cell(m(x.gross), "", "Sum of all base costs = " + m(x.gross)) + "<td></td>" + cell(m(x.dedPart), "", "Deductible used = " + m(x.dedPart) + (x.split ? " (medical " + m(x.dedMed) + " of " + m(x.Dm) + " + drugs " + m(x.dedRx) + " of " + m(x.Dr) + ", separate deductibles)" : " of " + m(x.D) + " (the lesser of the deductible and the allowed price of services it applies to, " + m(x.S) + ")")) + cell(m(x.total), "", "Copays and coinsurance from the first dollar " + m(x.first) + " + deductible used " + m(x.dedPart) + " + cost share after the deductible " + m(x.after) + " = " + m(x.raw) + (x.M > 0 ? "\nLimited to the out-of-pocket maximum " + m(x.M) + " = " + m(x.capped) : "") + (x.nc > 0 ? "\n+ not covered, paid in full " + m(x.nc) + " = " + m(x.total) : "")) + cell(m(x.gross - x.total), "", "Total base cost " + m(x.gross) + " − you pay " + m(x.total) + " = " + m(x.gross - x.total)) + "</tr>";
   const prem = r.premium, you = x.total;
   box.innerHTML =
     '<div class="detsum"><div><b>' + esc(pn(plan) || "Plan") + "</b>" + (r.isHsa ? " (HSA-eligible)" : "") + " · " + (stress ? "Normal year + stress scenario" : "Normal year") + "</div>" +
-      "<div>Deductible: " + (x.D > 0 ? m(x.dedPart) + " used of " + m(x.D) : "none entered") + "</div>" +
+      "<div>" + (x.split ? "Deductibles: medical " + (x.Dm > 0 ? m(x.dedMed) + " used of " + m(x.Dm) : "none") + " · drugs " + (x.Dr > 0 ? m(x.dedRx) + " used of " + m(x.Dr) : "none") : "Deductible: " + (x.D > 0 ? m(x.dedPart) + " used of " + m(x.D) : "none entered")) + "</div>" +
       "<div>Max out-of-pocket: " + (x.M > 0 ? m(x.M) : "none entered") + "</div>" +
       "<div data-tip=\"" + esc(premText(plan, r)) + "\" tabindex=\"0\">Premium: " + m(prem) + " / yr</div>" +
       "<div data-tip=\"" + esc("Premium " + m(prem) + " + what you pay " + m(you) + " = " + m(prem + you)) + "\" tabindex=\"0\">You pay + premium: <b>" + m(prem + you) + "</b></div></div>" +

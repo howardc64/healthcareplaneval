@@ -106,7 +106,7 @@ How the numbers change for a Medicare plan:
 
 - **Premium** = (plan premium + optional Part B premium) × 12 × the number of enrolled people. Enrolled people are those at or above the Medicare age in section 1; if nobody is, every person is counted and a notice says so.
 - **Deductible and maximum out-of-pocket** are per person; a couple uses 2 × the individual amounts (Medicare plans have no family amounts).
-- **Part D deductible**: when the medical deductible is $0, the deductible shared by the services is the per-person Part D deductible, so it only affects drug tiers marked "deductible applies".
+- **Separate deductibles**: a Medicare plan has a medical deductible (often $0) and a separate per-person Part D drug deductible. The medical deductible applies only to medical services; the drug deductible applies only to drug tiers marked "deductible applies". Marketplace plans keep one deductible shared by medical and drugs.
 - **Not modeled**: out-of-network use, the prescription out-of-pocket cap, free first 20 skilled-nursing days, and Medigap or employer coverage interaction. A notice lists these.
 
 ## How the numbers are calculated
