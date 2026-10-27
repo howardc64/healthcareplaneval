@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.5.0] - 2026-10-26
+
+### Added
+- **Day and night theme.** The app follows the device's light or dark setting (`prefers-color-scheme`) and switches live when the setting changes. Colors are now CSS variables; printing always uses the light theme.
+
 ## [2.4.0] - 2026-10-26
 
 ### Changed
