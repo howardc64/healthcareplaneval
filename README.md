@@ -32,13 +32,15 @@ Everything runs locally in your browser. No server, no build step, no dependenci
 Sections 1, 2 and 3 each have a **Hide** checkbox in the upper right (hidden by default; the choice is saved with your file).
 
 **1. Household annual health needs**
+Start with **Coverage for**: *Married couple (family plan)* or *Single person (self-only plan)*. A single person has one name, age and PCP visit count, one person in the stress scenario, the plan's **individual** deductible and out-of-pocket maximum (half the family amount, with a notice, if only the family amount is entered), and the self-only HSA limit, HDHP minimum deductible and HDHP out-of-pocket cap. A couple uses the family amounts. Switching back and forth keeps everything you entered.
+
 Names and ages of both spouses, your combined federal tax rate (include NIIT, e.g. 24 + 3.8 = 27.8), and your expected annual use: PCP visits per spouse, specialist visits, specialist procedures, blood work, X-rays, ultrasounds, MRIs, CTs, urgent care (visits per year, with blood work, X-rays, ultrasounds, MRIs and CTs per visit), and medication fills by tier (tier 5 to tier 1).
 
 **2. Costs**
 Your estimate of the allowed price per unit for ER visit, specialist procedure, labs (blood work), X-ray, ultrasound, MRI, CT, hospital cost per day and surgery (facility + surgeon, per procedure). The deductible and coinsurance are applied to these prices for every plan. A price in a plan's *Evaluator prices* overrides it for that plan; with neither, the app uses the copay.
 
 **3. Stress scenario**
-Tick one spouse or both, then enter ER visits, blood work, X-ray and imaging per ER visit (blood work, X-ray, US, MRI, CT), days hospitalized, and surgeries.
+Tick one spouse or both, then enter ER visits, blood work, X-ray and imaging per ER visit (blood work, X-ray, US, MRI, CT), days hospitalized (with blood work, X-ray, US, MRI and CT per hospital day), and surgeries.
 
 **4. Health plans**
 Add as many plans as you like (add, duplicate, delete). Tick **Hide** in the upper right corner of a plan to collapse it to its name. Each plan card holds every field of `health-plan.schema.json`, grouped into sections:
@@ -81,7 +83,7 @@ The plan file records **facts from the documents**: for every service a cost sha
 - Otherwise a copay is used as the allowed price, and "no charge" is $0.
 - Coinsurance has no dollar price in an SBC, so the price is left empty and listed in the import note.
 
-Everything in the schema is loaded onto the card. Ultrasound uses the plan's "x-ray and diagnostic imaging" cost share, MRI and CT use "imaging (CT/PET scans, MRIs)", surgery is the facility fee plus the surgeon fee, and the hospital price is per day. Premiums are not in an SBC; take them from the marketplace page. Plan files from schema 1.x are not read; the app says so when you load one.
+Everything in the schema is loaded onto the card. Ultrasound, MRI, PET and CT all use the single "imaging (MRI, PET, CT, ultrasound)" cost share (ultrasound is not part of "x-ray and diagnostic imaging"), surgery is the facility fee plus the surgeon fee, and the hospital price is per day. Premiums are not in an SBC; take them from the marketplace page. Plan files from schema 1.x are not read; the app says so when you load one.
 
 **Save, restore and print**
 

@@ -2,6 +2,75 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.12.1] - 2026-10-27
+
+### Changed
+- The HSA tax-savings area is now a faint row of centered dots instead of dashes.
+- The dashed outline to the maximum possible cost now starts at the end of the solid bar and runs across the HSA tax-savings area too, so it always ends at premium + out-of-pocket maximum.
+
+## [2.12.0] - 2026-10-27
+
+### Added
+- **Dollar axis under the bar chart**, with a tick every $5,000 labeled $5k, $10k and so on. It lines up with the bars and stays visible when the chart scrolls.
+
+### Changed
+- The HSA tax-savings area is now just a faint dashed line through the middle of the segment instead of a cross-hatch.
+- The dashed outline to the maximum possible cost is fainter still.
+
+## [2.11.0] - 2026-10-27
+
+### Added
+- **Per hospital day tests in the stress scenario**: blood work, X-ray, ultrasound, MRI and CT per hospital day. They are counted for each selected person × days hospitalized, use the plan's lab, X-ray and imaging cost shares, add the row "Stress: tests and imaging during hospital stay" to the results, and show in the line-item detail tab. Older saves open with 0.
+- **Maximum cost column** to the right of each bar's cost: premium + out-of-pocket maximum (with a tooltip).
+
+### Changed
+- The HSA cross-hatch and the dashed maximum outline are fainter so they draw less attention.
+- Removed the "Solid bar = …" label from the bar chart legend.
+
+## [2.10.0] - 2026-10-27
+
+### Changed
+- **HSA tax savings on the bar chart are now a cross-hatch fill** instead of a dashed outline. It still is not counted in the total.
+
+### Added
+- **Dashed outline to the maximum possible cost.** Every bar extends with a dashed outline to premium + out-of-pocket maximum, so you can see how close the year is to the worst case. For HSA plans it starts after the hatched area. Hover it for the maximum and the room left. The bar scale now fits the longest maximum.
+
+## [2.9.1] - 2026-10-27
+
+### Changed
+- **Number box arrows step once per click.** The browser's built-in up/down arrows repeat quickly while the mouse button is held. They are replaced by ▲ ▼ buttons that change the value by one step per click (respecting each box's minimum and maximum). Typing works as before.
+
+## [2.9.0] - 2026-10-27
+
+### Added
+- **Calculation tooltips in the line-item detail tab.** Hover (or tap) any number to see how it is figured: units (people × visits × per-visit counts), base cost, base total, the shared-deductible share, what you pay (copay or coinsurance plus the deductible portion), what insurance pays, the group subtotals, the out-of-pocket maximum reduction and the totals, premium and you-pay-plus-premium.
+
+### Changed
+- "Urgent care visits" no longer carries "(household)", so the urgent care inputs line up vertically with the others.
+
+## [2.8.0] - 2026-10-27
+
+### Added
+- **Premium shading on the bar chart.** The premium part of each bar is a slightly darker shade; the rest of the bar is out of pocket.
+- **Tooltips on bar segments.** Hover (or tap, or focus) the premium segment, the out-of-pocket segment or the dashed HSA tax-deduction outline to see how that part is figured. For HSA plans the out-of-pocket tooltip shows care costs minus the HSA tax deduction.
+
+## [2.7.0] - 2026-10-27
+
+### Changed
+- **Ultrasound is now classified with MRI, PET and CT**, not with X-ray and diagnostic imaging. The four are a single plan entry, "Imaging (MRI, PET, CT, ultrasound)", and ultrasound is costed with that cost share in the results, line-item detail and import notes. The plan files' evaluator notes were updated to match.
+
+### Added
+- **HSA tax benefit on the bar chart.** HSA plan bars are followed by a dashed outline showing the tax savings. It gives a visual cue only: the bar length and the dollar amount still show the cost after tax savings, and the dashed part is not counted in the total.
+
+## [2.6.0] - 2026-10-26
+
+### Added
+- **Single person evaluation.** A new **Coverage for** choice at the top of section 1 switches between *Married couple (family plan)* and *Single person (self-only plan)*. For a single person: spouse 2 and the second PCP count disappear, the stress scenario covers one person, the calculation uses each plan's individual deductible and out-of-pocket maximum (half the family amount, with a notice, when only that is entered), and the HSA maximum, HDHP minimum deductible and HDHP out-of-pocket cap use the self-only figures. Catch-up applies to the one person.
+- HSA settings gain the 2027 self-only values (Rev. Proc. 2026-24): contribution limit $4,500, HDHP minimum deductible $1,750, HDHP maximum out-of-pocket $8,700.
+
+### Changed
+- Saves from earlier versions open as *Married couple*; results are unchanged. The printout header names the single person.
+
 ## [2.5.0] - 2026-10-26
 
 ### Added

@@ -392,7 +392,7 @@
   "evaluator_inputs": {
     "notes": [
       "No dollar price estimates are stored in this file. Every service except visits, home health, hospice and Tier 1 drugs is 40% coinsurance after the deductible, so the documents give no dollar price; enter allowed prices in the evaluator's section 2 (Costs).",
-      "Ultrasound uses the plan's x-ray and diagnostic imaging cost share (40% after the deductible)."
+      "Ultrasound is classified with MRI, PET and CT (one imaging cost share: 40% after the deductible)."
     ]
   },
   "extraction": {

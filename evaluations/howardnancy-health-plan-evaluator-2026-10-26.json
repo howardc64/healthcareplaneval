@@ -1,9 +1,10 @@
 {
   "app": "health-plan-evaluator",
-  "version": "2.3.1",
-  "savedAt": "2026-10-27T00:42:00.060Z",
+  "version": "2.6.0",
+  "savedAt": "2026-10-27T05:03:46.055Z",
   "state": {
     "household": {
+      "status": "married",
       "p1": {
         "name": "Howard",
         "age": "62"
@@ -32,11 +33,11 @@
       "rx4": "",
       "rx3": "",
       "rx2": "",
-      "rx1": "10"
+      "rx1": "20"
     },
     "plans": [
       {
-        "id": "plmvpy57k89",
+        "id": "plmvq802m310",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -575,7 +576,7 @@
         }
       },
       {
-        "id": "plmvpy5g3d10",
+        "id": "plmvq802m312",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -1117,13 +1118,18 @@
     "stress": {
       "p1": true,
       "p2": true,
-      "er": "2",
+      "er": "1",
       "erBlood": "2",
       "erXray": "2",
       "erUS": "2",
       "erMRI": "0",
       "erCT": "0",
-      "days": "2",
+      "days": "1",
+      "hospBlood": "2",
+      "hospXray": "0",
+      "hospUS": "0",
+      "hospMRI": "0",
+      "hospCT": "0",
       "surgeries": "1"
     },
     "costs": {
@@ -1131,9 +1137,9 @@
       "specialist_procedure": "375",
       "blood_work": "200",
       "xray": "200",
-      "ultrasound": "350",
-      "mri": "350",
-      "ct": "350",
+      "ultrasound": "300",
+      "mri": "300",
+      "ct": "300",
       "hospital_day": "10000",
       "surgery": "6000"
     },
@@ -1155,9 +1161,12 @@
     "settings": {
       "year": "2027",
       "family": "9000",
+      "self": "4500",
       "catchUp": "1000",
       "minDed": "3500",
+      "minDedSelf": "1750",
       "maxOop": "17400",
+      "maxOopSelf": "8700",
       "catchAge": "55",
       "medicareAge": "65",
       "taxFull": false

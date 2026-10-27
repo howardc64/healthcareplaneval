@@ -9,7 +9,7 @@
 :root{
   --bg:#f4f6f9; --card:#fff; --ink:#1c2430; --muted:#5d6878; --line:#d9dfe7;
   --brand:#1f5fbf; --brand-ink:#fff; --good:#157a45; --good-bg:#e5f5ec;
-  --warn:#8a5a00; --warn-bg:#fff4d6; --bad:#a32121; --bar1:#7fa8e6; --bar2:#e59a59; --hbar1:#cfe1ff; --hbar2:#ffb878;
+  --warn:#8a5a00; --warn-bg:#fff4d6; --bad:#a32121; --bar1:#7fa8e6; --bar2:#e59a59; --hbar1:#cfe1ff; --hbar2:#ffb878; --hbar1d:#9dbdee; --hbar2d:#e8934c;
   --head:#1f5fbf; --field:#fff; --hover:#eef3fb; --primary-hover:#184c99; --tint:#eef3fb; --tint2:#dde7f6; --tint3:#f7f9fc;
   --plan-bg:#fbfcfe; --svc-visit:#f6f9fe; --tabbg:#e9eef6; --info-bg:#e8f0fc; --info-ink:#1b4a94; --note-line:#ecd28a; --note-ink:#4d3600;
   --dot:#9aa7b8; --link:#1f5fbf; color-scheme:light;
@@ -39,6 +39,12 @@ h3{font-size:14px;margin:14px 0 8px;text-transform:uppercase;letter-spacing:.04e
 .inp{display:flex;align-items:center;border:1px solid var(--line);border-radius:7px;background:var(--field);padding:0 8px}
 .inp:focus-within{border-color:var(--brand);box-shadow:0 0 0 2px rgba(31,95,191,.18)}
 .inp i{font-style:normal;color:var(--muted)}
+.inp input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.inp input[type=number]::-webkit-inner-spin-button,.inp input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.inp .stp{display:flex;flex-direction:column;flex:0 0 auto;margin-left:2px}
+.inp .stp button{all:unset;box-sizing:border-box;width:18px;height:11px;line-height:11px;font-size:8px;text-align:center;color:var(--muted);cursor:pointer;border-radius:3px;user-select:none}
+.inp .stp button:hover{background:var(--tint3);color:var(--ink)}
+@media print{.inp .stp{display:none}}
 .inp input{border:0;outline:0;background:transparent;font:inherit;color:var(--ink);padding:7px 4px;width:100%;min-width:0}
 .chk{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--ink)}
 .chk input{width:17px;height:17px}
@@ -72,13 +78,33 @@ header.top .bn{display:flex;align-items:center;gap:4px;min-width:0;font-weight:6
 header.top .bn .tag{background:rgba(255,255,255,.9);color:var(--head)}
 header.top .bn .pname{max-width:130px}
 header.top .bl{display:flex;align-items:center;gap:8px;margin:1px 0}
-header.top .btrack{flex:1 1 auto;min-width:0}
+header.top .btrack{flex:1 1 auto;min-width:0;display:flex;align-items:center}
+header.top .bx{position:absolute;left:0;top:0;bottom:0;width:0;transition:width .7s cubic-bezier(.22,.8,.3,1);--hc:rgba(255,255,255,.55);background-image:radial-gradient(circle,var(--hc) 0 1.3px,transparent 1.6px);background-size:7px 100%;background-position:0 center;background-repeat:repeat-x;cursor:help}
+header.top .bm{position:relative;height:10px;box-sizing:border-box;width:0;flex:0 0 auto;border:1px dashed rgba(255,255,255,.28);border-left:0;border-radius:0 4px 4px 0;transition:width .7s cubic-bezier(.22,.8,.3,1);cursor:help}
+header.top .bm.off{visibility:hidden}
+
+
+header.top .bmx{flex:0 0 auto;width:84px;font-size:11px;color:rgba(255,255,255,.6);white-space:nowrap;font-variant-numeric:tabular-nums}
+header.top .bx.off{visibility:hidden}
+header.top .bx1{--hc:var(--hbar1)}header.top .bx2{--hc:var(--hbar2)}
+header.top .legend .l3::before{background:radial-gradient(circle,rgba(255,255,255,.6) 0 1.3px,transparent 1.6px) center/100% 100% no-repeat;border:0}
+header.top .legend .l5::before{background:transparent;opacity:.5;border:1px dashed rgba(255,255,255,.4);box-sizing:border-box}
 header.top .b{height:10px;border-radius:4px;min-width:2px;width:0;transition:width .7s cubic-bezier(.22,.8,.3,1)}
+header.top .b{display:flex;overflow:hidden}
 header.top .b1{background:var(--hbar1)}header.top .b2{background:var(--hbar2)}
-header.top .bv{flex:0 0 auto;min-width:74px;font-size:12px;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;text-decoration:none;text-underline-offset:3px}
+header.top .bp,header.top .bo{height:100%;flex:0 0 auto;transition:width .7s cubic-bezier(.22,.8,.3,1);text-decoration:none!important;cursor:help}
+header.top .b1 .bp{background:var(--hbar1d)}header.top .b2 .bp{background:var(--hbar2d)}
+header.top .bo{background:transparent}
+
+header.top .legend .l4::before{background:var(--hbar1d)}
+header.top .bv{flex:0 0 auto;width:74px;font-size:12px;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;text-decoration:none;text-underline-offset:3px}
 header.top .bv[data-tip]{text-decoration:underline dotted rgba(255,255,255,.6)}
+header.top .baxis{position:sticky;bottom:0;background:var(--head);display:grid;grid-template-columns:190px 1fr;gap:10px;margin-top:2px;padding-top:2px}
+header.top .baxis .ax{position:relative;height:22px;margin-right:174px;border-top:1px solid rgba(255,255,255,.35)}
+header.top .baxis .tk{position:absolute;top:0;width:1px;height:5px;background:rgba(255,255,255,.55)}
+header.top .baxis .tl{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.7);white-space:nowrap;font-variant-numeric:tabular-nums}
 header.top .bars-empty{font-size:13px;opacity:.9;margin:2px 0}
-@media(max-width:640px){header.top .brow{grid-template-columns:1fr;gap:2px}}
+@media(max-width:640px){header.top .brow{grid-template-columns:1fr;gap:2px}header.top .baxis{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){header.top .b{transition:none}}
 #status{font-size:13px;color:var(--muted);min-height:18px;margin:0 0 10px}
 footer{color:var(--muted);font-size:12px;text-align:center;padding:0 20px 30px}
@@ -224,7 +250,7 @@ header.top button{background:rgba(255,255,255,.1)}
     <div class="sec-head"><h2>3. Stress scenario</h2>
       <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="stress"> Hide</label></div>
     <div class="sec-body">
-    <p class="hint">A bad year layered on top of normal use. Counts apply to <b>each</b> selected person (select both to double them). Blood work, X-ray and imaging counts are per ER visit.</p>
+    <p class="hint">A bad year layered on top of normal use. Counts apply to <b>each</b> selected person (select both to double them). Blood work, X-ray and imaging counts are per ER visit, or per hospital day where labeled.</p>
     <div id="stressBox"></div>
     </div>
   </section>
@@ -244,7 +270,7 @@ header.top button{background:rgba(255,255,255,.1)}
   <section class="card not-results" id="secSettings">
     <details>
       <summary>HSA limits and rules (editable)</summary>
-      <p class="hint" style="margin-top:8px">Defaults are the IRS 2027 figures (Rev. Proc. 2026-24) for family HDHP coverage. Update them for other years.</p>
+      <p class="hint" style="margin-top:8px">Defaults are the IRS 2027 figures (Rev. Proc. 2026-24) for family and self-only HDHP coverage. A single person uses the self-only figures. Update them for other years.</p>
       <div id="settingsBox"></div>
     </details>
   </section>
@@ -271,7 +297,7 @@ header.top button{background:rgba(255,255,255,.1)}
 
 <script>
 "use strict";
-const APP_VERSION = "2.5.0";
+const APP_VERSION = "2.6.0";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -303,9 +329,9 @@ const SERVICE_DEFS = [
   { k:"virtual_care_visit", l:"Virtual care visit", g:"svcVisits" },
   { k:"chiropractic", l:"Chiropractic", g:"svcVisits", visit:true },
   { k:"lab_test", l:"Lab test (blood work, at an office or lab)", g:"svcTests", used:true },
-  { k:"xray_diagnostic_imaging", l:"X-ray and diagnostic imaging (also used for ultrasound)", g:"svcTests", used:true },
+  { k:"xray_diagnostic_imaging", l:"X-ray and diagnostic imaging", g:"svcTests", used:true },
   { k:"diagnostic_test_other_place_of_service", l:"Lab and x-ray billed at hospital, ER or outpatient facility", g:"svcTests" },
-  { k:"imaging_ct_pet_mri", l:"Imaging (CT, PET, MRI)", g:"svcTests", used:true },
+  { k:"imaging_ct_pet_mri", l:"Imaging (MRI, PET, CT, ultrasound)", g:"svcTests", used:true },
   { k:"outpatient_surgery_facility", l:"Outpatient surgery, facility fee", g:"svcFacility", used:true },
   { k:"outpatient_surgery_professional", l:"Outpatient surgery, surgeon fee", g:"svcFacility", used:true },
   { k:"emergency_room", l:"Emergency room", g:"svcFacility", used:true },
@@ -400,8 +426,8 @@ function migrateFlat(o, id){
   set(p.services.urgent_care_visit); p.prices.urgent_care_visit = S(o.ucCost);
   p.prices.specialist_procedure = S(o.procCost);
   set(p.services.lab_test); p.prices.blood_work = S(bloodOld);
-  set(p.services.xray_diagnostic_imaging); p.prices.xray = S(o.xrayCost); p.prices.ultrasound = S(o.imgUS);
-  set(p.services.imaging_ct_pet_mri); p.prices.mri = S(o.imgMRI); p.prices.ct = S(o.imgCT);
+  set(p.services.xray_diagnostic_imaging); p.prices.xray = S(o.xrayCost);
+  set(p.services.imaging_ct_pet_mri); p.prices.ultrasound = S(o.imgUS); p.prices.mri = S(o.imgMRI); p.prices.ct = S(o.imgCT);
   set(p.services.emergency_room); p.prices.er_visit = S(o.erCost);
   set(p.services.hospital_facility, { unit:"day" }); p.prices.hospital_day = S(o.hospDay);
   set(p.services.outpatient_surgery_facility); set(p.services.outpatient_surgery_professional); p.prices.surgery = S(o.surgery);
@@ -411,26 +437,39 @@ function migrateFlat(o, id){
 
 function defaultState(){
   return {
-    household:{ p1:{name:"Spouse 1",age:""}, p2:{name:"Spouse 2",age:""}, taxRate:"24",
+    household:{ status:"married", p1:{name:"Spouse 1",age:""}, p2:{name:"Spouse 2",age:""}, taxRate:"24",
       pcp1:"", pcp2:"", spec:"", proc:"", us:"", mri:"", ct:"", bloodWork:"", xray:"",
       ucVisits:"", ucBlood:"", ucXray:"", ucUS:"", ucMRI:"", ucCT:"",
       rx5:"", rx4:"", rx3:"", rx2:"", rx1:"" },
     plans:[],
-    stress:{ p1:true, p2:false, er:"1", erBlood:"0", erXray:"0", erUS:"1", erMRI:"0", erCT:"1", days:"3", surgeries:"1" },
+    stress:{ p1:true, p2:false, er:"1", erBlood:"0", erXray:"0", erUS:"1", erMRI:"0", erCT:"1", days:"3", hospBlood:"0", hospXray:"0", hospUS:"0", hospMRI:"0", hospCT:"0", surgeries:"1" },
     costs:{ er_visit:"", specialist_procedure:"", blood_work:"", xray:"", ultrasound:"", mri:"", ct:"", hospital_day:"", surgery:"" },
     view:{ hide:{ s1:false, s2:false, s3:false, s4:false, hsaDetails:false, hsaCost:false }, secHide:{ household:true, costs:true, stress:true } },
-    settings:{ year:"2027", family:"9000", catchUp:"1000", minDed:"3500", maxOop:"17400", catchAge:"55", medicareAge:"65", taxFull:false }
+    settings:{ year:"2027", family:"9000", self:"4500", catchUp:"1000", minDed:"3500", minDedSelf:"1750", maxOop:"17400", maxOopSelf:"8700", catchAge:"55", medicareAge:"65", taxFull:false }
   };
 }
 
 /* ---------- plan limits ---------- */
-function planDed(p){
+/* household status: "married" (two people, family amounts) or "single" (one person, individual amounts) */
+const isSingle = h => !!h && h.status === "single";
+function p1Name(h){ const n = (h.p1.name || "").trim(); return isSingle(h) ? (!n || n === "Spouse 1" ? "Person" : n) : (n || "Spouse 1"); }
+function p2Name(h){ return h.p2.name || "Spouse 2"; }
+/* Married: family amount (2 x individual if only that is given). Single: individual amount (half the family amount if only that is given). */
+function planDed(p, single){
   const f = numOrNull(p.limits.deductible_family), i = numOrNull(p.limits.deductible_individual);
+  if (single) return i != null ? Math.max(0, i) : (f != null ? Math.max(0, f) / 2 : 0);
   return f != null ? Math.max(0, f) : (i != null ? 2 * Math.max(0, i) : 0);
 }
-function planOop(p){
+function planOop(p, single){
   const f = numOrNull(p.limits.oop_max_family), i = numOrNull(p.limits.oop_max_individual);
+  if (single) return i != null ? Math.max(0, i) : (f != null ? Math.max(0, f) / 2 : 0);
   return f != null ? Math.max(0, f) : (i != null ? 2 * Math.max(0, i) : 0);
+}
+function singleEstimates(p){
+  const L = [];
+  if (numOrNull(p.limits.deductible_individual) == null && numOrNull(p.limits.deductible_family) != null) L.push("individual deductible");
+  if (numOrNull(p.limits.oop_max_individual) == null && numOrNull(p.limits.oop_max_family) != null) L.push("individual max out-of-pocket");
+  return L;
 }
 function genPct(p){
   const v = numOrNull(p.limits.coinsurance_member_pct);
@@ -477,12 +516,12 @@ function mkLine(p, o){
     const full = c.st === "copay" ? (c.cop == null ? 0 : c.cop) * charged : c.pct / 100 * S;
     if (c.ded) Q = Math.min(full, S); else { cls = "first"; first = full; }
   }
-  return { tag:o.tag, label:o.label, n:n, charged:charged, A:a, src:src, noPrice:noPrice, cs:c, cls:cls, S:S, first:first, Q:Q };
+  return { nx:o.nx || "", tag:o.tag, label:o.label, n:n, charged:charged, A:a, src:src, noPrice:noPrice, cs:c, cls:cls, S:S, first:first, Q:Q };
 }
-/* Deductible and max out-of-pocket are family amounts (individual x 2 when only that is given).
+/* Deductible and max out-of-pocket are family amounts for a couple, individual amounts for a single person.
    The deductible is shared by the "ded" lines in proportion to their allowed price. */
-function settle(p, lines){
-  const D = planDed(p), M = planOop(p);
+function settle(p, lines, single){
+  const D = planDed(p, single), M = planOop(p, single);
   let first = 0, S = 0, Q = 0, nc = 0, gross = 0;
   lines.forEach(L => {
     gross += L.S;
@@ -500,43 +539,49 @@ function buildLines(p, h, s, costs){
   costs = costs || {};
   const sv = p.services, pr = k => { const v = numOrNull(p.prices[k]); return v != null ? v : numOrNull(costs[k]); };
   const psrc = k => numOrNull(p.prices[k]) != null ? "plan details: Evaluator price" : "Costs section (2)";
-  const n1 = h.p1.name || "Spouse 1", n2 = h.p2.name || "Spouse 2";
+  const single = isSingle(h), n1 = p1Name(h), n2 = p2Name(h);
   const normal = [], stress = [];
   const add = (arr, o) => { if (o.n > 0){ if (o.pk) o.psrc = psrc(o.pk); arr.push(mkLine(p, o)); } };
   const pv = sv.primary_care_visit, firstN = floorInt(pv.first_count);
-  [[h.pcp1, n1], [h.pcp2, n2]].forEach(x => {
+  (single ? [[h.pcp1, n1]] : [[h.pcp1, n1], [h.pcp2, n2]]).forEach(x => {
     const v = floorInt(x[0]), a = Math.min(v, firstN);
     add(normal, { tag:"pcp", label:"PCP first visits, " + x[1], cs:pv.first, n:a, price:pr("primary_care_visit"), pk:"primary_care_visit" });
     add(normal, { tag:"pcp", label:"PCP visits, " + x[1], cs:pv.cost_share, n:v - a, price:pr("primary_care_visit"), pk:"primary_care_visit" });
   });
   add(normal, { tag:"spec", label:"Specialist visits", cs:sv.specialist_visit, n:floorInt(h.spec), price:pr("specialist_visit"), pk:"specialist_visit" });
   add(normal, { tag:"proc", label:"Specialist procedures", cs:null, n:floorInt(h.proc), price:pr("specialist_procedure"), pk:"specialist_procedure" });
-  add(normal, { tag:"img", label:"Ultrasound", cs:sv.xray_diagnostic_imaging, n:floorInt(h.us), price:pr("ultrasound"), pk:"ultrasound" });
+  add(normal, { tag:"img", label:"Ultrasound", cs:sv.imaging_ct_pet_mri, n:floorInt(h.us), price:pr("ultrasound"), pk:"ultrasound" });
   add(normal, { tag:"img", label:"MRI", cs:sv.imaging_ct_pet_mri, n:floorInt(h.mri), price:pr("mri"), pk:"mri" });
   add(normal, { tag:"img", label:"CT", cs:sv.imaging_ct_pet_mri, n:floorInt(h.ct), price:pr("ct"), pk:"ct" });
   add(normal, { tag:"blood", label:"Blood work", cs:sv.lab_test, n:floorInt(h.bloodWork), price:pr("blood_work"), pk:"blood_work" });
   add(normal, { tag:"xray", label:"X-ray", cs:sv.xray_diagnostic_imaging, n:floorInt(h.xray), price:pr("xray"), pk:"xray" });
   const uc = floorInt(h.ucVisits);
   add(normal, { tag:"ucVisit", label:"Urgent care visits", cs:sv.urgent_care_visit, n:uc, price:pr("urgent_care_visit"), pk:"urgent_care_visit" });
-  add(normal, { tag:"ucBlood", label:"Urgent care blood work", cs:sv.lab_test, n:uc * floorInt(h.ucBlood), price:pr("blood_work"), pk:"blood_work" });
-  add(normal, { tag:"ucXray", label:"Urgent care X-ray", cs:sv.xray_diagnostic_imaging, n:uc * floorInt(h.ucXray), price:pr("xray"), pk:"xray" });
-  add(normal, { tag:"ucImg", label:"Urgent care ultrasound", cs:sv.xray_diagnostic_imaging, n:uc * floorInt(h.ucUS), price:pr("ultrasound"), pk:"ultrasound" });
-  add(normal, { tag:"ucImg", label:"Urgent care MRI", cs:sv.imaging_ct_pet_mri, n:uc * floorInt(h.ucMRI), price:pr("mri"), pk:"mri" });
-  add(normal, { tag:"ucImg", label:"Urgent care CT", cs:sv.imaging_ct_pet_mri, n:uc * floorInt(h.ucCT), price:pr("ct"), pk:"ct" });
+  add(normal, { tag:"ucBlood", label:"Urgent care blood work", cs:sv.lab_test, n:uc * floorInt(h.ucBlood), nx:uc + " urgent care visit(s) × " + floorInt(h.ucBlood) + " per visit", price:pr("blood_work"), pk:"blood_work" });
+  add(normal, { tag:"ucXray", label:"Urgent care X-ray", cs:sv.xray_diagnostic_imaging, n:uc * floorInt(h.ucXray), nx:uc + " urgent care visit(s) × " + floorInt(h.ucXray) + " per visit", price:pr("xray"), pk:"xray" });
+  add(normal, { tag:"ucImg", label:"Urgent care ultrasound", cs:sv.imaging_ct_pet_mri, n:uc * floorInt(h.ucUS), nx:uc + " urgent care visit(s) × " + floorInt(h.ucUS) + " per visit", price:pr("ultrasound"), pk:"ultrasound" });
+  add(normal, { tag:"ucImg", label:"Urgent care MRI", cs:sv.imaging_ct_pet_mri, n:uc * floorInt(h.ucMRI), nx:uc + " urgent care visit(s) × " + floorInt(h.ucMRI) + " per visit", price:pr("mri"), pk:"mri" });
+  add(normal, { tag:"ucImg", label:"Urgent care CT", cs:sv.imaging_ct_pet_mri, n:uc * floorInt(h.ucCT), nx:uc + " urgent care visit(s) × " + floorInt(h.ucCT) + " per visit", price:pr("ct"), pk:"ct" });
   DRUG_DEFS.forEach(d => add(normal, { tag:"rx", label:"Medication tier " + d.t, cs:p.drugs[d.k], n:floorInt(h["rx" + d.t]), price:pr("rx_tier" + d.t) }));
 
-  const k = (s.p1 ? 1 : 0) + (s.p2 ? 1 : 0), visits = floorInt(s.er), days = floorInt(s.days), surg = floorInt(s.surgeries);
+  const k = (s.p1 ? 1 : 0) + (!single && s.p2 ? 1 : 0), visits = floorInt(s.er), days = floorInt(s.days), surg = floorInt(s.surgeries);
   const ev = k * visits;
-  add(stress, { tag:"er", label:"ER visits", cs:sv.emergency_room, n:ev, price:pr("er_visit"), pk:"er_visit" });
-  add(stress, { tag:"erBlood", label:"ER blood work", cs:sv.lab_test, n:ev * floorInt(s.erBlood), price:pr("blood_work"), pk:"blood_work" });
-  add(stress, { tag:"erXray", label:"ER X-ray", cs:sv.xray_diagnostic_imaging, n:ev * floorInt(s.erXray), price:pr("xray"), pk:"xray" });
-  add(stress, { tag:"erImg", label:"ER ultrasound", cs:sv.xray_diagnostic_imaging, n:ev * floorInt(s.erUS), price:pr("ultrasound"), pk:"ultrasound" });
-  add(stress, { tag:"erImg", label:"ER MRI", cs:sv.imaging_ct_pet_mri, n:ev * floorInt(s.erMRI), price:pr("mri"), pk:"mri" });
-  add(stress, { tag:"erImg", label:"ER CT", cs:sv.imaging_ct_pet_mri, n:ev * floorInt(s.erCT), price:pr("ct"), pk:"ct" });
-  add(stress, { tag:"hosp", label:"Hospital days", cs:sv.hospital_facility, n:k * days, groups:Math.max(k, 1), price:pr("hospital_day"), pk:"hospital_day" });
+  add(stress, { tag:"er", label:"ER visits", cs:sv.emergency_room, n:ev, nx:k + " person(s) × " + visits + " ER visit(s) each", price:pr("er_visit"), pk:"er_visit" });
+  add(stress, { tag:"erBlood", label:"ER blood work", cs:sv.lab_test, n:ev * floorInt(s.erBlood), nx:ev + " ER visit(s) × " + floorInt(s.erBlood) + " per visit", price:pr("blood_work"), pk:"blood_work" });
+  add(stress, { tag:"erXray", label:"ER X-ray", cs:sv.xray_diagnostic_imaging, n:ev * floorInt(s.erXray), nx:ev + " ER visit(s) × " + floorInt(s.erXray) + " per visit", price:pr("xray"), pk:"xray" });
+  add(stress, { tag:"erImg", label:"ER ultrasound", cs:sv.imaging_ct_pet_mri, n:ev * floorInt(s.erUS), nx:ev + " ER visit(s) × " + floorInt(s.erUS) + " per visit", price:pr("ultrasound"), pk:"ultrasound" });
+  add(stress, { tag:"erImg", label:"ER MRI", cs:sv.imaging_ct_pet_mri, n:ev * floorInt(s.erMRI), nx:ev + " ER visit(s) × " + floorInt(s.erMRI) + " per visit", price:pr("mri"), pk:"mri" });
+  add(stress, { tag:"erImg", label:"ER CT", cs:sv.imaging_ct_pet_mri, n:ev * floorInt(s.erCT), nx:ev + " ER visit(s) × " + floorInt(s.erCT) + " per visit", price:pr("ct"), pk:"ct" });
+  add(stress, { tag:"hosp", label:"Hospital days", cs:sv.hospital_facility, n:k * days, nx:k + " person(s) × " + days + " day(s) each", groups:Math.max(k, 1), price:pr("hospital_day"), pk:"hospital_day" });
+  const hd = k * days;
+  add(stress, { tag:"hospTest", label:"Hospital blood work", cs:sv.lab_test, n:hd * floorInt(s.hospBlood), nx:k + " person(s) × " + days + " day(s) × " + floorInt(s.hospBlood) + " per hospital day", price:pr("blood_work"), pk:"blood_work" });
+  add(stress, { tag:"hospTest", label:"Hospital X-ray", cs:sv.xray_diagnostic_imaging, n:hd * floorInt(s.hospXray), nx:k + " person(s) × " + days + " day(s) × " + floorInt(s.hospXray) + " per hospital day", price:pr("xray"), pk:"xray" });
+  add(stress, { tag:"hospTest", label:"Hospital ultrasound", cs:sv.imaging_ct_pet_mri, n:hd * floorInt(s.hospUS), nx:k + " person(s) × " + days + " day(s) × " + floorInt(s.hospUS) + " per hospital day", price:pr("ultrasound"), pk:"ultrasound" });
+  add(stress, { tag:"hospTest", label:"Hospital MRI", cs:sv.imaging_ct_pet_mri, n:hd * floorInt(s.hospMRI), nx:k + " person(s) × " + days + " day(s) × " + floorInt(s.hospMRI) + " per hospital day", price:pr("mri"), pk:"mri" });
+  add(stress, { tag:"hospTest", label:"Hospital CT", cs:sv.imaging_ct_pet_mri, n:hd * floorInt(s.hospCT), nx:k + " person(s) × " + days + " day(s) × " + floorInt(s.hospCT) + " per hospital day", price:pr("ct"), pk:"ct" });
   const sp = pr("surgery"), half = sp == null ? null : sp / 2;
-  add(stress, { tag:"surg", label:"Surgery, facility fee", cs:sv.outpatient_surgery_facility, n:k * surg, price:half, pk:"surgery" });
-  add(stress, { tag:"surg", label:"Surgery, surgeon fee", cs:sv.outpatient_surgery_professional, n:k * surg, price:half, pk:"surgery" });
+  add(stress, { tag:"surg", label:"Surgery, facility fee", cs:sv.outpatient_surgery_facility, n:k * surg, nx:k + " person(s) × " + surg + " surgery(ies) each", price:half, pk:"surgery" });
+  add(stress, { tag:"surg", label:"Surgery, surgeon fee", cs:sv.outpatient_surgery_professional, n:k * surg, nx:k + " person(s) × " + surg + " surgery(ies) each", price:half, pk:"surgery" });
   return { normal:normal, stress:stress, people:k };
 }
 function sumTag(lines){
@@ -546,11 +591,12 @@ function sumTag(lines){
 
 function hsaLimit(state){
   const st = state.settings, h = state.household;
-  const ages = [num(h.p1.age), num(h.p2.age)];
+  const single = isSingle(h);
+  const ages = single ? [num(h.p1.age)] : [num(h.p1.age), num(h.p2.age)];
   const cAge = num(st.catchAge), mAge = num(st.medicareAge);
   const catchers = ages.filter(a => a >= cAge && a < mAge).length;
   const medicare = ages.filter(a => a >= mAge).length;
-  return { max: num(st.family) + catchers * num(st.catchUp), catchers, medicare };
+  return { max: num(single ? st.self : st.family) + catchers * num(st.catchUp), catchers, medicare, single };
 }
 function evaluate(state, plan){
   const h = state.household, s = state.stress;
@@ -561,9 +607,9 @@ function evaluate(state, plan){
     ucVisit:sumTag(N, "ucVisit"), ucBlood:sumTag(N, "ucBlood"), ucXray:sumTag(N, "ucXray"), ucImg:sumTag(N, "ucImg"), rx:sumTag(N, "rx") };
   u.uc = u.ucVisit + u.ucBlood + u.ucXray + u.ucImg;
   u.total = u.pcp + u.spec + u.proc + u.imaging + u.blood + u.xray + u.uc + u.rx;
-  const st = { people:b.people, er:sumTag(X, "er"), erBlood:sumTag(X, "erBlood"), erXray:sumTag(X, "erXray"), erImg:sumTag(X, "erImg"), hosp:sumTag(X, "hosp"), surg:sumTag(X, "surg") };
-  st.total = st.er + st.erBlood + st.erXray + st.erImg + st.hosp + st.surg;
-  const setBase = settle(plan, N), setAll = settle(plan, all);
+  const st = { people:b.people, er:sumTag(X, "er"), erBlood:sumTag(X, "erBlood"), erXray:sumTag(X, "erXray"), erImg:sumTag(X, "erImg"), hosp:sumTag(X, "hosp"), hospTest:sumTag(X, "hospTest"), surg:sumTag(X, "surg") };
+  st.total = st.er + st.erBlood + st.erXray + st.erImg + st.hosp + st.hospTest + st.surg;
+  const single = isSingle(h), setBase = settle(plan, N, single), setAll = settle(plan, all, single);
   const isHsa = !!plan.identity.hsa_eligible;
   const premium = num(plan.premium.monthly) * 12;
   const oopBase = setBase.total, oopAll = setAll.total;
@@ -587,8 +633,9 @@ function evaluate(state, plan){
       balance: contrib - usedBase, balanceStress: contrib - usedAll, warnings: [] };
     r.net = r.complete - r.hsa.saveOnSpend;
     r.netStress = r.stress - r.hsa.saveOnSpendStress;
-    if (planDed(plan) < num(state.settings.minDed)) r.hsa.warnings.push("Deductible is below the HDHP minimum of " + fmt(num(state.settings.minDed)) + ", so the plan may not be HSA-eligible.");
-    if (!(planOop(plan) > 0) || planOop(plan) > num(state.settings.maxOop)) r.hsa.warnings.push("Max out-of-pocket is missing or above the HDHP cap of " + fmt(num(state.settings.maxOop)) + ".");
+    const minD = num(single ? state.settings.minDedSelf : state.settings.minDed), maxO = num(single ? state.settings.maxOopSelf : state.settings.maxOop);
+    if (planDed(plan, single) < minD) r.hsa.warnings.push("Deductible is below the HDHP minimum of " + fmt(minD) + (single ? " (self-only)" : "") + ", so the plan may not be HSA-eligible.");
+    if (!(planOop(plan, single) > 0) || planOop(plan, single) > maxO) r.hsa.warnings.push("Max out-of-pocket is missing or above the HDHP cap of " + fmt(maxO) + (single ? " (self-only)" : "") + ".");
   }
   r.tip = buildTips(state, r);
   return r;
@@ -639,9 +686,9 @@ function insExplain(x){
 }
 function buildTips(state, r){
   const h = state.household, s = state.stress, p = r.plan, u = r.u, st = r.st, N = r.lines.normal, X = r.lines.stress;
-  const n1 = h.p1.name || "Spouse 1", n2 = h.p2.name || "Spouse 2";
+  const single = isSingle(h), n1 = p1Name(h), n2 = p2Name(h);
   const t = Math.min(Math.max(num(h.taxRate), 0), 100);
-  const who = [s.p1 ? n1 : null, s.p2 ? n2 : null].filter(Boolean).join(" + ") || "no one selected";
+  const who = [s.p1 ? n1 : null, !single && s.p2 ? n2 : null].filter(Boolean).join(" + ") || "no one selected";
   const T = {};
   T.prem = "Monthly premium " + m(num(p.premium.monthly)) + " × 12 months = " + m(r.premium);
   T.pcp = catTip(N, ["pcp"]);
@@ -654,6 +701,14 @@ function buildTips(state, r){
   T.rx = catTip(N, ["rx"]);
   T.totalGross = "PCP " + m(u.pcp) + " + specialist " + m(u.spec) + " + procedures " + m(u.proc) + " + imaging " + m(u.imaging) + " + blood work " + m(u.blood) + " + X-ray " + m(u.xray) + " + urgent care " + m(u.uc) + " + medications " + m(u.rx) + " = " + m(u.total) + "\n(Every listed price paid in full: no deductible, copay, coinsurance or cap.)";
   T.oopBase = insExplain(r.setBase);
+  T.segPrem = "Premium: monthly " + m(num(p.premium.monthly)) + " × 12 months = " + m(r.premium) + "\n(Paid whether or not you use care.)";
+  const segOop = (oop, save, label) => "Out of pocket (" + label + "): care costs you pay " + m(oop) + (r.hsa ? " − HSA tax deduction " + m(save) + " = " + m(Math.max(oop - save, 0)) : "") + "\n(Deductible, copays and coinsurance, up to the out-of-pocket maximum.)";
+  T.segOop1 = segOop(r.oopBase, r.hsa ? r.hsa.saveOnSpend : 0, "normal year");
+  T.segOop2 = segOop(r.oopAll, r.hsa ? r.hsa.saveOnSpendStress : 0, "normal year + stress");
+  if (r.hsa){
+    T.segHsa1 = "HSA tax deduction: " + m(r.hsa.saveOnSpend) + " (normal year)\nNot counted in the total. The solid bar is already reduced by it; the hatched area shows what it saved you.";
+    T.segHsa2 = "HSA tax deduction: " + m(r.hsa.saveOnSpendStress) + " (normal year + stress)\nNot counted in the total. The solid bar is already reduced by it; the hatched area shows what it saved you.";
+  }
   T.completeGross = "Premium " + m(r.premium) + " + other costs with no deductible limit " + m(u.total) + " = " + m(r.completeGross);
   T.complete = "Premium " + m(r.premium) + " + other costs with deductible " + m(r.oopBase) + " = " + m(r.complete);
   const who2 = "Applies to " + st.people + " person(s): " + who + ".\n";
@@ -662,8 +717,9 @@ function buildTips(state, r){
   T.stXray = who2 + catTip(X, ["erXray"]);
   T.stImg = who2 + catTip(X, ["erImg"]);
   T.stHosp = who2 + catTip(X, ["hosp"]);
+  T.stHospTest = who2 + catTip(X, ["hospTest"]);
   T.stSurg = who2 + catTip(X, ["surg"]);
-  T.stTotal = "ER " + m(st.er) + " + ER blood work " + m(st.erBlood) + " + ER X-ray " + m(st.erXray) + " + ER imaging " + m(st.erImg) + " + hospital " + m(st.hosp) + " + surgery " + m(st.surg) + " = " + m(st.total);
+  T.stTotal = "ER " + m(st.er) + " + ER blood work " + m(st.erBlood) + " + ER X-ray " + m(st.erXray) + " + ER imaging " + m(st.erImg) + " + hospital " + m(st.hosp) + " + hospital tests and imaging " + m(st.hospTest) + " + surgery " + m(st.surg) + " = " + m(st.total);
   T.stressGross = "Premium " + m(r.premium) + " + normal-year listed prices " + m(u.total) + " + stress listed prices " + m(st.total) + " = " + m(r.stressGross);
   T.stress = "Premium " + m(r.premium) + " + out-of-pocket for normal year plus stress " + m(r.oopAll) + " = " + m(r.stress) + "\n\nHow the " + m(r.oopAll) + " is found:\n" + insExplain(r.setAll);
   T.stressAdded = "Out-of-pocket with stress " + m(r.oopAll) + " − normal year " + m(r.oopBase) + " = " + m(r.stressAdded) + "\n(The deductible and cap are applied once to the combined year.)";
@@ -671,7 +727,7 @@ function buildTips(state, r){
     const x = r.hsa, lim = hsaLimit(state), S = state.settings;
     const blank = String(p.hsaContrib).trim() === "";
     const usedB = Math.min(x.contrib, r.oopBase), usedA = Math.min(x.contrib, r.oopAll);
-    T.hsaMax = "Family limit " + m(num(S.family)) + " + catch-up " + lim.catchers + " × " + m(num(S.catchUp)) + " (spouses aged " + S.catchAge + " up to Medicare age " + S.medicareAge + ") = " + m(x.max);
+    T.hsaMax = (lim.single ? "Self-only limit " + m(num(S.self)) : "Family limit " + m(num(S.family))) + " + catch-up " + lim.catchers + " × " + m(num(S.catchUp)) + " (" + (lim.single ? "age " : "spouses aged ") + S.catchAge + " up to Medicare age " + S.medicareAge + ") = " + m(x.max);
     T.hsaContrib = (blank ? "No amount entered, so the maximum " + m(x.max) + " is used" : "Planned " + m(num(p.hsaContrib)) + ", limited to the maximum " + m(x.max)) + " = " + m(x.contrib);
     T.hsaTax = m(x.contrib) + " × " + t + "% tax rate = " + m(x.taxSavings);
     T.hsaReal = m(x.contrib) + " × (1 − " + t + "%) = " + m(x.realCost) + "\n(What the contribution really costs after the tax deduction.)";
@@ -721,7 +777,7 @@ function costedItems(p){
     ["Specialist procedure (not in plan documents)", null, pr("specialist_procedure")],
     ["Blood work", sv.lab_test, pr("blood_work")],
     ["X-ray", sv.xray_diagnostic_imaging, pr("xray")],
-    ["Ultrasound", sv.xray_diagnostic_imaging, pr("ultrasound")],
+    ["Ultrasound", sv.imaging_ct_pet_mri, pr("ultrasound")],
     ["MRI", sv.imaging_ct_pet_mri, pr("mri")],
     ["CT", sv.imaging_ct_pet_mri, pr("ct")],
     ["ER visit", sv.emergency_room, pr("er_visit")],
@@ -802,7 +858,6 @@ function planFromSchema(doc, ctx){
   const hf = p.services.hospital_facility;
   if (numOrNull(hf.max_units) != null && hf.structure === "copay") notes.push("Hospital copay is limited to " + hf.max_units + " " + (hf.unit || "unit") + "(s) per stay; the calculation applies that limit.");
   if (missing.length) notes.push("Enter the dollar prices in section 2 (Costs) or above under “Evaluator prices” on this card (they are the allowed prices the deductible and coinsurance apply to).");
-  if (numOrNull(pr.ultrasound) == null && numOrNull(pr.xray) == null) notes.push("Ultrasound uses the plan's x-ray and diagnostic imaging cost share.");
   const list = a => Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 20).map(x => x.slice(0, 400)) : [];
   p._import = {
     source: shortStr(id.sbc_id || (Array.isArray(id.source_documents) ? id.source_documents[0] : ""), 120), carrier: shortStr(id.carrier, 80), planYear: shortStr(id.plan_year, 40),
@@ -835,7 +890,9 @@ function fieldHtml(label, attrs, value, o){
   return '<label class="fld ' + (o.cls || "") + '" for="' + id + '"><span>' + label + '</span><span class="inp">' +
     (o.pre === undefined ? "" : "<i>" + o.pre + "</i>") +
     '<input id="' + id + '" type="' + type + '"' + extra + " " + attrs + ' value="' + esc(value) + '">' +
-    (o.suf ? "<i>" + o.suf + "</i>" : "") + "</span></label>";
+    (o.suf ? "<i>" + o.suf + "</i>" : "") +
+    (o.text ? "" : '<span class="stp"><button type="button" tabindex="-1" data-step="1" aria-label="Increase">▲</button><button type="button" tabindex="-1" data-step="-1" aria-label="Decrease">▼</button></span>') +
+    "</span></label>";
 }
 function pathField(label, path, o){ return fieldHtml(label, 'data-path="' + path + '"', getPath(state, path), o); }
 function selectHtml(label, attrs, value, opts, o){
@@ -853,26 +910,30 @@ function dollars(extra){ return Object.assign({ pre:"$" }, extra || {}); }
 /* ---------- renderers ---------- */
 function renderHousehold(){
   const h = state.household;
-  let html = '<h3>Spouses</h3><div class="grid">' +
-    pathField("Name (spouse 1)", "household.p1.name", { text:true }) +
-    pathField("Age (spouse 1)", "household.p1.age", { min:0, max:120, step:1 }) +
-    pathField("Name (spouse 2)", "household.p2.name", { text:true }) +
-    pathField("Age (spouse 2)", "household.p2.age", { min:0, max:120, step:1 }) +
+  const single = isSingle(h);
+  let html = '<h3>Who is covered</h3><div class="grid">' +
+    selectHtml("Coverage for", 'data-path="household.status"', h.status, [["married", "Married couple (family plan)"], ["single", "Single person (self-only plan)"]], { cls:"span2" }) +
+    "</div>" +
+    '<h3>' + (single ? "Person" : "Spouses") + '</h3><div class="grid">' +
+    pathField(single ? "Name" : "Name (spouse 1)", "household.p1.name", { text:true }) +
+    pathField(single ? "Age" : "Age (spouse 1)", "household.p1.age", { min:0, max:120, step:1 }) +
+    (single ? "" : pathField("Name (spouse 2)", "household.p2.name", { text:true }) +
+    pathField("Age (spouse 2)", "household.p2.age", { min:0, max:120, step:1 })) +
     pathField("Federal tax bracket incl. NIIT", "household.taxRate", { min:0, max:100, suf:"%" }) +
     '</div><p class="hint" style="margin-top:6px">Enter one combined rate, e.g. 24% bracket + 3.8% NIIT = 27.8. Used only for HSA tax savings.</p>' +
     '<h3>Visits and procedures</h3><div class="grid">' +
-    pathField("PCP visits, <span class=\"nm1\">" + esc(h.p1.name) + "</span>", "household.pcp1", { min:0, step:1 }) +
-    pathField("PCP visits, <span class=\"nm2\">" + esc(h.p2.name) + "</span>", "household.pcp2", { min:0, step:1 }) +
-    pathField("Specialist visits (household)", "household.spec", { min:0, step:1 }) +
+    pathField(single ? "PCP visits" : "PCP visits, <span class=\"nm1\">" + esc(h.p1.name) + "</span>", "household.pcp1", { min:0, step:1 }) +
+    (single ? "" : pathField("PCP visits, <span class=\"nm2\">" + esc(h.p2.name) + "</span>", "household.pcp2", { min:0, step:1 })) +
+    pathField("Specialist visits" + (single ? "" : " (household)"), "household.spec", { min:0, step:1 }) +
     pathField("Specialist procedures", "household.proc", { min:0, step:1 }) +
-    pathField("Blood work (household)", "household.bloodWork", { min:0, step:1 }) +
-    pathField("X-ray (household)", "household.xray", { min:0, step:1 }) +
+    pathField("Blood work" + (single ? "" : " (household)"), "household.bloodWork", { min:0, step:1 }) +
+    pathField("X-ray" + (single ? "" : " (household)"), "household.xray", { min:0, step:1 }) +
     '</div><h3>Imaging</h3><div class="grid">' +
     pathField("Ultrasound (US)", "household.us", { min:0, step:1 }) +
     pathField("MRI", "household.mri", { min:0, step:1 }) +
     pathField("CT", "household.ct", { min:0, step:1 }) +
     '</div><h3>Urgent care</h3><p class="hint" style="margin:0 0 8px">Number of urgent care visits in a year. Blood work, X-ray and imaging counts are <b>per urgent care visit</b>.</p><div class="grid">' +
-    pathField("Urgent care visits (household)", "household.ucVisits", { min:0, step:1 }) +
+    pathField("Urgent care visits", "household.ucVisits", { min:0, step:1 }) +
     pathField("Blood work per visit", "household.ucBlood", { min:0, step:1 }) +
     pathField("X-ray per visit", "household.ucXray", { min:0, step:1 }) +
     pathField("Ultrasounds per visit", "household.ucUS", { min:0, step:1 }) +
@@ -906,9 +967,11 @@ function renderStress(){
   const chk = (path, checked, label) => '<label class="chk"><input type="checkbox" data-path="' + path + '"' + (checked ? " checked" : "") + '> ' + label + "</label>";
   $("stressBox").innerHTML =
     '<div class="grid" style="margin-bottom:10px">' +
-    chk("stress.p1", s.p1, '<span class="nm1">' + esc(h.p1.name) + "</span>") +
-    chk("stress.p2", s.p2, '<span class="nm2">' + esc(h.p2.name) + "</span>") +
-    '<span class="hint" style="margin:0">Check both for a household-wide event.</span></div>' +
+    (isSingle(h)
+      ? chk("stress.p1", s.p1, '<span class="nm1">' + esc(p1Name(h)) + "</span> has the stress event") + '<span class="hint" style="margin:0">Uncheck to leave the stress scenario out.</span></div>'
+      : chk("stress.p1", s.p1, '<span class="nm1">' + esc(h.p1.name) + "</span>") +
+        chk("stress.p2", s.p2, '<span class="nm2">' + esc(h.p2.name) + "</span>") +
+        '<span class="hint" style="margin:0">Check both for a household-wide event.</span></div>') +
     '<div class="grid">' +
     pathField("ER visits", "stress.er", { min:0, step:1 }) +
     pathField("Blood work per ER visit", "stress.erBlood", { min:0, step:1 }) +
@@ -917,17 +980,25 @@ function renderStress(){
     pathField("MRIs per ER visit", "stress.erMRI", { min:0, step:1 }) +
     pathField("CTs per ER visit", "stress.erCT", { min:0, step:1 }) +
     pathField("Days hospitalized", "stress.days", { min:0, step:1 }) +
+    pathField("Blood work per hospital day", "stress.hospBlood", { min:0, step:1 }) +
+    pathField("X-ray per hospital day", "stress.hospXray", { min:0, step:1 }) +
+    pathField("Ultrasounds per hospital day", "stress.hospUS", { min:0, step:1 }) +
+    pathField("MRIs per hospital day", "stress.hospMRI", { min:0, step:1 }) +
+    pathField("CTs per hospital day", "stress.hospCT", { min:0, step:1 }) +
     pathField("Surgeries", "stress.surgeries", { min:0, step:1 }) + "</div>";
 }
 function renderSettings(){
   $("settingsBox").innerHTML = '<div class="grid">' +
     pathField("Plan year", "settings.year", { text:true }) +
     pathField("HSA family contribution limit", "settings.family", dollars()) +
-    pathField("Catch-up contribution (per eligible spouse)", "settings.catchUp", dollars()) +
+    pathField("HSA self-only contribution limit", "settings.self", dollars()) +
+    pathField("Catch-up contribution (per eligible person)", "settings.catchUp", dollars()) +
     pathField("Catch-up eligible from age", "settings.catchAge", { min:0, step:1 }) +
     pathField("Medicare age (no HSA contributions)", "settings.medicareAge", { min:0, step:1 }) +
     pathField("HDHP minimum family deductible", "settings.minDed", dollars()) +
-    pathField("HDHP maximum family out-of-pocket", "settings.maxOop", dollars()) + "</div>" +
+    pathField("HDHP minimum self-only deductible", "settings.minDedSelf", dollars()) +
+    pathField("HDHP maximum family out-of-pocket", "settings.maxOop", dollars()) +
+    pathField("HDHP maximum self-only out-of-pocket", "settings.maxOopSelf", dollars()) + "</div>" +
     '<label class="chk" style="margin-top:10px"><input type="checkbox" data-path="settings.taxFull"' + (state.settings.taxFull ? " checked" : "") +
     '> Count tax savings on the full HSA contribution (default: only on care paid from the HSA)</label>';
 }
@@ -1000,7 +1071,7 @@ function planCard(p){
     sec("premium", "Premium", "Marketplace estimate for the household; an SBC does not list a premium.", '<div class="grid">' +
       pf("Monthly premium", "premium.monthly", dollars()) + pf("Marketplace estimated yearly cost", "premium.estimated_yearly_cost", dollars()) +
       pf("Premium note", "premium.note", { text:true, cls:"span2" }) + "</div>") +
-    sec("limits", "Deductible, out-of-pocket maximum and coinsurance", "The calculation uses the <b>family</b> amounts (2 × the individual amount if only that is given). It does not model per-person embedded deductibles.", '<div class="grid">' +
+    sec("limits", "Deductible, out-of-pocket maximum and coinsurance", "The calculation uses the <b>family</b> amounts for a married couple (2 × the individual amount if only that is given) and the <b>individual</b> amounts for a single person (half the family amount if only that is given). It does not model per-person embedded deductibles.", '<div class="grid">' +
       pf("Deductible, individual", "limits.deductible_individual", dollars()) + pf("Deductible, family", "limits.deductible_family", dollars()) +
       ps("Embedded family deductible?", "limits.deductible_embedded", TRI) + ps("Separate deductibles for some services?", "limits.separate_service_deductibles", TRI) +
       pf("Max out-of-pocket, individual", "limits.oop_max_individual", dollars()) + pf("Max out-of-pocket, family", "limits.oop_max_family", dollars()) +
@@ -1050,6 +1121,30 @@ function lineDetail(L, x){
   else if (L.cls === "nc") pay = L.S;
   return { ded:ded, pay:pay, ins:L.S - pay };
 }
+function detTips(L, x, d){
+  const T = {}, c = L.cs;
+  T.units = (L.nx ? L.nx + " = " + L.n : "Planned " + L.n + " (from your annual needs in section 1)") + (L.charged < L.n ? "\nOnly " + L.charged + " of the " + L.n + " are charged a copay (the plan limits copays per stay)." : "");
+  T.each = L.noPrice ? "No price entered and the plan gives no copay, so this is counted as $0." : "Allowed price per unit: " + m(L.A) + (L.src ? "\nSource: " + L.src : "");
+  T.total = L.n + " units × " + m(L.A) + " = " + m(L.S);
+  const share = c.st === "copay" ? L.charged + " charged unit(s) × " + m(c.cop == null ? 0 : c.cop) + " copay = " + m(c.cop == null ? 0 : c.cop * L.charged)
+    : c.st === "coinsurance" || c.st === "unknown" || c.st === "not_stated" ? c.pct + "% × " + m(L.S) + " = " + m(c.pct / 100 * L.S) : "";
+  const pct = Math.round(x.f * 10000) / 100;
+  const dedLine = "Deductible " + m(x.D) + " is shared by every line where it applies, in proportion to its allowed price:\nmin(100%, " + m(x.D) + " ÷ " + m(x.S) + " allowed) = " + pct + "%";
+  if (L.cls === "ded"){
+    T.ded = dedLine + "\n× this line's " + m(L.S) + " = " + m(d.ded);
+    T.pay = "Deductible used " + m(d.ded) + " + (1 − " + pct + "%) × your cost share " + m(L.Q) + (share ? " (" + share + ")" : "") + " = " + m(d.pay) + "\n(Before the out-of-pocket maximum is applied.)";
+  } else if (L.cls === "first"){
+    T.ded = "The deductible does not apply to this service.";
+    T.pay = (share || "Your cost share") + (share ? "" : " = " + m(d.pay)) + "\n(Paid from the first dollar; counts toward the out-of-pocket maximum.)";
+  } else if (L.cls === "nc"){
+    T.ded = "Not covered, so nothing goes toward the deductible.";
+    T.pay = "Not covered: you pay the full " + m(L.S) + ", outside the out-of-pocket maximum.";
+  } else {
+    T.ded = "No charge: nothing goes toward the deductible."; T.pay = "No charge: $0.";
+  }
+  T.ins = "Base cost " + m(L.S) + " − you pay " + m(d.pay) + " = " + m(d.ins);
+  return T;
+}
 function renderDetail(){
   const box = $("detailBox");
   if (!state.plans.length){ box.innerHTML = '<p class="hint">No plans yet. Add a plan or load the example, then come back here.</p>'; return; }
@@ -1064,27 +1159,27 @@ function renderDetail(){
     ["Medications", lines.filter(L => L.tag === "rx")]
   ];
   if (stress) groups.push(["Stress scenario", r.lines.stress]);
-  const cell = (v, cls) => '<td' + (cls ? ' class="' + cls + '"' : "") + ">" + v + "</td>";
+  const cell = (v, cls, tip) => '<td' + (cls ? ' class="' + cls + '"' : "") + (tip ? ' data-tip="' + esc(tip) + '" tabindex="0"' : "") + ">" + v + "</td>";
   let rows = "", nrows = 0;
   groups.forEach(g => {
     if (!g[1].length) return;
     rows += '<tr class="sec"><th colspan="8">' + g[0] + "</th></tr>";
     let sb = 0, sd = 0, sp = 0, si = 0;
     g[1].forEach(L => {
-      const d = lineDetail(L, x); nrows++;
+      const d = lineDetail(L, x), T = detTips(L, x, d); nrows++;
       sb += L.S; sd += d.ded; sp += d.pay; si += d.ins;
-      const base = L.noPrice ? '<td class="unk">unknown<span class="src">counted as $0</span></td>'
-        : "<td>" + m(L.A) + (L.src ? '<span class="src">' + esc(L.src) + "</span>" : "") + "</td>";
-      rows += "<tr><th class=\"l\">" + esc(L.label) + "</th>" + cell(L.n) + base + cell(m(L.S)) +
+      const base = L.noPrice ? '<td class="unk" data-tip="' + esc(T.each) + '" tabindex="0">unknown<span class="src">counted as $0</span></td>'
+        : '<td data-tip="' + esc(T.each) + '" tabindex="0">' + m(L.A) + (L.src ? '<span class="src">' + esc(L.src) + "</span>" : "") + "</td>";
+      rows += "<tr><th class=\"l\">" + esc(L.label) + "</th>" + cell(L.n, "", T.units) + base + cell(m(L.S), "", T.total) +
         '<td class="cov">' + esc(csText(L.cs)) + (L.charged < L.n ? "; " + L.charged + " of " + L.n + " units charged" : "") + "</td>" +
-        cell(d.ded > 0 ? m(d.ded) : "—") + cell(m(d.pay)) + cell(m(d.ins)) + "</tr>";
+        cell(d.ded > 0 ? m(d.ded) : "—", "", T.ded) + cell(m(d.pay), "", T.pay) + cell(m(d.ins), "", T.ins) + "</tr>";
     });
-    rows += '<tr class="total"><th class="l">Subtotal, ' + g[0].toLowerCase() + "</th><td></td><td></td>" + cell(m(sb)) + '<td></td>' + cell(m(sd)) + cell(m(sp)) + cell(m(si)) + "</tr>";
+    rows += '<tr class="total"><th class="l">Subtotal, ' + g[0].toLowerCase() + "</th><td></td><td></td>" + cell(m(sb), "", "Sum of the base costs in this group = " + m(sb)) + '<td></td>' + cell(m(sd), "", "Sum of the deductible used in this group = " + m(sd)) + cell(m(sp), "", "Sum of what you pay in this group = " + m(sp) + "\n(Before the out-of-pocket maximum.)") + cell(m(si), "", "Sum of what insurance pays in this group = " + m(si)) + "</tr>";
   });
   if (!nrows) rows = '<tr><td colspan="8" class="l">No services or medications are planned. Enter your annual needs in section 1 of the Evaluator tab.</td></tr>';
   const adj = x.capped - x.raw;
-  const foot = (x.M > 0 && adj < 0 ? '<tr class="cap"><th class="l">Out-of-pocket maximum of ' + m(x.M) + ' reached: reduction</th><td></td><td></td><td></td><td></td><td></td>' + cell(m(adj)) + cell("+" + m(-adj)) + "</tr>" : "") +
-    '<tr class="total"><th class="l">Total (excluding premium)</th><td></td><td></td>' + cell(m(x.gross)) + "<td></td>" + cell(m(x.dedPart)) + cell(m(x.total)) + cell(m(x.gross - x.total)) + "</tr>";
+  const foot = (x.M > 0 && adj < 0 ? '<tr class="cap"><th class="l">Out-of-pocket maximum of ' + m(x.M) + ' reached: reduction</th><td></td><td></td><td></td><td></td><td></td>' + cell(m(adj), "", "Your payments before the cap " + m(x.raw) + " − out-of-pocket maximum " + m(x.M) + " = " + m(x.raw - x.M) + " over the cap.\nYou pay only " + m(x.capped) + " (plus anything not covered), so " + m(-adj) + " moves to the insurer.") + cell("+" + m(-adj), "", "Amount over the out-of-pocket maximum that insurance picks up instead of you = " + m(-adj)) + "</tr>" : "") +
+    '<tr class="total"><th class="l">Total (excluding premium)</th><td></td><td></td>' + cell(m(x.gross), "", "Sum of all base costs = " + m(x.gross)) + "<td></td>" + cell(m(x.dedPart), "", "Deductible used = " + m(x.dedPart) + " of " + m(x.D) + " (the lesser of the deductible and the allowed price of services it applies to, " + m(x.S) + ")") + cell(m(x.total), "", "Copays and coinsurance from the first dollar " + m(x.first) + " + deductible used " + m(x.dedPart) + " + cost share after the deductible " + m(x.after) + " = " + m(x.raw) + (x.M > 0 ? "\nLimited to the out-of-pocket maximum " + m(x.M) + " = " + m(x.capped) : "") + (x.nc > 0 ? "\n+ not covered, paid in full " + m(x.nc) + " = " + m(x.total) : "")) + cell(m(x.gross - x.total), "", "Total base cost " + m(x.gross) + " − you pay " + m(x.total) + " = " + m(x.gross - x.total)) + "</tr>";
   const prem = r.premium, you = x.total;
   box.innerHTML =
     '<div class="detailbar no-print"><label class="fld"><span>Plan</span><select id="detPlan">' +
@@ -1093,8 +1188,8 @@ function renderDetail(){
     '<div class="detsum"><div><b>' + esc(pn(plan) || "Plan") + "</b>" + (r.isHsa ? " (HSA-eligible)" : "") + "</div>" +
       "<div>Deductible: " + (x.D > 0 ? m(x.dedPart) + " used of " + m(x.D) : "none entered") + "</div>" +
       "<div>Max out-of-pocket: " + (x.M > 0 ? m(x.M) : "none entered") + "</div>" +
-      "<div>Premium: " + m(prem) + " / yr</div>" +
-      "<div>You pay + premium: <b>" + m(prem + you) + "</b></div></div>" +
+      "<div data-tip=\"" + esc("Monthly premium " + m(num(plan.premium.monthly)) + " × 12 months = " + m(prem)) + "\" tabindex=\"0\">Premium: " + m(prem) + " / yr</div>" +
+      "<div data-tip=\"" + esc("Premium " + m(prem) + " + what you pay " + m(you) + " = " + m(prem + you)) + "\" tabindex=\"0\">You pay + premium: <b>" + m(prem + you) + "</b></div></div>" +
     '<div class="tablewrap"><table class="res det"><thead><tr><th class="l">Service / medication</th><th>Units</th><th>Base cost each</th><th>Base cost total</th><th class="l">Insurance coverage</th><th>Deductible used</th><th>You pay</th><th>Insurance pays</th></tr></thead><tbody>' +
     rows + foot + "</tbody></table></div>" +
     '<p class="hint" style="margin-top:10px">Base cost is the allowed price: the plan\'s own Evaluator price, else your cost in section 2, else the copay. “Deductible used” is the part of your payment that goes toward the deductible. Services that are not covered are paid in full and sit outside the out-of-pocket maximum.</p>';
@@ -1149,13 +1244,15 @@ function tweenNumber(el, to){
   };
   el._raf = requestAnimationFrame(step);
 }
+const mr = (e, set) => set.M > 0 ? Math.max(set.M - set.capped, 0) : 0, mr1 = e => mr(e, e.setBase), mr2 = e => mr(e, e.setAll);
+const sv1 = e => e.isHsa ? e.hsa.saveOnSpend : 0, sv2 = e => e.isHsa ? e.hsa.saveOnSpendStress : 0;
 function renderBars(evs){
   const box = $("bars");
   if (!evs.length){ box._sig = ""; box.innerHTML = '<div class="bars-empty">Add at least one plan to see results.</div>'; return; }
   if (!box.querySelector(".legend")){
-    box.innerHTML = '<div class="legend"><span class="l1">Normal year</span><span class="l2">Normal year + stress scenario</span><span class="lnote">Cost after HSA tax savings where applicable</span></div>';
+    box.innerHTML = '<div class="legend"><span class="l1">Normal year</span><span class="l2">Normal year + stress scenario</span><span class="l4">Premium (darker)</span><span class="l3">HSA tax savings (not counted in total)</span><span class="l5">Maximum possible: premium + out-of-pocket max</span></div>';
   }
-  const maxV = Math.max.apply(null, evs.map(e => Math.max(e.net, e.netStress, 1)));
+  const maxV = Math.max.apply(null, evs.map(e => Math.max(e.net + sv1(e) + mr1(e), e.netStress + sv2(e) + mr2(e), 1)));
   const rows = {};
   box.querySelectorAll(".brow").forEach(r => { rows[r.dataset.pid] = r; });
   const keep = {};
@@ -1166,8 +1263,8 @@ function renderBars(evs){
     if (!r){
       r = document.createElement("div"); r.className = "brow"; r.dataset.pid = id;
       r.innerHTML = '<div class="bn"></div><div>' +
-        '<div class="bl"><div class="btrack"><div class="b b1"></div></div><span class="bv v1" tabindex="0"></span></div>' +
-        '<div class="bl"><div class="btrack"><div class="b b2"></div></div><span class="bv v2" tabindex="0"></span></div></div>';
+        '<div class="bl"><div class="btrack"><div class="b b1"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div></div><div class="bm bm1" data-tip="" tabindex="0"><div class="bx bx1" data-tip="" tabindex="0"></div></div></div><span class="bv v1" tabindex="0"></span><span class="bmx bmx1" data-tip="" tabindex="0"></span></div>' +
+        '<div class="bl"><div class="btrack"><div class="b b2"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div></div><div class="bm bm2" data-tip="" tabindex="0"><div class="bx bx2" data-tip="" tabindex="0"></div></div></div><span class="bv v2" tabindex="0"></span><span class="bmx bmx2" data-tip="" tabindex="0"></span></div></div>';
       box.appendChild(r); rows[id] = r; fresh.push(r);
     }
     const nameKey = pn(e.plan) + "|" + (e.isHsa ? 1 : 0);
@@ -1177,7 +1274,26 @@ function renderBars(evs){
     }
     const v1 = r.querySelector(".v1"), v2 = r.querySelector(".v2");
     v1.dataset.tip = e.tip.net; v2.dataset.tip = e.tip.netStress;
+    [["1", e.net, e.oopBase, sv1(e), e.tip.segOop1, e.tip.segHsa1], ["2", e.netStress, e.oopAll, sv2(e), e.tip.segOop2, e.tip.segHsa2]].forEach(a => {
+      const prem = Math.min(e.premium, Math.max(a[1], 0)), tot = Math.max(a[1], 0);
+      r["_p" + a[0]] = tot > 0 ? (prem / tot * 100).toFixed(1) + "%" : "0%";
+      r["_o" + a[0]] = tot > 0 ? ((tot - prem) / tot * 100).toFixed(1) + "%" : "0%";
+      r.querySelector(".b" + a[0] + " .bp").dataset.tip = e.tip.segPrem;
+      r.querySelector(".b" + a[0] + " .bo").dataset.tip = a[4];
+      r.querySelector(".bx" + a[0]).dataset.tip = a[5] || "";
+      const set = a[0] === "1" ? e.setBase : e.setAll, rem = mr(e, set);
+      const mx = r.querySelector(".bmx" + a[0]);
+      mx.textContent = set.M > 0 ? "max " + fmt(e.premium + set.nc + set.M) : "no max";
+      mx.dataset.tip = set.M > 0 ? "Maximum possible cost for the year: premium " + fmt(e.premium) + " + out-of-pocket maximum " + fmt(set.M) + (set.nc > 0 ? " + not-covered costs " + fmt(set.nc) : "") + " = " + fmt(e.premium + set.nc + set.M) + (e.isHsa ? "\n(Before HSA tax savings.)" : "") : "No out-of-pocket maximum is entered for this plan.";
+      r.querySelector(".bm" + a[0]).dataset.tip = set.M > 0 ? "Maximum possible cost for the year: premium " + fmt(e.premium) + " + out-of-pocket maximum " + fmt(set.M) + " = " + fmt(e.premium + set.M) + (e.isHsa ? "\n(Before HSA tax savings.)" : "") + (set.nc > 0 ? "\n(Not-covered costs are extra.)" : "") + "\n\nThis scenario: " + fmt(e.premium + a[2]) + " before tax savings.\nRoom left before the maximum: " + fmt(rem) + "." : "";
+    });
     r._w1 = (e.net / maxV * 100).toFixed(1) + "%"; r._w2 = (e.netStress / maxV * 100).toFixed(1) + "%";
+    [["1", sv1(e), mr1(e)], ["2", sv2(e), mr2(e)]].forEach(a => {
+      const tot = a[1] + a[2];
+      r["_m" + a[0]] = (tot / maxV * 100).toFixed(1) + "%";
+      r["_x" + a[0]] = tot > 0 ? (a[1] / tot * 100).toFixed(1) + "%" : "0%";
+      r["_mo" + a[0]] = tot <= 0; r["_xo" + a[0]] = a[1] <= 0;
+    });
     tweenNumber(v1, e.net); tweenNumber(v2, e.netStress);
   });
   Object.keys(rows).forEach(id => { if (!keep[id]) rows[id].remove(); });
@@ -1186,7 +1302,20 @@ function renderBars(evs){
   const have = Array.prototype.map.call(box.querySelectorAll(".brow"), r => r.dataset.pid).join(",");
   if (want !== have) evs.forEach(e => box.appendChild(rows[String(e.plan.id)]));
   /* new rows start at 0 and grow; existing rows glide from their old width to the new one */
-  const apply = () => evs.forEach(e => { const r = rows[String(e.plan.id)]; r.querySelector(".b1").style.width = r._w1; r.querySelector(".b2").style.width = r._w2; });
+  const apply = () => evs.forEach(e => { const r = rows[String(e.plan.id)]; ["1", "2"].forEach(k => { r.querySelector(".b" + k + " .bp").style.width = r["_p" + k]; r.querySelector(".b" + k + " .bo").style.width = r["_o" + k]; }); r.querySelector(".b1").style.width = r._w1; r.querySelector(".b2").style.width = r._w2; ["1", "2"].forEach(k => { const m = r.querySelector(".bm" + k), x = r.querySelector(".bx" + k); m.style.width = r["_m" + k]; m.classList.toggle("off", r["_mo" + k]); x.style.width = r["_x" + k]; x.classList.toggle("off", r["_xo" + k]); }); });
+  let ax = box.querySelector(".baxis");
+  if (!ax){ ax = document.createElement("div"); ax.className = "baxis"; ax.innerHTML = '<div></div><div class="ax"></div>'; }
+  box.appendChild(ax);
+  const axSig = String(Math.ceil(maxV));
+  if (ax._sig !== axSig){
+    ax._sig = axSig;
+    let h = "";
+    for (let v = 0; v <= maxV; v += 5000){
+      const left = (v / maxV * 100).toFixed(2) + "%";
+      h += '<span class="tk" style="left:' + left + '"></span><span class="tl" style="left:' + left + '">$' + (v / 1000) + (v ? 'k' : '') + '</span>';
+    }
+    ax.querySelector(".ax").innerHTML = h;
+  }
   if (fresh.length){ void box.offsetWidth; requestAnimationFrame(apply); } else apply();
 }
 
@@ -1203,13 +1332,14 @@ function renderResultsMain(){
     $("notices").innerHTML = '<div class="note info">Add at least one plan to see results.</div>';
     renderBars([]); $("resTable").innerHTML = ""; return;
   }
-  if (!state.stress.p1 && !state.stress.p2) notices.push(["info", "No one is selected in the stress scenario, so the stress rows equal the normal-year rows."]);
+  if (!state.stress.p1 && (isSingle(state.household) || !state.stress.p2)) notices.push(["info", "No one is selected in the stress scenario, so the stress rows equal the normal-year rows."]);
   if (evs.some(e => e.isHsa)){
-    if (lim.medicare) notices.push(["", lim.medicare + " spouse(s) at or above the Medicare age. Anyone enrolled in Medicare cannot contribute to an HSA, so check your eligibility; the maximum shown assumes the family limit still applies."]);
-    if (lim.catchers) notices.push(["info", lim.catchers + " spouse(s) qualify for the catch-up contribution, included in the HSA maximum."]);
+    if (lim.medicare) notices.push(["", lim.medicare + (lim.single ? " person is" : " spouse(s)") + " at or above the Medicare age. Anyone enrolled in Medicare cannot contribute to an HSA, so check your eligibility; the maximum shown assumes the " + (lim.single ? "self-only" : "family") + " limit still applies."]);
+    if (lim.catchers) notices.push(["info", lim.catchers + (lim.single ? " person qualifies" : " spouse(s) qualify") + " for the catch-up contribution, included in the HSA maximum."]);
     evs.filter(e => e.isHsa).forEach(e => e.hsa.warnings.forEach(w => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> " + esc(w)])));
     evs.filter(e => e.isHsa && e.hsa.overLimit).forEach(e => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> planned contribution exceeds the maximum; the maximum is used."]));
   }
+  if (isSingle(state.household)) evs.filter(e => singleEstimates(e.plan).length).forEach(e => notices.push(["info", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> no " + esc(singleEstimates(e.plan).join(" or ")) + " is entered, so half the family amount is used for a single person. Enter the individual amount on the plan card for an exact result."]));
   evs.filter(e => e.missing.length).forEach(e => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> no price is entered for " + esc(e.missing.join(", ")) + ", so " + (e.missing.length === 1 ? "it counts" : "they count") + " as $0. Enter the price in section 2 (Costs) or under “Evaluator prices” on the plan card."]));
   $("notices").innerHTML = notices.map(x => '<div class="note ' + x[0] + '">' + x[1] + "</div>").join("");
 
@@ -1243,6 +1373,7 @@ function renderResultsMain(){
   add(resRow("Stress: X-ray during ER", col(e => e.st.erXray), { cls:"sub" }, T("stXray")));
   add(resRow("Stress: imaging during ER", col(e => e.st.erImg), { cls:"sub" }, T("stImg")));
   add(resRow("Stress: hospital days", col(e => e.st.hosp), { cls:"sub" }, T("stHosp")));
+  add(resRow("Stress: tests and imaging during hospital stay", col(e => e.st.hospTest), { cls:"sub" }, T("stHospTest")));
   add(resRow("Stress: surgeries", col(e => e.st.surg), { cls:"sub" }, T("stSurg")));
   add(resRow("Stress total, listed prices", col(e => e.st.total), null, T("stTotal")));
   add(resRow("Complete + stress, no deductible limit", col(e => e.stressGross), { best:true }, T("stressGross")));
@@ -1282,6 +1413,20 @@ function autosave(skipFile){
     if (!skipFile && fileHandle && $("autoFile").checked) writeToHandle().catch(e => setStatus("Auto-save to file failed: " + e.message + " Click Save to try again."));
   }, 400);
 }
+/* up/down buttons: one step per click; holding the mouse button does not repeat */
+document.addEventListener("click", ev => {
+  const b = ev.target.closest && ev.target.closest(".stp button");
+  if (!b) return;
+  const inp = b.closest(".inp").querySelector("input[type=number]");
+  if (!inp) return;
+  const dir = Number(b.dataset.step), min = inp.min === "" ? -Infinity : Number(inp.min), max = inp.max === "" ? Infinity : Number(inp.max);
+  const st = inp.step && inp.step !== "any" ? Number(inp.step) : 1;
+  const cur = inp.value === "" ? 0 : Number(inp.value);
+  let v = Math.round((cur + dir * st) * 1e6) / 1e6;
+  v = Math.min(Math.max(v, min), max);
+  inp.value = String(v);
+  inp.dispatchEvent(new Event("input", { bubbles:true }));
+});
 document.addEventListener("input", ev => {
   const el = ev.target;
   if (!(el instanceof HTMLInputElement || el instanceof HTMLSelectElement || el instanceof HTMLTextAreaElement)) return;
@@ -1291,6 +1436,7 @@ document.addEventListener("input", ev => {
   }
   if (el.dataset.path){
     setPath(state, el.dataset.path, val);
+    if (el.dataset.path === "household.status"){ renderHousehold(); renderStress(); renderPlans(); renderResults(); autosave(); return; }
     if (el.dataset.path === "household.p1.name") document.querySelectorAll(".nm1").forEach(x => x.textContent = val);
     if (el.dataset.path === "household.p2.name") document.querySelectorAll(".nm2").forEach(x => x.textContent = val);
   } else if (el.dataset.plan){
@@ -1362,6 +1508,7 @@ function normalizeState(raw){
   if (src.stress && src.stress.erBlood === undefined && src.stress.erLabs !== undefined) out.stress.erBlood = src.stress.erLabs;
   delete out.stress.erLabs; delete out.household.labs; delete out.household.ucLabs;
   out.stress.p1 = !!out.stress.p1; out.stress.p2 = !!out.stress.p2;
+  out.household.status = out.household.status === "single" ? "single" : "married";
   out.costs = Object.assign({}, base.costs, plainObj(src.costs) ? src.costs : {});
   Object.keys(out.costs).forEach(k => { out.costs[k] = out.costs[k] == null ? "" : String(out.costs[k]); });
   out.settings = Object.assign({}, base.settings, src.settings || {});
@@ -1495,7 +1642,7 @@ function loadExample(){
   state.household.p2 = { name:"Sam", age:"54" };
   state.household.taxRate = "27.8";
   Object.assign(state.household, { pcp1:"3", pcp2:"2", spec:"4", proc:"2", us:"1", mri:"1", ct:"0", bloodWork:"4", xray:"1", ucVisits:"1", ucBlood:"1", ucXray:"1", ucUS:"0", ucMRI:"0", ucCT:"0", rx5:"0", rx4:"0", rx3:"12", rx2:"12", rx1:"24" });
-  state.stress = { p1:true, p2:false, er:"1", erBlood:"2", erXray:"1", erUS:"1", erMRI:"0", erCT:"1", days:"3", surgeries:"1" };
+  state.stress = { p1:true, p2:false, er:"1", erBlood:"2", erXray:"1", erUS:"1", erMRI:"0", erCT:"1", days:"3", hospBlood:"1", hospXray:"0", hospUS:"0", hospMRI:"0", hospCT:"0", surgeries:"1" };
   state.plans = [
     examplePlan({ name:"Gold PPO (example)", premium:"1650", deductible:"1500", coins:"20", oopMax:"8000",
       pcpAnnual:"0", pcp2nd:"30", pcp3plus:"30", specCopay:"60", procCost:"250",
@@ -1530,7 +1677,7 @@ $("btnReset").addEventListener("click", () => {
   detachFile(); state = defaultState(); renderAll(); autosave(true); setStatus("All inputs cleared. Auto-save to file is off and the remembered save file was cleared; use Save as… to pick a file.");
 });
 function doPrint(resultsOnly){
-  $("printDate").textContent = "Printed " + new Date().toLocaleString() + " · Household: " + state.household.p1.name + " and " + state.household.p2.name;
+  $("printDate").textContent = "Printed " + new Date().toLocaleString() + " · " + (isSingle(state.household) ? "Single person: " + p1Name(state.household) : "Household: " + state.household.p1.name + " and " + state.household.p2.name);
   document.body.classList.toggle("print-results-only", !!resultsOnly);
   const done = () => { document.body.classList.remove("print-results-only"); window.removeEventListener("afterprint", done); };
   window.addEventListener("afterprint", done);

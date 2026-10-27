@@ -382,7 +382,8 @@
               "description": "Lab and x-ray billed at hospital, ER or outpatient facility instead of the office."
             },
             "imaging_ct_pet_mri": {
-              "$ref": "#/$defs/costShare"
+              "$ref": "#/$defs/costShare",
+              "description": "Advanced imaging: MRI, PET, CT and ultrasound share this one cost share."
             },
             "outpatient_surgery_facility": {
               "$ref": "#/$defs/costShare"

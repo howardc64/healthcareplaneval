@@ -382,7 +382,7 @@
     "notes": [
       "No dollar price estimates are stored in this file. Enter allowed prices in the evaluator's section 2 (Costs).",
       "ER, imaging (CT/MRI), outpatient surgery and hospital stays are flat copays that apply after the deductible; the evaluator needs a full allowed price for them (section 2) to count the deductible correctly.",
-      "Ultrasound uses the plan's x-ray and diagnostic imaging cost share ($30 copay)."
+      "Ultrasound is classified with MRI, PET and CT (one imaging cost share: $300 copay)."
     ]
   },
   "extraction": {
