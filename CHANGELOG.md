@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.15.0] - 2026-10-27
+
+### Changed
+- Cost bars: the paid-out-of-pocket section is renamed **Other out of pocket** and no longer includes medications.
+- Medication cost is its own striped segment with a tooltip showing what you pay for each medication tier.
+- Premium, other out of pocket and medications each use a different shade (darkest, lightest, and a striped mid-tone), in both the normal-year and stress bars. The legend shows all three.
+
 ## [2.14.0] - 2026-10-27
 
 ### Changed

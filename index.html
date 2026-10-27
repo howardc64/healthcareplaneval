@@ -9,7 +9,7 @@
 :root{
   --bg:#f4f6f9; --card:#fff; --ink:#1c2430; --muted:#5d6878; --line:#d9dfe7;
   --brand:#1f5fbf; --brand-ink:#fff; --good:#157a45; --good-bg:#e5f5ec;
-  --warn:#8a5a00; --warn-bg:#fff4d6; --bad:#a32121; --bar1:#7fa8e6; --bar2:#e59a59; --hbar1:#cfe1ff; --hbar2:#ffb878; --hbar1d:#9dbdee; --hbar2d:#e8934c;
+  --warn:#8a5a00; --warn-bg:#fff4d6; --bad:#a32121; --bar1:#7fa8e6; --bar2:#e59a59; --hbar1:#cfe1ff; --hbar2:#ffb878; --hbar1d:#8fb2ea; --hbar2d:#e8934c; --hbar1p:#4f82cc; --hbar2p:#c4651f; --hbar1m:#d9e7ff; --hbar2m:#ffd2a6;
   --head:#1f5fbf; --field:#fff; --hover:#eef3fb; --primary-hover:#184c99; --tint:#eef3fb; --tint2:#dde7f6; --tint3:#f7f9fc;
   --plan-bg:#fbfcfe; --svc-visit:#f6f9fe; --tabbg:#e9eef6; --info-bg:#e8f0fc; --info-ink:#1b4a94; --note-line:#ecd28a; --note-ink:#4d3600;
   --dot:#9aa7b8; --link:#1f5fbf; color-scheme:light;
@@ -94,10 +94,15 @@ header.top .b{height:10px;border-radius:4px;min-width:2px;width:0;transition:wid
 header.top .b{display:flex;overflow:hidden}
 header.top .b1{background:var(--hbar1)}header.top .b2{background:var(--hbar2)}
 header.top .bp,header.top .bo{height:100%;flex:0 0 auto;transition:width .7s cubic-bezier(.22,.8,.3,1);text-decoration:none!important;cursor:help}
-header.top .b1 .bp{background:var(--hbar1d)}header.top .b2 .bp{background:var(--hbar2d)}
+header.top .b1 .bp{background:var(--hbar1p)}header.top .b2 .bp{background:var(--hbar2p)}
 header.top .bo{background:transparent}
+header.top .bd{height:100%;flex:0 0 auto;transition:width .7s cubic-bezier(.22,.8,.3,1);cursor:help}
+header.top .b1 .bd{background:repeating-linear-gradient(135deg,var(--hbar1d) 0 3px,var(--hbar1m) 3px 6px)}
+header.top .b2 .bd{background:repeating-linear-gradient(135deg,var(--hbar2d) 0 3px,var(--hbar2m) 3px 6px)}
 
-header.top .legend .l4::before{background:var(--hbar1d)}
+header.top .legend .l4::before{background:linear-gradient(90deg,var(--hbar1p) 50%,var(--hbar2p) 50%)}
+header.top .legend .l6::before{background:linear-gradient(90deg,var(--hbar1) 50%,var(--hbar2) 50%)}
+header.top .legend .l7::before{background:repeating-linear-gradient(135deg,var(--hbar1d) 0 2px,var(--hbar1m) 2px 4px)}
 header.top .bv{flex:0 0 auto;width:74px;font-size:12px;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;text-decoration:none;text-underline-offset:3px}
 header.top .bv[data-tip]{text-decoration:underline dotted rgba(255,255,255,.6)}
 header.top .baxis{position:sticky;bottom:0;background:var(--head);display:grid;grid-template-columns:190px 1fr;gap:10px;margin-top:2px;padding-top:2px}
@@ -296,7 +301,7 @@ header.top button{background:rgba(255,255,255,.1)}
 
 <script>
 "use strict";
-const APP_VERSION = "2.14.0";
+const APP_VERSION = "2.15.0";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -555,6 +560,20 @@ function settle(p, lines, single){
   const capped = M > 0 ? Math.min(raw, M) : raw;
   return { D:D, M:M, first:first, S:S, Q:Q, f:f, dedPart:dedPart, after:after, raw:raw, capped:capped, nc:nc, total:capped + nc, gross:gross };
 }
+/* How much of what you pay (after the out-of-pocket cap) is for medications, and per medication tier. */
+function rxShare(set, lines){
+  const k = set.raw > 0 ? set.capped / set.raw : 1;
+  let total = 0; const rows = [];
+  lines.forEach(L => {
+    if (L.tag !== "rx") return;
+    let v = 0;
+    if (L.cls === "first") v = L.first * k;
+    else if (L.cls === "ded") v = (set.f * L.S + (1 - set.f) * L.Q) * k;
+    else if (L.cls === "nc") v = L.S;
+    total += v; rows.push({ label:L.label, n:L.n, S:L.S, pay:v });
+  });
+  return { total:total, rows:rows };
+}
 function buildLines(p, h, s, costs){
   costs = costs || {};
   const sv = p.services, pr = k => { const v = numOrNull(p.prices[k]); return v != null ? v : numOrNull(costs[k]); };
@@ -658,6 +677,11 @@ function evaluate(state, plan){
     if (planDed(plan, single) < minD) r.hsa.warnings.push("Deductible is below the HDHP minimum of " + fmt(minD) + (single ? " (self-only)" : "") + ", so the plan may not be HSA-eligible.");
     if (!(planOop(plan, single) > 0) || planOop(plan, single) > maxO) r.hsa.warnings.push("Max out-of-pocket is missing or above the HDHP cap of " + fmt(maxO) + (single ? " (self-only)" : "") + ".");
   }
+  const seg = (netv, rx) => {
+    const tot = Math.max(netv, 0), prem = Math.min(premium, tot), rest = tot - prem, rxS = Math.min(rx.total, rest);
+    return { tot:tot, prem:prem, rx:rxS, other:rest - rxS, rxFull:rx.total, rows:rx.rows };
+  };
+  r.seg1 = seg(r.net, rxShare(setBase, N)); r.seg2 = seg(r.netStress, rxShare(setAll, all));
   r.tip = buildTips(state, r);
   return r;
 }
@@ -728,9 +752,19 @@ function buildTips(state, r){
   T.totalGross = "PCP " + m(u.pcp) + " + specialist " + m(u.spec) + " + procedures " + m(u.proc) + " + imaging " + m(u.imaging) + " + blood work " + m(u.blood) + " + X-ray " + m(u.xray) + " + urgent care " + m(u.uc) + " + medications " + m(u.rx) + " = " + m(u.total) + "\n(Every listed price paid in full: no deductible, copay, coinsurance or cap.)";
   T.oopBase = insExplain(r.setBase);
   T.segPrem = "Premium: " + premText(p, r) + "\n(Paid whether or not you use care.)";
-  const segOop = (oop, save, label) => "Out of pocket (" + label + "): care costs you pay " + m(oop) + (r.hsa ? " − HSA tax deduction " + m(save) + " = " + m(Math.max(oop - save, 0)) : "") + "\n(Deductible, copays and coinsurance, up to the out-of-pocket maximum.)";
-  T.segOop1 = segOop(r.oopBase, r.hsa ? r.hsa.saveOnSpend : 0, "normal year");
-  T.segOop2 = segOop(r.oopAll, r.hsa ? r.hsa.saveOnSpendStress : 0, "normal year + stress");
+  const segOop = (oop, save, label, sg) => "Other out of pocket (" + label + "): care costs you pay " + m(oop) + " − medications " + m(sg.rxFull) + " = " + m(Math.max(oop - sg.rxFull, 0)) + (r.hsa ? "\n− HSA tax deduction " + m(save) + " = " + m(sg.other) : "") + "\n(Deductible, copays and coinsurance for everything except medications, up to the out-of-pocket maximum.)";
+  const segRx = (label, sg) => {
+    const L = ["Medications (" + label + "): you pay " + m(sg.rxFull) + " of the " + m(sg.rows.reduce((a, x) => a + x.S, 0)) + " total medication cost"];
+    sg.rows.forEach(x => L.push("  " + x.label + ": " + x.n + " fill(s), price " + m(x.S) + ", you pay " + m(x.pay)));
+    if (!sg.rows.length) L.push("  No medications entered.");
+    if (sg.rx < sg.rxFull - 0.005) L.push("Shown in the bar: " + m(sg.rx) + " (the HSA tax deduction lowers the other segments first, then this one).");
+    L.push("(Medication copays and coinsurance, with the deductible and out-of-pocket maximum applied across all care.)");
+    return L.join("\n");
+  };
+  T.segOop1 = segOop(r.oopBase, r.hsa ? r.hsa.saveOnSpend : 0, "normal year", r.seg1);
+  T.segOop2 = segOop(r.oopAll, r.hsa ? r.hsa.saveOnSpendStress : 0, "normal year + stress", r.seg2);
+  T.segRx1 = segRx("normal year", r.seg1);
+  T.segRx2 = segRx("normal year + stress", r.seg2);
   if (r.hsa){
     T.segHsa1 = "HSA tax deduction: " + m(r.hsa.saveOnSpend) + " (normal year)\nNot counted in the total. The solid bar is already reduced by it; the hatched area shows what it saved you.";
     T.segHsa2 = "HSA tax deduction: " + m(r.hsa.saveOnSpendStress) + " (normal year + stress)\nNot counted in the total. The solid bar is already reduced by it; the hatched area shows what it saved you.";
@@ -1325,7 +1359,7 @@ function renderBars(evs){
   const box = $("bars");
   if (!evs.length){ box._sig = ""; box.innerHTML = '<div class="bars-empty">Add at least one plan to see results.</div>'; return; }
   if (!box.querySelector(".legend")){
-    box.innerHTML = '<div class="legend"><span class="l1">Normal year</span><span class="l2">Normal year + stress scenario</span><span class="l4">Premium (darker)</span><span class="l3">HSA tax savings (not counted in total)</span><span class="l5">Maximum possible: premium + out-of-pocket max</span></div>';
+    box.innerHTML = '<div class="legend"><span class="l1">Normal year</span><span class="l2">Normal year + stress scenario</span><span class="l4">Premium (darkest)</span><span class="l6">Other out of pocket (lightest)</span><span class="l7">Medications (striped)</span><span class="l3">HSA tax savings (not counted in total)</span><span class="l5">Maximum possible: premium + out-of-pocket max</span></div>';
   }
   const maxV = Math.max.apply(null, evs.map(e => Math.max(e.net + sv1(e) + mr1(e), e.netStress + sv2(e) + mr2(e), 1)));
   const rows = {};
@@ -1338,8 +1372,8 @@ function renderBars(evs){
     if (!r){
       r = document.createElement("div"); r.className = "brow"; r.dataset.pid = id;
       r.innerHTML = '<div class="bn"></div><div>' +
-        '<div class="bl"><input type="checkbox" class="bsel" data-scen="normal" aria-label="Show this plan, normal year, in Line-item detail" data-tip="Show this plan and scenario in Line-item detail"><div class="btrack"><div class="b b1"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div></div><div class="bm bm1" data-tip="" tabindex="0"><div class="bx bx1" data-tip="" tabindex="0"></div></div></div><span class="bv v1" tabindex="0"></span><span class="bmx bmx1" data-tip="" tabindex="0"></span></div>' +
-        '<div class="bl"><input type="checkbox" class="bsel" data-scen="stress" aria-label="Show this plan, normal year plus stress scenario, in Line-item detail" data-tip="Show this plan and scenario in Line-item detail"><div class="btrack"><div class="b b2"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div></div><div class="bm bm2" data-tip="" tabindex="0"><div class="bx bx2" data-tip="" tabindex="0"></div></div></div><span class="bv v2" tabindex="0"></span><span class="bmx bmx2" data-tip="" tabindex="0"></span></div></div>';
+        '<div class="bl"><input type="checkbox" class="bsel" data-scen="normal" aria-label="Show this plan, normal year, in Line-item detail" data-tip="Show this plan and scenario in Line-item detail"><div class="btrack"><div class="b b1"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div><div class="bd" data-tip="" tabindex="0"></div></div><div class="bm bm1" data-tip="" tabindex="0"><div class="bx bx1" data-tip="" tabindex="0"></div></div></div><span class="bv v1" tabindex="0"></span><span class="bmx bmx1" data-tip="" tabindex="0"></span></div>' +
+        '<div class="bl"><input type="checkbox" class="bsel" data-scen="stress" aria-label="Show this plan, normal year plus stress scenario, in Line-item detail" data-tip="Show this plan and scenario in Line-item detail"><div class="btrack"><div class="b b2"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div><div class="bd" data-tip="" tabindex="0"></div></div><div class="bm bm2" data-tip="" tabindex="0"><div class="bx bx2" data-tip="" tabindex="0"></div></div></div><span class="bv v2" tabindex="0"></span><span class="bmx bmx2" data-tip="" tabindex="0"></span></div></div>';
       box.appendChild(r); rows[id] = r; fresh.push(r);
     }
     const nameKey = pn(e.plan) + "|" + (e.isHsa ? 1 : 0);
@@ -1349,12 +1383,12 @@ function renderBars(evs){
     }
     const v1 = r.querySelector(".v1"), v2 = r.querySelector(".v2");
     v1.dataset.tip = e.tip.net; v2.dataset.tip = e.tip.netStress;
-    [["1", e.net, e.oopBase, sv1(e), e.tip.segOop1, e.tip.segHsa1], ["2", e.netStress, e.oopAll, sv2(e), e.tip.segOop2, e.tip.segHsa2]].forEach(a => {
-      const prem = Math.min(e.premium, Math.max(a[1], 0)), tot = Math.max(a[1], 0);
-      r["_p" + a[0]] = tot > 0 ? (prem / tot * 100).toFixed(1) + "%" : "0%";
-      r["_o" + a[0]] = tot > 0 ? ((tot - prem) / tot * 100).toFixed(1) + "%" : "0%";
+    [["1", e.net, e.oopBase, sv1(e), e.tip.segOop1, e.tip.segHsa1, e.seg1, e.tip.segRx1], ["2", e.netStress, e.oopAll, sv2(e), e.tip.segOop2, e.tip.segHsa2, e.seg2, e.tip.segRx2]].forEach(a => {
+      const sg = a[6], tot = sg.tot, pc = x => tot > 0 ? (x / tot * 100).toFixed(1) + "%" : "0%";
+      r["_p" + a[0]] = pc(sg.prem); r["_o" + a[0]] = pc(sg.other); r["_d" + a[0]] = pc(sg.rx);
       r.querySelector(".b" + a[0] + " .bp").dataset.tip = e.tip.segPrem;
       r.querySelector(".b" + a[0] + " .bo").dataset.tip = a[4];
+      r.querySelector(".b" + a[0] + " .bd").dataset.tip = a[7];
       r.querySelector(".bx" + a[0]).dataset.tip = a[5] || "";
       const set = a[0] === "1" ? e.setBase : e.setAll, rem = mr(e, set);
       const mx = r.querySelector(".bmx" + a[0]);
@@ -1377,7 +1411,7 @@ function renderBars(evs){
   const have = Array.prototype.map.call(box.querySelectorAll(".brow"), r => r.dataset.pid).join(",");
   if (want !== have) evs.forEach(e => box.appendChild(rows[String(e.plan.id)]));
   /* new rows start at 0 and grow; existing rows glide from their old width to the new one */
-  const apply = () => evs.forEach(e => { const r = rows[String(e.plan.id)]; ["1", "2"].forEach(k => { r.querySelector(".b" + k + " .bp").style.width = r["_p" + k]; r.querySelector(".b" + k + " .bo").style.width = r["_o" + k]; }); r.querySelector(".b1").style.width = r._w1; r.querySelector(".b2").style.width = r._w2; ["1", "2"].forEach(k => { const m = r.querySelector(".bm" + k), x = r.querySelector(".bx" + k); m.style.width = r["_m" + k]; m.classList.toggle("off", r["_mo" + k]); x.style.width = r["_x" + k]; x.classList.toggle("off", r["_xo" + k]); }); });
+  const apply = () => evs.forEach(e => { const r = rows[String(e.plan.id)]; ["1", "2"].forEach(k => { r.querySelector(".b" + k + " .bp").style.width = r["_p" + k]; r.querySelector(".b" + k + " .bo").style.width = r["_o" + k]; r.querySelector(".b" + k + " .bd").style.width = r["_d" + k]; }); r.querySelector(".b1").style.width = r._w1; r.querySelector(".b2").style.width = r._w2; ["1", "2"].forEach(k => { const m = r.querySelector(".bm" + k), x = r.querySelector(".bx" + k); m.style.width = r["_m" + k]; m.classList.toggle("off", r["_mo" + k]); x.style.width = r["_x" + k]; x.classList.toggle("off", r["_xo" + k]); }); });
   let ax = box.querySelector(".baxis");
   if (!ax){ ax = document.createElement("div"); ax.className = "baxis"; ax.innerHTML = '<div></div><div class="ax"></div>'; }
   box.appendChild(ax);
