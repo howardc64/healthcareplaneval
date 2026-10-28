@@ -1,7 +1,7 @@
 {
   "app": "health-plan-evaluator",
-  "version": "2.13.0",
-  "savedAt": "2026-10-27T06:39:20.098Z",
+  "version": "2.25.1",
+  "savedAt": "2026-10-28T01:37:47.736Z",
   "state": {
     "household": {
       "status": "married",
@@ -33,11 +33,14 @@
       "rx4": "",
       "rx3": "",
       "rx2": "",
-      "rx1": "20"
+      "rx1": "20",
+      "dentalCleaning": "6",
+      "dentalRoot": "0",
+      "dentalCrown": ""
     },
     "plans": [
       {
-        "id": "plmvqbeujx6",
+        "id": "plmvrfzdls18",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -49,6 +52,7 @@
           "svcFacility": false,
           "svcMental": true,
           "svcOther": true,
+          "svcDental": false,
           "medicare": false,
           "supp": true,
           "oon": true,
@@ -102,7 +106,10 @@
           "deductible_out_of_network": "",
           "oop_max_combined": "",
           "drug_deductible_amount": "",
-          "drug_oop_max": ""
+          "drug_oop_max": "",
+          "dental_deductible": "",
+          "dental_annual_max": "",
+          "dental_preventive_counts_toward_max": ""
         },
         "services": {
           "preventive_care": {
@@ -533,6 +540,36 @@
             "max_units": "",
             "limits": "",
             "source_text": ""
+          },
+          "dental_cleaning": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "dental_root_canal": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "dental_crown": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
           }
         },
         "out_of_network_services": {
@@ -865,6 +902,9 @@
           "er_visit": "",
           "hospital_day": "",
           "surgery": "",
+          "dental_cleaning": "",
+          "dental_root_canal": "",
+          "dental_crown": "",
           "rx_tier1": "",
           "rx_tier2": "",
           "rx_tier3": "",
@@ -879,7 +919,7 @@
         }
       },
       {
-        "id": "plmvqbeujx8",
+        "id": "plmvrfzdlt20",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -891,6 +931,7 @@
           "svcFacility": false,
           "svcMental": true,
           "svcOther": true,
+          "svcDental": false,
           "medicare": false,
           "supp": true,
           "oon": true,
@@ -944,7 +985,10 @@
           "deductible_out_of_network": "",
           "oop_max_combined": "",
           "drug_deductible_amount": "",
-          "drug_oop_max": ""
+          "drug_oop_max": "",
+          "dental_deductible": "",
+          "dental_annual_max": "",
+          "dental_preventive_counts_toward_max": ""
         },
         "services": {
           "preventive_care": {
@@ -1375,6 +1419,36 @@
             "max_units": "",
             "limits": "",
             "source_text": ""
+          },
+          "dental_cleaning": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "dental_root_canal": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
+          },
+          "dental_crown": {
+            "structure": "",
+            "copay_amount": "",
+            "coinsurance_pct": "",
+            "deductible_applies": "",
+            "unit": "",
+            "max_units": "",
+            "limits": "",
+            "source_text": ""
           }
         },
         "out_of_network_services": {
@@ -1707,6 +1781,9 @@
           "er_visit": "",
           "hospital_day": "",
           "surgery": "",
+          "dental_cleaning": "",
+          "dental_root_canal": "",
+          "dental_crown": "",
           "rx_tier1": "",
           "rx_tier2": "",
           "rx_tier3": "",
@@ -1747,7 +1824,12 @@
       "mri": "500",
       "ct": "500",
       "hospital_day": "10000",
-      "surgery": "8000"
+      "surgery": "8000",
+      "dental_cleaning": "175",
+      "dental_root_canal": "2500",
+      "dental_crown": "2500",
+      "rx_tier3": "",
+      "part_b_monthly": ""
     },
     "view": {
       "hide": {
@@ -1760,9 +1842,10 @@
       },
       "secHide": {
         "household": false,
-        "costs": false,
+        "costs": true,
         "stress": false
-      }
+      },
+      "showStress": false
     },
     "settings": {
       "year": "2027",
