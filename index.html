@@ -233,6 +233,10 @@ section.is-hidden{padding-bottom:10px}
 section.is-hidden .sec-head h2{margin-bottom:0}
 .defaults-box{border:1px solid var(--line);border-radius:10px;padding:4px 14px 12px;margin:6px 0 14px;background:var(--field)}
 .defaults-box h3{margin:12px 0 6px}
+.defaults-box .psec-head h3{margin:8px 0 4px}
+.defaults-box.is-hidden .def-body{display:none}
+.defaults-box.is-hidden .psec-head h3::after{content:" (hidden)";text-transform:none;letter-spacing:0;font-weight:400}
+body.no-ma .ma-set{display:none}
 table.det td.l,table.det th.l{text-align:left;white-space:normal}
 table.det td.cov{text-align:left;white-space:normal;color:var(--muted);font-size:13px;min-width:200px}
 table.det td.unk{color:var(--bad)}
@@ -378,7 +382,7 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
 
 <script>
 "use strict";
-const APP_VERSION = "2.28.1";
+const APP_VERSION = "2.29.0";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -552,7 +556,7 @@ function defaultState(){
     stress:{ p1:true, p2:false, er:"1", erBlood:"0", erXray:"0", erUS:"1", erMRI:"0", erCT:"1", days:"3", hospBlood:"0", hospXray:"0", hospUS:"0", hospMRI:"0", hospCT:"0", surgeries:"1" },
     costs:{ er_visit:"", specialist_procedure:"", blood_work:"", xray:"", ultrasound:"", mri:"", ct:"", hospital_day:"", surgery:"", dental_cleaning:"", dental_root_canal:"", dental_crown:"" },
     defaults:{ dental_cleanings_per_year:"2", rx_tier3:"250", part_b_base:"203", part_b_growth:"5.25", part_b_override:"" },
-    view:{ hide:{ s1:false, s2:false, s3:false, s4:false, hsaDetails:false, hsaCost:false }, secHide:{ household:true, costs:true, stress:true, plans:false, settings:true }, showStress:false },
+    view:{ hide:{ s1:false, s2:false, s3:false, s4:false, hsaDetails:false, hsaCost:false }, secHide:{ household:true, costs:true, stress:true, plans:false, settings:true, defaults:false }, showStress:false },
     settings:{ family:"9000", self:"4500", catchUp:"1000", minDed:"3500", minDedSelf:"1750", maxOop:"17400", maxOopSelf:"8700", catchAge:"55" }
   };
 }
@@ -1258,18 +1262,22 @@ function pbPreviewText(){
   return yrs.map(y => { const v = partBFor(state, y); return y + ": " + (v == null ? "not set" : m(v)); }).join(" · ") + " per month, per enrolled person.";
 }
 function renderDefaults(){
-  $("defaultsBox").innerHTML = "<h3>Defaults</h3>" +
+  $("defaultsBox").classList.toggle("is-hidden", !!state.view.secHide.defaults);
+  $("defaultsBox").innerHTML = '<div class="psec-head"><h3>Defaults</h3>' +
+    '<label class="chk hidechk no-print"><input type="checkbox" data-defhide="1"' + (state.view.secHide.defaults ? " checked" : "") + '> Hide</label></div><div class="def-body">' +
     '<p class="hint" style="margin:0 0 4px">Used for any plan that has no value of its own.</p>' +
     '<h3>Dental</h3><div class="grid costgrid">' +
     pathField("Cleanings covered per person per year", "defaults.dental_cleanings_per_year", { min:0, step:1 }) + '</div>' +
     '<p class="hint" style="margin:6px 0 0">Used when a plan\'s dental cleaning has no “Max covered per person per year”. Cleanings above it are not covered.</p>' +
-    '<h3>Medications and Medicare premium</h3><div class="grid costgrid">' +
-    pathField("Medication tier 3, per fill", "defaults.rx_tier3", dollars()) +
+    '<h3>Medications</h3><div class="grid costgrid">' +
+    pathField("Medication tier 3, per fill", "defaults.rx_tier3", dollars()) + '</div>' +
+    '<p class="hint" style="margin:6px 0 0">Tier 3 applies when a plan has no Evaluator price for it.</p>' +
+    '<div class="ma-set"><h3>Medicare premium</h3><div class="grid costgrid">' +
     pathField("Part B premium, monthly, in " + PB_BASE_YEAR, "defaults.part_b_base", dollars()) +
     pathField("Part B yearly increase", "defaults.part_b_growth", { min:0, step:0.01, suf:"%" }) +
     pathField("Part B override, monthly (optional)", "defaults.part_b_override", dollars()) + '</div>' +
-    '<p class="hint" style="margin:6px 0 0">Tier 3 applies when a plan has no Evaluator price for it. Part B is per enrolled person, for Medicare Advantage plans only, when the plan card has no Part B premium. Each plan uses the Part B premium for its own plan year (the base grows by the yearly increase from ' + PB_BASE_YEAR + '); an override replaces that for every year.</p>' +
-    '<p class="hint" id="pbPreview" style="margin:4px 0 0"></p>';
+    '<p class="hint" style="margin:6px 0 0">Part B is per enrolled person, for Medicare Advantage plans only, when the plan card has no Part B premium. Each plan uses the Part B premium for its own plan year (the base grows by the yearly increase from ' + PB_BASE_YEAR + '); an override replaces that for every year.</p>' +
+    '<p class="hint" id="pbPreview" style="margin:4px 0 0"></p></div></div>';
   $("pbPreview").textContent = pbPreviewText();
 }
 function applySecHide(){
@@ -1838,6 +1846,7 @@ function renderResultsMain(){
   const n = evs.length;
   const anyHsa = evs.some(e => e.isHsa);
   document.body.classList.toggle("no-hsa", !anyHsa);
+  document.body.classList.toggle("no-ma", !state.plans.some(isMA));
   if (anyHsa !== lastAnyHsa){ lastAnyHsa = anyHsa; renderViewOpts(); }
   const short = barNames(evs);
   const notices = [];   /* [class, html] or [class, html, plan evaluation]; plan notes with the same text are merged below */
@@ -1981,6 +1990,7 @@ document.addEventListener("input", ev => {
   if (el.dataset.viewrow){
     state.view.hide[el.dataset.viewrow] = !val; $("rowsLbl").textContent = rowsLabel(); renderResults(); autosave(); return;
   }
+  if (el.dataset.defhide){ state.view.secHide.defaults = !!val; $("defaultsBox").classList.toggle("is-hidden", !!val); autosave(); return; }
   if (el.dataset.sechideBox){
     state.view.secHide[el.dataset.sechideBox] = !!val; applySecHide(); autosave(); return;
   }

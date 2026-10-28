@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.29.0] - 2026-10-28
+
+### Changed
+- **Defaults block has a Hide checkbox** in its upper right corner (saved as `view.secHide.defaults`, visible by default).
+- **Medications and Medicare premium are separate groups** in Defaults. The Medicare premium group (Part B premium, yearly increase, override and the preview) shows only while at least one Medicare Advantage plan is in the list.
+
 ## [2.28.1] - 2026-10-28
 
 ### Changed
