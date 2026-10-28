@@ -39,14 +39,11 @@ Start with **Coverage for**: *Married couple (family plan)* or *Single person (s
 
 Names and ages of both spouses, your combined federal tax rate (include NIIT, e.g. 24 + 3.8 = 27.8), and your expected annual use: PCP visits per spouse, specialist visits, specialist procedures, blood work, X-rays, ultrasounds, MRIs, CTs, urgent care (visits per year, with blood work, X-rays, ultrasounds, MRIs and CTs per visit), medication fills by tier (tier 5 to tier 1), and your yearly **dental** needs: cleanings, root canals and crowns (household totals).
 
-**2. Costs**
-Your estimate of the allowed price per unit for ER visit, specialist procedure, labs (blood work), X-ray, ultrasound, MRI, CT, hospital cost per day, surgery (facility + surgeon, per procedure) the dental cleaning, root canal and crown,  Each of these fills in for any plan whose own field is empty. The medication tier 3 price and the Part B premium are in **Defaults** (in Health plans). The deductible and coinsurance are applied to these prices for every plan. A price in a plan's *Evaluator prices* overrides it for that plan (and a plan with no value in a field uses the Costs value); with neither, the app uses the copay.
-
-**3. Stress scenario**
+**2. Stress scenario**
 Tick one spouse or both, then enter ER visits, blood work, X-ray and imaging per ER visit (blood work, X-ray, US, MRI, CT), days hospitalized (with blood work, X-ray, US, MRI and CT per hospital day), and surgeries.
 
-**4. Health plans**
-At the top is a **Defaults** block, used for any plan that has no value of its own: *cleanings covered per person per year* (2; applies when a plan's dental cleaning has no max), the *medication tier 3 price per fill* ($250; the plan's Evaluator price wins) and the *Part B premium* ($203 a month in 2026, growing 5.25% a year; each Medicare Advantage plan uses its own plan year, the plan's own Part B premium wins, and an optional override replaces the calculation). Tick **Hide** in the section's upper right corner to fold the whole section away; hidden plans still count and are saved. The Defaults block has its own **Hide** checkbox. The Part B (Medicare premium) group appears only while a Medicare Advantage plan is in the list.
+**3. Health plans**
+At the top is a **Plan defaults** block, used for any plan that has no value of its own. It holds your estimate of the *allowed price per unit* for ER visit, specialist procedure, hospital per day, surgery, labs (blood work), X-ray, ultrasound, MRI, CT, and the dental cleaning, root canal and crown; *cleanings covered per person per year* (2; applies when a plan's dental cleaning has no max); the *medication tier 3, 4 and 5 prices per fill* (tier 3 is $250, tiers 4 and 5 start blank; a plan's Evaluator price wins); and the *Part B premium* ($203 a month in 2026, growing 5.25% a year; each Medicare Advantage plan uses its own plan year, the plan's own Part B premium wins, and an optional override replaces the calculation). The deductible and coinsurance are applied to these prices for every plan; a price in a plan's *Evaluator prices* overrides it for that plan, and with neither the app uses the copay. Tick **Hide** in the section's upper right corner to fold the whole section away; hidden plans still count and are saved. The Plan defaults block has its own **Hide** checkbox. The Part B (Medicare premium) group appears only while a Medicare Advantage plan is in the list.
 
 Add as many plans as you like (add, duplicate, delete). Tick **Hide** in the upper right corner of a plan to collapse it to its name. Each plan card holds every field of `health-plan.schema.json`, grouped into sections:
 
@@ -77,7 +74,7 @@ Both this table and the Annual cost table scroll inside their own frame. The fra
 6. For HSA plans, an explicit block: complete cost − tax reduction, and complete cost with stress − tax reduction
 7. Net cost after HSA tax savings
 
-Plan names use the short form shown on the bars; hover or tap a name to see it in full. The **Show/hide rows** dropdown above the table collapses Household, Costs, Stress scenario, Health plans, HSA details and HSA plans (all shown by default). The lowest cost in each comparison row is highlighted green. Hover over (or tap) any dollar amount to see exactly how it was calculated.
+Plan names use the short form shown on the bars; hover or tap a name to see it in full. The **Show/hide rows** dropdown above the table collapses Household, Stress scenario, Health plans, HSA details and HSA plans (all shown by default). The lowest cost in each comparison row is highlighted green. Hover over (or tap) any dollar amount to see exactly how it was calculated.
 
 **Load a plan from plan documents**
 
@@ -88,7 +85,7 @@ Plan names use the short form shown on the bars; hover or tap a name to see it i
 
 The plan file records **facts from the documents**: for every service a cost share (copay amount, coinsurance percentage, whether the deductible applies, limits) with a source quote. The optional `evaluator_inputs.prices` block holds **your own dollar estimates** and is kept separate from the facts. The app picks each price like this:
 
-- A number in `evaluator_inputs.prices` wins over the Costs value (use it for services the documents price only as coinsurance, for copays charged after the deductible, and for anything not listed, such as specialist procedures).
+- A number in `evaluator_inputs.prices` wins over the Plan defaults value (use it for services the documents price only as coinsurance, for copays charged after the deductible, and for anything not listed, such as specialist procedures).
 - Otherwise a copay is used as the allowed price, and "no charge" is $0.
 - Coinsurance has no dollar price in an SBC, so the price is left empty and listed in the import note.
 
@@ -123,7 +120,7 @@ How the numbers change for a Medicare plan:
 Deductible and out-of-pocket amounts are **family** (household) amounts; if only the individual amount is given, 2 × that is used.
 
 - **Annual premium** = monthly premium × 12.
-- **Allowed price per unit** = your number in the plan's *Evaluator prices* if there is one, otherwise your cost in Costs, otherwise the copay amount. A service that is only coinsurance and has no price counts as $0, and the results show a notice naming it.
+- **Allowed price per unit** = your number in the plan's *Evaluator prices* if there is one, otherwise your Plan default, otherwise the copay amount. A service that is only coinsurance and has no price counts as $0, and the results show a notice naming it.
 - **Each service line** (units × allowed price) goes into one bucket according to its cost share:
   - *No charge / not applicable*: you pay $0.
   - *Deductible does not apply*: you pay the copay (per charged unit) or your coinsurance % of the allowed price from the first dollar. It counts toward the max out-of-pocket but not toward the deductible.
@@ -160,7 +157,7 @@ The app warns if an HSA plan falls outside the HDHP deductible or out-of-pocket 
 
 ## Save file format
 
-A JSON object: `{ "app": "health-plan-evaluator", "version": "...", "savedAt": "...", "state": { "household": {...}, "plans": [...], "stress": {...}, "settings": {...} } }`. `costs` holds the Costs prices and `view.secHide` the hide state of sections 1 to 3. Each plan mirrors the schema (`identity`, `network`, `premium`, `limits`, `services`, `drugs`, `prices`, ...) plus `hide`, `collapsed` and `hsaContrib`. Missing fields are filled with defaults when a file is opened. Saves from 2.0.0 and earlier (one flat price per service) are converted on open; their primary care copays become flat copays.
+A JSON object: `{ "app": "health-plan-evaluator", "version": "...", "savedAt": "...", "state": { "household": {...}, "plans": [...], "stress": {...}, "settings": {...} } }`. `costs` holds the Plan defaults prices and `view.secHide` the hide state of the sections. Each plan mirrors the schema (`identity`, `network`, `premium`, `limits`, `services`, `drugs`, `prices`, ...) plus `hide`, `collapsed` and `hsaContrib`. Missing fields are filled with defaults when a file is opened. Saves from 2.0.0 and earlier (one flat price per service) are converted on open; their primary care copays become flat copays.
 
 ## Limitations
 

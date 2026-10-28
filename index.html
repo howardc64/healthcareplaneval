@@ -216,8 +216,6 @@ table.res thead .pname{max-width:170px;white-space:normal;overflow:visible;text-
 .costgrid{grid-template-columns:repeat(5,minmax(0,1fr));align-items:end;margin-bottom:6px}
 @media(max-width:900px){.costgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:560px){.costgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-#costsBox h3{margin:14px 0 6px;font-size:14px}
-#costsBox h3:first-child{margin-top:2px}
 .psec .grid{align-items:end}
 .fld.span2{grid-column:span 2}
 @media(max-width:480px){.fld.span2{grid-column:auto}}
@@ -317,15 +315,6 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
     </div>
   </section>
 
-  <section class="card not-results" id="secCosts" data-sechide="costs">
-    <div class="sec-head"><h2>Costs</h2>
-      <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="costs"> Hide</label></div>
-    <div class="sec-body">
-    <p class="hint">Your estimate of the <b>allowed price per unit</b> for each service. The deductible and coinsurance are applied to these prices for every plan. A price entered under a plan's <b>Evaluator prices</b> overrides it for that plan; if both are blank the app uses the plan's copay amount. Every field here fills in for any plan that has no value of its own. The medication tier 3 price and the Medicare Part B premium are in <b>Defaults</b>, inside Health plans.</p>
-    <div id="costsBox"></div>
-    </div>
-  </section>
-
   <section class="card not-results" id="secStress" data-sechide="stress">
     <div class="sec-head"><h2>Stress scenario</h2>
       <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="stress"> Hide</label></div>
@@ -340,7 +329,7 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
       <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="plans"> Hide</label></div>
     <div class="sec-body">
     <div id="defaultsBox" class="defaults-box"></div>
-    <p class="hint">Add one card per plan. Tick <b>Hide</b> in a plan's upper right corner to collapse the whole plan to its name. Every field of <code>health-plan.schema.json</code> is on the card, grouped into sections; tick <b>Hide</b> on a section to fold it away (sections that do not affect the cost start hidden). Each service has its own cost share: a flat copay or a coinsurance percentage, and whether the deductible applies first. Deductible and max out-of-pocket are the <b>family</b> amounts. Prices come from Costs and the Defaults above; a price under a plan's <b>Evaluator prices</b> overrides it for that plan, and with neither the app uses the copay amount.</p>
+    <p class="hint">Add one card per plan. Tick <b>Hide</b> in a plan's upper right corner to collapse the whole plan to its name. Every field of <code>health-plan.schema.json</code> is on the card, grouped into sections; tick <b>Hide</b> on a section to fold it away (sections that do not affect the cost start hidden). Each service has its own cost share: a flat copay or a coinsurance percentage, and whether the deductible applies first. Deductible and max out-of-pocket are the <b>family</b> amounts. Prices come from the Plan defaults above; a price under a plan's <b>Evaluator prices</b> overrides it for that plan, and with neither the app uses the copay amount.</p>
     <div id="plansBox"></div>
     <div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
       <button type="button" class="primary" id="btnAddPlan">+ Add plan</button>
@@ -382,7 +371,7 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
 
 <script>
 "use strict";
-const APP_VERSION = "2.29.0";
+const APP_VERSION = "2.30.0";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -555,8 +544,8 @@ function defaultState(){
     plans:[],
     stress:{ p1:true, p2:false, er:"1", erBlood:"0", erXray:"0", erUS:"1", erMRI:"0", erCT:"1", days:"3", hospBlood:"0", hospXray:"0", hospUS:"0", hospMRI:"0", hospCT:"0", surgeries:"1" },
     costs:{ er_visit:"", specialist_procedure:"", blood_work:"", xray:"", ultrasound:"", mri:"", ct:"", hospital_day:"", surgery:"", dental_cleaning:"", dental_root_canal:"", dental_crown:"" },
-    defaults:{ dental_cleanings_per_year:"2", rx_tier3:"250", part_b_base:"203", part_b_growth:"5.25", part_b_override:"" },
-    view:{ hide:{ s1:false, s2:false, s3:false, s4:false, hsaDetails:false, hsaCost:false }, secHide:{ household:true, costs:true, stress:true, plans:false, settings:true, defaults:false }, showStress:false },
+    defaults:{ dental_cleanings_per_year:"2", rx_tier3:"250", rx_tier4:"", rx_tier5:"", part_b_base:"203", part_b_growth:"5.25", part_b_override:"" },
+    view:{ hide:{ s1:false, s2:false, s3:false, s4:false, hsaDetails:false, hsaCost:false }, secHide:{ household:true, stress:true, plans:false, settings:true, defaults:false }, showStress:false },
     settings:{ family:"9000", self:"4500", catchUp:"1000", minDed:"3500", minDedSelf:"1750", maxOop:"17400", maxOopSelf:"8700", catchAge:"55" }
   };
 }
@@ -726,7 +715,7 @@ function rxShare(set, lines){
 function buildLines(p, h, s, costs, defs){
   costs = costs || {}; defs = defs || {};
   const sv = p.services, pr = k => { const v = numOrNull(p.prices[k]); return v != null ? v : numOrNull(costs[k]); };
-  const psrc = k => numOrNull(p.prices[k]) != null ? "plan details: Evaluator price" : (k === "rx_tier3" ? "Defaults" : "Costs");
+  const psrc = k => numOrNull(p.prices[k]) != null ? "plan details: Evaluator price" : (/^rx_tier[345]$/.test(k) ? "Plan defaults" : "Plan defaults");
   const single = isSingle(h), n1 = p1Name(h), n2 = p2Name(h);
   const normal = [], stress = [];
   const add = (arr, o) => { if (o.n > 0){ if (o.pk) o.psrc = psrc(o.pk); if (o.dk) o.people = single ? 1 : 2; arr.push(o.dk ? mkDental(p, o) : mkLine(p, o)); } };
@@ -751,7 +740,7 @@ function buildLines(p, h, s, costs, defs){
   add(normal, { tag:"ucImg", label:"Urgent care MRI", cs:sv.imaging_ct_pet_mri, n:uc * floorInt(h.ucMRI), nx:uc + " urgent care visit(s) × " + floorInt(h.ucMRI) + " per visit", price:pr("mri"), pk:"mri" });
   add(normal, { tag:"ucImg", label:"Urgent care CT", cs:sv.imaging_ct_pet_mri, n:uc * floorInt(h.ucCT), nx:uc + " urgent care visit(s) × " + floorInt(h.ucCT) + " per visit", price:pr("ct"), pk:"ct" });
   DENTAL_DEFS.forEach(d => add(normal, { tag:"d_" + d.dk, dk:d.dk, prev:d.prev, label:d.label, cs:sv[d.key], n:floorInt(h[d.hk]), price:pr(d.key), pk:d.key, defMax:d.prev ? defs.cleanings : null }));
-  DRUG_DEFS.forEach(d => add(normal, { tag:"rx", label:"Medication tier " + d.t, cs:p.drugs[d.k], n:floorInt(h["rx" + d.t]), price:pr("rx_tier" + d.t), pk:d.t === 3 ? "rx_tier3" : undefined }));
+  DRUG_DEFS.forEach(d => add(normal, { tag:"rx", label:"Medication tier " + d.t, cs:p.drugs[d.k], n:floorInt(h["rx" + d.t]), price:pr("rx_tier" + d.t), pk:d.t >= 3 ? "rx_tier" + d.t : undefined }));
 
   const k = (s.p1 ? 1 : 0) + (!single && s.p2 ? 1 : 0), visits = floorInt(s.er), days = floorInt(s.days), surg = floorInt(s.surgeries);
   const ev = k * visits;
@@ -810,7 +799,7 @@ function evaluate(state, plan){
   const h = state.household, s = state.stress;
   const t = Math.min(Math.max(num(h.taxRate), 0), 100) / 100;
   const dfl = state.defaults || {};
-  const b = buildLines(plan, h, s, Object.assign({}, state.costs, { rx_tier3:dfl.rx_tier3 }), { cleanings:numOrNull(dfl.dental_cleanings_per_year) }), all = b.normal.concat(b.stress);
+  const b = buildLines(plan, h, s, Object.assign({}, state.costs, { rx_tier3:dfl.rx_tier3, rx_tier4:dfl.rx_tier4, rx_tier5:dfl.rx_tier5 }), { cleanings:numOrNull(dfl.dental_cleanings_per_year) }), all = b.normal.concat(b.stress);
   const N = b.normal, X = b.stress;
   const u = { pcp:sumTag(N, "pcp"), spec:sumTag(N, "spec"), proc:sumTag(N, "proc"), imaging:sumTag(N, "img"), blood:sumTag(N, "blood"), xray:sumTag(N, "xray"),
     ucVisit:sumTag(N, "ucVisit"), ucBlood:sumTag(N, "ucBlood"), ucXray:sumTag(N, "ucXray"), ucImg:sumTag(N, "ucImg"), rx:sumTag(N, "rx") };
@@ -874,7 +863,7 @@ function m(n){
 function premText(p, r){
   const mo = num(p.premium.monthly), pb = num(r.partB);
   if (!isMA(p)) return "Monthly premium " + m(mo) + " × 12 months = " + m(r.premium);
-  return "(Plan premium " + m(mo) + (pb ? " + Part B " + m(pb) + (r.partBSrc === "Defaults" ? " (Default for " + planYear(r.plan, state) + ")" : "") : "") + ") × 12 months × " + r.enr + " enrolled " + (r.enr === 1 ? "person" : "people") + " = " + m(r.premium);
+  return "(Plan premium " + m(mo) + (pb ? " + Part B " + m(pb) + (r.partBSrc === "Defaults" ? " (Plan default for " + planYear(r.plan, state) + ")" : "") : "") + ") × 12 months × " + r.enr + " enrolled " + (r.enr === 1 ? "person" : "people") + " = " + m(r.premium);
 }
 function dedText(c){ return c.ded ? "the deductible applies first" : "the deductible does not apply"; }
 function csText(c){
@@ -901,7 +890,7 @@ function dentalCsText(L, d){
 function dentalRowText(rw, d){
   const L = rw.L, price = L.noPrice ? "NO PRICE ENTERED (counted as $0)" : m(L.A) + (L.src ? " (" + L.src + ")" : "");
   return L.label + ": " + L.n + " × " + price + " = " + m(L.S) + "\n   → " + dentalCsText(L, d) +
-    (L.exN > 0 ? "\n   → covered: " + L.cov + " of " + L.n + " (limit " + L.limitPer + " per person a year" + (L.limitDef ? ", from Defaults because the plan states none" : "") + "); the other " + L.exN + " are not covered: " + m(L.exS) : "") + "\n   you pay " + m(rw.pay) +
+    (L.exN > 0 ? "\n   → covered: " + L.cov + " of " + L.n + " (limit " + L.limitPer + " per person a year" + (L.limitDef ? ", from Plan defaults because the plan states none" : "") + "); the other " + L.exN + " are not covered: " + m(L.exS) : "") + "\n   you pay " + m(rw.pay) +
     (rw.over > 0 ? " (" + m(rw.over) + " of it is above the annual maximum)" : "");
 }
 function dentalTip(x, dk){
@@ -1158,7 +1147,7 @@ function planFromSchema(doc, ctx){
   if (numOrNull(hf.max_units) != null && hf.structure === "copay") notes.push("Hospital copay is limited to " + hf.max_units + " " + (hf.unit || "unit") + "(s) per stay; the calculation applies that limit.");
   if (DENTAL_DEFS.some(d => p.services[d.key].structure)) notes.push("Dental: costed outside the medical deductible and out-of-pocket maximum, with the plan's own dental deductible and annual maximum (both per person; a couple gets two).");
   if (isMA(p)) notes.push("Medicare plan: premium is counted per enrolled person (those at or above the Medicare age); the medical deductible and the Part D drug deductible are separate (the drug deductible applies to drug tiers marked “deductible applies”); the prescription out-of-pocket cap limits what you pay for medications; out-of-network costs and the free first 20 skilled-nursing days are recorded but not costed.");
-  if (missing.length) notes.push("Enter the dollar prices in Costs or above under “Evaluator prices” on this card (they are the allowed prices the deductible and coinsurance apply to).");
+  if (missing.length) notes.push("Enter the dollar prices in Plan defaults or above under “Evaluator prices” on this card (they are the allowed prices the deductible and coinsurance apply to).");
   const list = a => Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 20).map(x => x.slice(0, 400)) : [];
   p._import = {
     source: shortStr(id.sbc_id || (Array.isArray(id.source_documents) ? id.source_documents[0] : ""), 120), carrier: shortStr(id.carrier, 80), planYear: shortStr(id.plan_year, 40),
@@ -1248,34 +1237,25 @@ function renderHousehold(){
     pathField("Crowns", "household.dentalCrown", { min:0, step:1 }) + "</div>";
   $("householdBox").innerHTML = html;
 }
-function renderCosts(){
-  const grp = (title, hint, fields) => "<h3>" + title + "</h3>" + (hint ? '<p class="hint" style="margin:0 0 8px">' + hint + "</p>" : "") +
-    '<div class="grid costgrid">' + fields.map(f => pathField(f[0], "costs." + f[1], dollars())).join("") + "</div>";
-  $("costsBox").innerHTML =
-    grp("Visits, hospital and surgery", "", [["ER visit", "er_visit"], ["Specialist procedure", "specialist_procedure"], ["Hospital, per day", "hospital_day"], ["Surgery, per procedure", "surgery"]]) +
-    grp("Tests and imaging", "", [["Labs (blood work), per test", "blood_work"], ["X-ray", "xray"], ["Ultrasound", "ultrasound"], ["MRI", "mri"], ["CT", "ct"]]) +
-    grp("Dental", "", [["Dental cleaning", "dental_cleaning"], ["Dental root canal", "dental_root_canal"], ["Dental crown", "dental_crown"]]);
-}
 function pbPreviewText(){
   const yrs = [2026, 2027, 2028, 2029], ov = numOrNull(state.defaults.part_b_override);
   if (ov != null) return "Override in use: Part B is " + m(ov) + " a month for every plan year.";
   return yrs.map(y => { const v = partBFor(state, y); return y + ": " + (v == null ? "not set" : m(v)); }).join(" · ") + " per month, per enrolled person.";
 }
 function renderDefaults(){
+  const grp = (title, fields) => "<h3>" + title + '</h3><div class="grid costgrid">' + fields.map(f => pathField(f[0], f[1], f[2] || dollars())).join("") + "</div>";
+  const C = (label, k) => [label, "costs." + k];
   $("defaultsBox").classList.toggle("is-hidden", !!state.view.secHide.defaults);
-  $("defaultsBox").innerHTML = '<div class="psec-head"><h3>Defaults</h3>' +
+  $("defaultsBox").innerHTML = '<div class="psec-head"><h3>Plan defaults</h3>' +
     '<label class="chk hidechk no-print"><input type="checkbox" data-defhide="1"' + (state.view.secHide.defaults ? " checked" : "") + '> Hide</label></div><div class="def-body">' +
-    '<p class="hint" style="margin:0 0 4px">Used for any plan that has no value of its own.</p>' +
-    '<h3>Dental</h3><div class="grid costgrid">' +
-    pathField("Cleanings covered per person per year", "defaults.dental_cleanings_per_year", { min:0, step:1 }) + '</div>' +
-    '<p class="hint" style="margin:6px 0 0">Used when a plan\'s dental cleaning has no “Max covered per person per year”. Cleanings above it are not covered.</p>' +
-    '<h3>Medications</h3><div class="grid costgrid">' +
-    pathField("Medication tier 3, per fill", "defaults.rx_tier3", dollars()) + '</div>' +
-    '<p class="hint" style="margin:6px 0 0">Tier 3 applies when a plan has no Evaluator price for it.</p>' +
-    '<div class="ma-set"><h3>Medicare premium</h3><div class="grid costgrid">' +
-    pathField("Part B premium, monthly, in " + PB_BASE_YEAR, "defaults.part_b_base", dollars()) +
-    pathField("Part B yearly increase", "defaults.part_b_growth", { min:0, step:0.01, suf:"%" }) +
-    pathField("Part B override, monthly (optional)", "defaults.part_b_override", dollars()) + '</div>' +
+    '<p class="hint" style="margin:0 0 4px">Your estimate of the <b>allowed price per unit</b> for each service. The deductible and coinsurance are applied to these prices for every plan. A price entered under a plan\'s <b>Evaluator prices</b> overrides it for that plan; if both are blank the app uses the plan\'s copay amount.</p>' +
+    grp("Visits, hospital and surgery", [C("ER visit", "er_visit"), C("Specialist procedure", "specialist_procedure"), C("Hospital, per day", "hospital_day"), C("Surgery, per procedure", "surgery")]) +
+    grp("Tests and imaging", [C("Labs (blood work), per test", "blood_work"), C("X-ray", "xray"), C("Ultrasound", "ultrasound"), C("MRI", "mri"), C("CT", "ct")]) +
+    grp("Dental", [C("Dental cleaning", "dental_cleaning"), C("Dental root canal", "dental_root_canal"), C("Dental crown", "dental_crown"), ["Cleanings covered per person per year", "defaults.dental_cleanings_per_year", { min:0, step:1 }]]) +
+    '<p class="hint" style="margin:6px 0 0">Cleanings covered is used when a plan\'s dental cleaning has no “Max covered per person per year”. Cleanings above it are not covered.</p>' +
+    grp("Medications", [["Medication tier 3, per fill", "defaults.rx_tier3"], ["Medication tier 4, per fill", "defaults.rx_tier4"], ["Medication tier 5, per fill", "defaults.rx_tier5"]]) +
+    '<p class="hint" style="margin:6px 0 0">Tiers 3 to 5 apply when a plan has no Evaluator price for that tier; with neither, the plan\'s copay is used.</p>' +
+    '<div class="ma-set">' + grp("Medicare premium", [["Part B premium, monthly, in " + PB_BASE_YEAR, "defaults.part_b_base"], ["Part B yearly increase", "defaults.part_b_growth", { min:0, step:0.01, suf:"%" }], ["Part B override, monthly (optional)", "defaults.part_b_override"]]) +
     '<p class="hint" style="margin:6px 0 0">Part B is per enrolled person, for Medicare Advantage plans only, when the plan card has no Part B premium. Each plan uses the Part B premium for its own plan year (the base grows by the yearly increase from ' + PB_BASE_YEAR + '); an override replaces that for every year.</p>' +
     '<p class="hint" id="pbPreview" style="margin:4px 0 0"></p></div></div>';
   $("pbPreview").textContent = pbPreviewText();
@@ -1433,7 +1413,7 @@ function planCard(p){
       const sum = x => x.structure === "copay" ? m(num(x.copay_amount)) + " copay" : x.structure === "coinsurance" ? num(x.coinsurance_pct) + "%" : x.structure === "no_charge" ? "$0" : x.structure === "not_covered" ? "not covered" : x.structure === "not_applicable" ? "n/a" : "—";
       return '<div class="svc"><div class="svc-t">' + esc(c.name || c.channel) + (c.days_supply ? " (" + esc(c.days_supply) + "-day supply)" : "") + '</div><p class="hint">' +
         [1,2,3,4,5].map(t => "Tier " + t + ": " + sum(c["tier" + t])).join(" · ") + (c.insulin_cap ? " · Insulin max " + m(num(c.insulin_cap)) : "") + "</p></div>"; }).join("") : '<p class="hint">None recorded.</p>') : "") +
-    sec("prices", "Evaluator prices (your estimates)", "The <b>allowed price</b> per unit that the deductible and coinsurance apply to. A number here overrides the price in Costs for this plan; if both are blank the app uses the copay amount. Services that are only coinsurance need a price here, or they count as $0.",
+    sec("prices", "Evaluator prices (your estimates)", "The <b>allowed price</b> per unit that the deductible and coinsurance apply to. A number here overrides the price in Plan defaults for this plan; if both are blank the app uses the copay amount. Services that are only coinsurance need a price here, or they count as $0.",
       '<div class="grid">' + PRICE_DEFS.map(d => pf(d[1], "prices." + d[0], dollars())).join("") + '</div><div class="grid wide">' +
       pa("Notes on your estimates (one per line)", "evaluator_notes", 3) + "</div>") +
     sec("lists", "Excluded and other covered services", "", '<div class="grid wide">' +
@@ -1472,7 +1452,7 @@ function applyStress(){
 }
 function renderAll(){
   applyStress();
-  renderViewOpts(); renderHousehold(); renderCosts(); renderDefaults(); renderPlans(); renderStress(); renderSettings(); applySecHide(); renderResults();
+  renderViewOpts(); renderHousehold(); renderDefaults(); renderPlans(); renderStress(); renderSettings(); applySecHide(); renderResults();
 }
 
 /* ---------- line-item detail tab ---------- */
@@ -1487,7 +1467,7 @@ function lineDetail(L, x){
 }
 function detTipsDental(L, x, d){
   const T = {}, c = L.cs, dn = x.dental, rw = dn.rows.find(q => q.L === L) || { over:0 };
-  T.units = (L.n ? "Planned " + L.n + " (from your annual dental needs in Household)" : "") + (L.exN > 0 ? "\nThe plan covers " + L.limitPer + " per person a year" + (L.limitDef ? " (the Default, because the plan states no limit)" : "") + " (" + L.cov + " of the " + L.n + "). The other " + L.exN + " are not covered: you pay " + m(L.exS) + " for them." : "");
+  T.units = (L.n ? "Planned " + L.n + " (from your annual dental needs in Household)" : "") + (L.exN > 0 ? "\nThe plan covers " + L.limitPer + " per person a year" + (L.limitDef ? " (the Plan default, because the plan states no limit)" : "") + " (" + L.cov + " of the " + L.n + "). The other " + L.exN + " are not covered: you pay " + m(L.exS) + " for them." : "");
   T.each = L.noPrice ? "No price entered and the plan gives no copay, so this is counted as $0." : "Allowed price per unit: " + m(L.A) + (L.src ? "\nSource: " + L.src : "");
   T.total = L.n + " units × " + m(L.A) + " = " + m(L.S);
   T.ded = c.ded && dn.D > 0 && c.st !== "not_covered" ? "Dental deductible " + m(dn.D) + " (per person × people covered), shared in the order cleanings, root canals, crowns. This line uses " + m(d.ded) + " of it." : "No dental deductible applies to this line.";
@@ -1574,7 +1554,7 @@ function renderDetail(){
       "<div class=\"pay\" data-tip=\"" + esc("Premium " + m(prem) + " + what you pay " + m(you) + " = " + m(prem + you)) + "\" tabindex=\"0\">You pay + premium: <b>" + m(prem + you) + "</b></div></div>" +
     '<div class="tablewrap"><table class="res det"><thead><tr><th class="l">Service / medication</th><th>Units</th><th>Base cost each</th><th>Base cost total</th><th class="l">Insurance coverage</th><th>Deductible used</th><th>You pay</th><th>Insurance pays</th></tr></thead><tbody>' +
     rows + foot + "</tbody></table></div>" +
-    '<p class="hint mt10">Base cost is the allowed price: the plan\'s own Evaluator price, else your cost in Costs, else the copay. “Deductible used” is the part of your payment that goes toward the deductible. Services that are not covered are paid in full and sit outside the out-of-pocket maximum. Dental has its own deductible and annual maximum and also sits outside the medical out-of-pocket maximum.</p>';
+    '<p class="hint mt10">Base cost is the allowed price: the plan\'s own Evaluator price, else your Plan default, else the copay. “Deductible used” is the part of your payment that goes toward the deductible. Services that are not covered are paid in full and sit outside the out-of-pocket maximum. Dental has its own deductible and annual maximum and also sits outside the medical out-of-pocket maximum.</p>';
 }
 const tabScroll = { main:0, detail:0 };
 function setTab(t){
@@ -1866,12 +1846,12 @@ function renderResultsMain(){
   if (maEvs.length){
     notices.push(["info", lim.medicare ? "Medicare plan premiums are counted for " + lim.medicare + " enrolled " + (lim.medicare === 1 ? "person" : "people") + " (those at or above the Medicare age)." :
       "No one in the household is at or above the Medicare age, so Medicare Advantage plans may not be available yet. Premiums are counted for every person."]);
-    maEvs.forEach(e => notices.push(["info", (e.partB == null ? "No Part B premium is entered (plan card or Defaults), so it is not counted. " : "") +
+    maEvs.forEach(e => notices.push(["info", (e.partB == null ? "No Part B premium is entered (plan card or Plan defaults), so it is not counted. " : "") +
       (drugCap(e.plan) > 0 ? "" : "No prescription out-of-pocket cap is entered, so medication costs are not capped. ") +
       "Out-of-network costs and the free first 20 skilled-nursing days are not modeled.", e]));
   }
   if (isSingle(state.household)) evs.filter(e => singleEstimates(e.plan).length).forEach(e => notices.push(["info", "no " + esc(singleEstimates(e.plan).join(" or ")) + " is entered, so half the family amount is used for a single person. Enter the individual amount on the plan card for an exact result.", e]));
-  evs.filter(e => e.missing.length).forEach(e => notices.push(["", "no price is entered for " + esc(e.missing.join(", ")) + ", so " + (e.missing.length === 1 ? "it counts" : "they count") + " as $0. Enter the price in Costs or under “Evaluator prices” on the plan card.", e]));
+  evs.filter(e => e.missing.length).forEach(e => notices.push(["", "no price is entered for " + esc(e.missing.join(", ")) + ", so " + (e.missing.length === 1 ? "it counts" : "they count") + " as $0. Enter the price in Plan defaults or under “Evaluator prices” on the plan card.", e]));
   evs.filter(e => e.dentalUnset.length).forEach(e => notices.push(["", "no dental cost share is entered for " + esc(e.dentalUnset.join(", ").toLowerCase()) + ", so " + (e.dentalUnset.length === 1 ? "it counts" : "they count") + " as not covered (you pay the full price). Enter it under “Services: dental” on the plan card.", e]));
   /* Same wording for several plans -> one notice naming them (short names, full name on hover). */
   const nameTip = list => esc(list.map(e => pn(e.plan) || "(unnamed plan)").join("\n"));

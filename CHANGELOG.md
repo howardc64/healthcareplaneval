@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.30.0] - 2026-10-28
+
+### Changed
+- **Defaults is now "Plan defaults" and holds every cost item.** The separate Costs section is gone. Its prices (visits, hospital and surgery; tests and imaging; dental) are in Plan defaults, grouped with the dental cleanings limit, the medication tier prices and the Medicare premium. Saved files are unchanged: the prices are still stored under `costs`, so old files open and give the same results.
+
+### Added
+- **Medication tier 4 and tier 5 prices per fill** in Plan defaults (blank by default). They apply when a plan has no Evaluator price for that tier; with neither, the plan's copay is used, as before.
+
 ## [2.29.0] - 2026-10-28
 
 ### Changed

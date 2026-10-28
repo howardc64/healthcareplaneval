@@ -1,7 +1,7 @@
 {
   "app": "health-plan-evaluator",
-  "version": "2.29.0",
-  "savedAt": "2026-10-28T06:21:19.775Z",
+  "version": "2.30.0",
+  "savedAt": "2026-10-28T17:01:27.976Z",
   "state": {
     "household": {
       "status": "married",
@@ -40,7 +40,7 @@
     },
     "plans": [
       {
-        "id": "plmvrq7ail18",
+        "id": "plmvsd2tpf14",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -919,7 +919,7 @@
         }
       },
       {
-        "id": "plmvrq7ail20",
+        "id": "plmvsd2tpf16",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -1832,6 +1832,8 @@
     "defaults": {
       "dental_cleanings_per_year": "2",
       "rx_tier3": "250",
+      "rx_tier4": "",
+      "rx_tier5": "",
       "part_b_base": "203",
       "part_b_growth": "5.25",
       "part_b_override": ""
@@ -1847,7 +1849,6 @@
       },
       "secHide": {
         "household": true,
-        "costs": true,
         "stress": false,
         "plans": true,
         "settings": true,
