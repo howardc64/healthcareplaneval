@@ -21,22 +21,29 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
 /* Sticky blue top pane; every rule inside is scoped to it (CSS nesting). */
 header.top{
-  background:var(--head);color:var(--brand-ink);padding:14px 20px;position:sticky;top:0;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,.15);
+  background:var(--head);color:var(--brand-ink);padding:8px 20px 0;position:sticky;top:0;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,.15);
   & .row{max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
-  & .row.filerow{justify-content:flex-start;gap:6px;margin-top:4px;font-size:12px;opacity:.9}
-  & h1{margin:0;font-size:20px}
-  & button{border-color:rgba(255,255,255,.5);background:var(--w12);color:#fff}
+  & .row.filerow{justify-content:flex-start;gap:6px;margin-top:0;font-size:11px;line-height:1.3;opacity:.9}
+  & h1{margin:0;font-size:18px}
+  & button{border-color:rgba(255,255,255,.5);background:var(--w12);color:#fff;padding:3px 10px;font-size:13px}
+  & .toolbar{gap:6px;align-items:center}
   & button:hover{background:var(--w25)}
-  & .bars{max-width:1240px;margin:8px auto 0;padding-top:8px;border-top:1px solid var(--w28);max-height:38vh;overflow-y:auto}
-  & .legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;color:rgba(255,255,255,.85);margin:0 0 4px}
+  & .bars{max-width:1240px;margin:4px auto 0;padding:4px 0 2px;border-top:1px solid var(--w28);max-height:34vh;overflow-y:auto}
+  & .barsum{display:none;max-width:1240px;margin:4px auto 0;padding:4px 0 6px;border-top:1px solid var(--w28);font-size:13px;flex-wrap:wrap;gap:2px 18px;align-items:baseline}
+  & .barsum b{font-weight:700}
+  & .barsum .sv1{color:var(--hbar1)}
+  & .barsum .sv2{color:var(--hbar2)}
+  &.collapsed .bars{display:none}
+  &.collapsed .barsum{display:flex}
+  & .legend{display:flex;flex-wrap:wrap;gap:0 14px;font-size:11px;line-height:16px;color:rgba(255,255,255,.85);margin:0 0 2px}
+  & .legend span[data-tip]{text-decoration:none}
   & .legend .l1::before{background:var(--hbar1)}
   & .legend .l2::before{background:var(--hbar2)}
-  & .legend .lnote{margin-left:auto;opacity:.8}
-  & .brow{display:grid;grid-template-columns:190px 1fr;gap:10px;align-items:center;margin:4px 0}
-  & .bn{display:flex;align-items:center;gap:4px;min-width:0;font-weight:600;font-size:13px;color:#fff}
+    & .brow{display:grid;grid-template-columns:190px 1fr;gap:10px;align-items:center;margin:0;padding:2px 0;min-height:30px;box-sizing:content-box}
+  & .bn{display:flex;align-items:center;gap:4px;min-width:0;font-weight:600;font-size:12px;color:#fff}
   & .bn .tag{background:rgba(255,255,255,.9);color:var(--head)}
-  & .bn .pname{max-width:150px;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;vertical-align:baseline}
-  & .bl{display:flex;align-items:center;gap:8px;margin:1px 0}
+  & .bn .pname{max-width:175px;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.2;vertical-align:baseline}
+  & .bl{display:flex;align-items:center;gap:8px;margin:0;line-height:15px}
   & .bsel{flex:0 0 auto;width:14px;height:14px;margin:0;accent-color:#fff;cursor:pointer}
   & .btrack{flex:1 1 auto;min-width:0;display:flex;align-items:center}
   & .bx{position:absolute;left:0;top:0;bottom:0;width:0;transition:width var(--bar-anim);--hc:var(--w55);background-image:radial-gradient(circle,var(--hc) 0 1.3px,transparent 1.6px);background-size:7px 100%;background-position:0 center;background-repeat:repeat-x;cursor:help}
@@ -64,9 +71,9 @@ header.top{
   & .bv{flex:0 0 auto;width:74px;font-size:12px;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;text-decoration:none;text-underline-offset:3px}
   & .bv[data-tip]{text-decoration:underline dotted var(--w60)}
   & .baxis{position:sticky;bottom:0;background:var(--head);display:grid;grid-template-columns:190px 1fr;gap:10px;margin-top:2px;padding-top:2px}
-  & .baxis .ax{position:relative;height:22px;margin-right:174px;margin-left:22px;border-top:1px solid var(--w35)}
+  & .baxis .ax{position:relative;height:18px;margin-right:174px;margin-left:22px;border-top:1px solid var(--w35)}
   & .baxis .tk{position:absolute;top:0;width:1px;height:5px;background:var(--w55)}
-  & .baxis .tl{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.7);white-space:nowrap;font-variant-numeric:tabular-nums}
+  & .baxis .tl{position:absolute;top:5px;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.7);white-space:nowrap;font-variant-numeric:tabular-nums}
   & .bars-empty{font-size:13px;opacity:.9;margin:2px 0}
   @media(max-width:640px){& .brow{grid-template-columns:1fr;gap:2px}& .baxis{grid-template-columns:1fr}}
   @media(prefers-reduced-motion:reduce){& .b{transition:none}}
@@ -74,8 +81,12 @@ header.top{
   & button.flash-bad{background:#c0392b!important;border-color:#ff9d92!important;color:#fff!important}
   & #fileName.flash{animation:fnflash 1.8s ease-out}
   @media (prefers-reduced-motion:reduce){& #fileName.flash{animation:none}}
-  & .tabs{max-width:1240px;margin:8px auto 0;padding:0;display:flex;gap:6px;border-bottom:1px solid var(--w35)}
-  & .tabs button{border:1px solid var(--w35);border-bottom:0;border-radius:8px 8px 0 0;background:var(--w12);color:#fff;padding:6px 16px;margin-bottom:-1px}
+  & .tabbar{max-width:1240px;margin:4px auto 0;display:flex;align-items:flex-end;gap:12px;border-bottom:1px solid var(--w35)}
+  & .tabs{display:flex;gap:6px;margin:0;padding:0}
+  & .tabtools{margin-left:auto;display:flex;align-items:center;gap:8px;padding-bottom:3px;font-size:12px}
+  & .tabtools a{color:#fff;opacity:.9}
+  & .tabtools button{padding:2px 10px;font-size:12px}
+  & .tabs button{border:1px solid var(--w35);border-bottom:0;border-radius:8px 8px 0 0;background:var(--w12);color:#fff;padding:4px 14px;margin-bottom:-1px}
   & .tabs button:hover{background:var(--w25)}
   & .tabs button.active{background:var(--card);font-weight:700;color:var(--brand);border-color:var(--card)}
 }
@@ -116,6 +127,17 @@ h3{font-size:14px;margin:14px 0 8px;text-transform:uppercase;letter-spacing:.04e
 .tag{display:inline-block;padding:1px 8px;border-radius:99px;font-size:12px;background:var(--good-bg);color:var(--good);margin-left:6px}
 #notices .note{background:var(--warn-bg);color:var(--warn);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:14px}
 #notices .note.info{background:var(--info-bg);color:var(--info-ink)}
+#notices .note .pname{max-width:none;white-space:normal;overflow:visible;vertical-align:baseline;text-decoration:underline dotted currentColor;text-underline-offset:3px}
+#notices .note .pname[data-tip]{text-decoration:underline dotted currentColor}
+body.no-hsa .hsa-tax{display:none}
+#secResults{scroll-margin-top:calc(var(--hdr,160px) + 8px)}
+.rowsmenu{position:relative}
+.rowsmenu>summary{display:inline-block;list-style:none;border:1px solid var(--line);background:var(--field);border-radius:7px;padding:4px 12px;font-weight:500;cursor:pointer}
+.rowsmenu>summary::-webkit-details-marker{display:none}
+.rowsmenu>summary::after{content:" ▾"}
+.rowsmenu .menu{position:absolute;z-index:6;top:calc(100% + 4px);left:0;min-width:230px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;box-shadow:0 6px 18px rgba(0,0,0,.2);display:grid;gap:6px}
+.toolbar .sep{margin-left:18px}
+body:not(.stress-on) .stress-only, body:not(.stress-on) #secStress{display:none!important}
 /* Table frames fit the space left under the sticky blue panel (--hdr is set by script), so a whole table,
    header row included, can be on screen at once and its header never slides behind the panel. */
 .tablewrap{--avail:calc(100vh - var(--hdr,160px) - 28px);overflow:auto;max-height:max(220px,var(--avail));scroll-margin-top:calc(var(--hdr,160px) + 8px)}
@@ -159,6 +181,7 @@ details summary{cursor:pointer;font-weight:600}
 .import-note button{float:right;padding:2px 8px;font-size:12px}
 .pname{display:inline-block;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
 .pname[data-tip]{text-decoration:none}
+table.res thead .pname{max-width:170px;white-space:normal;overflow:visible;text-overflow:clip;vertical-align:baseline}
 .viewopts{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin:0 0 10px;font-size:13px}
 .viewopts b{color:var(--muted);font-weight:600}
 .plan-head .actions{flex-wrap:wrap}
@@ -191,8 +214,10 @@ table.det td.cov{text-align:left;white-space:normal;color:var(--muted);font-size
 table.det td.unk{color:var(--bad)}
 table.det .src{display:block;font-size:11px;color:var(--muted)}
 table.det tr.cap td,table.det tr.cap th{color:var(--muted);font-style:italic}
-.detsum{display:flex;flex-wrap:wrap;gap:8px 24px;margin:12px 0;font-size:14px}
+.detsum{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px 12px;margin:12px 0;font-size:14px}
 .detsum div{background:var(--tint3);border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+.detsum div.lead{grid-column:1/-1}
+.detsum div.pay{border-color:var(--brand);font-weight:700}
 .plan{position:relative}
 .plan-hide{position:absolute;top:10px;right:14px;z-index:1}
 .plan-head{padding-right:72px}
@@ -230,15 +255,23 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
       <button type="button" id="btnExample">Load example</button>
       <button type="button" id="btnPrint">Print</button>
       <button type="button" id="btnPrintRes">Print results only</button>
-      <button type="button" id="btnReset">Reset</button>
+      <button type="button" id="btnStress" aria-pressed="false" title="Show or hide the stress scenario (section 3, the second bar, the stress rows)">Stress scenario: off</button>
+      <button type="button" id="btnReset" class="sep" title="Clear all inputs and plans (asks to confirm)">Reset…</button>
       <input type="file" id="fileIn" accept="application/json,.json" hidden>
     </div>
   </div>
   <div class="row filerow">Current file: <span id="fileName">none (use Save as… to choose a location and name)</span></div>
-  <nav class="tabs no-print" role="tablist">
-  <button type="button" class="active" role="tab" data-tab="main" id="tabBtnMain">Evaluator</button>
-  <button type="button" role="tab" data-tab="detail" id="tabBtnDetail">Line-item detail</button>
+  <div class="tabbar no-print">
+  <nav class="tabs" role="tablist" aria-label="Views">
+  <button type="button" class="active" role="tab" data-tab="main" id="tabBtnMain" aria-selected="true" aria-controls="tabMain" tabindex="0">Evaluator</button>
+  <button type="button" role="tab" data-tab="detail" id="tabBtnDetail" aria-selected="false" aria-controls="tabDetail" tabindex="-1">Line-item detail</button>
   </nav>
+  <div class="tabtools">
+    <a href="#secResults" id="jumpRes">Jump to results ↓</a>
+    <button type="button" id="btnPane" aria-expanded="true" aria-controls="bars" title="Shrink the blue pane to one row">▴ Collapse</button>
+  </div>
+  </div>
+  <div id="barsum" class="barsum" aria-live="polite"></div>
   <div id="bars" class="bars" aria-live="polite"></div>
 </header>
 
@@ -246,7 +279,7 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
   <div class="printhead"><h1 class="m0">Health Plan Evaluator</h1><div id="printDate"></div></div>
   <p id="status" role="status" aria-live="polite"></p>
 
-  <div id="tabMain">
+  <div id="tabMain" role="tabpanel" aria-labelledby="tabBtnMain">
   <section class="card not-results" id="secHousehold" data-sechide="household">
     <div class="sec-head"><h2>1. Household annual health needs</h2>
       <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="household"> Hide</label></div>
@@ -260,7 +293,7 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
     <div class="sec-head"><h2>2. Costs</h2>
       <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="costs"> Hide</label></div>
     <div class="sec-body">
-    <p class="hint">Your estimate of the <b>allowed price per unit</b> for each service. The deductible and coinsurance are applied to these prices for every plan. A price entered under a plan's <b>Evaluator prices</b> overrides it for that plan; if both are blank the app uses the plan's copay amount.</p>
+    <p class="hint">Your estimate of the <b>allowed price per unit</b> for each service. The deductible and coinsurance are applied to these prices for every plan. A price entered under a plan's <b>Evaluator prices</b> overrides it for that plan; if both are blank the app uses the plan's copay amount. Every field here fills in for any plan that has no value of its own: the tier 3 fill price and the Part B premium (Medicare plans only) are used by each plan whose own field is empty.</p>
     <div id="costsBox"></div>
     </div>
   </section>
@@ -303,7 +336,7 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
   </section>
   </div>
 
-  <div id="tabDetail" hidden>
+  <div id="tabDetail" role="tabpanel" aria-labelledby="tabBtnDetail" hidden>
     <section class="card" id="secDetail">
       <h2>Line-item detail</h2>
       <p class="hint">Tick the checkbox at the start of a bar in the header to choose the plan and scenario shown here. Every service and medication in your annual needs for one plan: the base (allowed) cost, how the plan covers it, how much of the deductible it uses, what you pay and what the insurer pays. Each row is one kind of service with its number of units; the deductible is shared across rows in proportion to their allowed price, as in the results.</p>
@@ -316,7 +349,7 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
 
 <script>
 "use strict";
-const APP_VERSION = "2.19.2";
+const APP_VERSION = "2.23.1";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -379,7 +412,16 @@ const SERVICE_DEFS = [
   { k:"mammogram", l:"Mammogram", g:"svcTests" },
   { k:"colonoscopy_preventive_diagnostic", l:"Colonoscopy, preventive or diagnostic", g:"svcFacility" },
   { k:"diabetic_supplies", l:"Diabetic supplies (meters and medical supplies)", g:"svcOther" },
-  { k:"continuous_glucose_monitor", l:"Continuous glucose monitor", g:"svcOther" }
+  { k:"continuous_glucose_monitor", l:"Continuous glucose monitor", g:"svcOther" },
+  { k:"dental_cleaning", l:"Dental cleaning", g:"svcDental", used:true },
+  { k:"dental_root_canal", l:"Dental root canal", g:"svcDental", used:true },
+  { k:"dental_crown", l:"Dental crown", g:"svcDental", used:true }
+];
+/* Dental needs: hk = household count, key = service and price key. Cleaning is preventive dental. */
+const DENTAL_DEFS = [
+  { dk:"cleaning", key:"dental_cleaning", hk:"dentalCleaning", label:"Dental cleanings", one:"Dental cleaning", prev:true },
+  { dk:"root", key:"dental_root_canal", hk:"dentalRoot", label:"Dental root canals", one:"Dental root canal" },
+  { dk:"crown", key:"dental_crown", hk:"dentalCrown", label:"Dental crowns", one:"Dental crown" }
 ];
 /* Medicare Advantage: services recorded with out-of-network cost shares, supplemental benefits */
 const OON_KEYS = ["preventive_care","annual_physical","primary_care_visit","specialist_visit","lab_test","xray_diagnostic_imaging","diagnostic_procedure","imaging_ct_pet_mri","outpatient_surgery_facility","hospital_facility","mental_health_outpatient_office","home_health","skilled_nursing","durable_medical_equipment","emergency_transport"];
@@ -395,6 +437,7 @@ const PRICE_DEFS = [
   ["primary_care_visit","Primary care visit"], ["specialist_visit","Specialist visit"], ["urgent_care_visit","Urgent care visit"],
   ["specialist_procedure","Specialist procedure"], ["blood_work","Blood work"], ["xray","X-ray"], ["ultrasound","Ultrasound"],
   ["mri","MRI"], ["ct","CT"], ["er_visit","ER visit"], ["hospital_day","Hospital day"], ["surgery","Surgery (facility + surgeon, per procedure)"],
+  ["dental_cleaning","Dental cleaning"], ["dental_root_canal","Dental root canal"], ["dental_crown","Dental crown"],
   ["rx_tier1","Medication tier 1, per fill"], ["rx_tier2","Medication tier 2, per fill"], ["rx_tier3","Medication tier 3, per fill"],
   ["rx_tier4","Medication tier 4, per fill"], ["rx_tier5","Medication tier 5, per fill"]
 ];
@@ -404,6 +447,7 @@ const SECTION_DEFS = [
   ["svcVisits","Services: office, urgent and virtual care"], ["svcTests","Services: tests and imaging"],
   ["svcFacility","Services: surgery, emergency and hospital"], ["svcMental","Services: mental health and maternity"],
   ["svcOther","Services: rehab, home care, equipment and children's"],
+  ["svcDental","Services: dental (cleaning, root canal, crown)"],
   ["medicare","Medicare facts"], ["supp","Supplemental benefits (dental, vision, hearing, fitness)"], ["oon","Out-of-network cost shares"],
   ["drugs","Prescription drugs"], ["channels","Pharmacy channels"], ["prices","Evaluator prices (your estimates)"],
   ["lists","Excluded and other covered services"], ["examples","SBC coverage examples"], ["extraction","Extraction notes"],
@@ -428,7 +472,7 @@ function blankPlan(id){
     identity:{ name:"New plan", carrier:"", state:"", plan_year:"", coverage_start:"", coverage_end:"", metal_level:"", plan_type:"", hsa_eligible:false, sbc_id:"", source_documents:"", plan_category:"marketplace", plan_id:"", medicare_coverage_type:"", service_area:"" },
     network:{ out_of_network_covered:"", primary_care_provider_required:"", specialist_referral_required:"", emergency_out_of_network_pays_in_network_rates:"" },
     premium:{ monthly:"", estimated_yearly_cost:"", note:"", part_b_monthly:"" },
-    limits:{ deductible_individual:"", deductible_family:"", deductible_embedded:"", separate_service_deductibles:"", oop_max_individual:"", oop_max_family:"", coinsurance_member_pct:"20", not_counted_toward_oop_max:"", deductible_out_of_network:"", oop_max_combined:"", drug_deductible_amount:"", drug_oop_max:"" },
+    limits:{ deductible_individual:"", deductible_family:"", deductible_embedded:"", separate_service_deductibles:"", oop_max_individual:"", oop_max_family:"", coinsurance_member_pct:"20", not_counted_toward_oop_max:"", deductible_out_of_network:"", oop_max_combined:"", drug_deductible_amount:"", drug_oop_max:"", dental_deductible:"", dental_annual_max:"", dental_preventive_counts_toward_max:"" },
     services:services, out_of_network_services:oon, supplemental_benefits:supp, pharmacy_channels:[],
     medicare:{ star_rating:"", includes_part_d:"", eligibility_note:"", extra_help_note:"", visitor_traveler_program:"", agent_phone:"", plan_page_url:"", annual_enrollment_period:"" },
     drugs:drugs, excluded_services:"", other_covered_services:"", coverage_examples:[],
@@ -474,11 +518,11 @@ function defaultState(){
     household:{ status:"married", p1:{name:"Spouse 1",age:""}, p2:{name:"Spouse 2",age:""}, taxRate:"24",
       pcp1:"", pcp2:"", spec:"", proc:"", us:"", mri:"", ct:"", bloodWork:"", xray:"",
       ucVisits:"", ucBlood:"", ucXray:"", ucUS:"", ucMRI:"", ucCT:"",
-      rx5:"", rx4:"", rx3:"", rx2:"", rx1:"" },
+      rx5:"", rx4:"", rx3:"", rx2:"", rx1:"", dentalCleaning:"", dentalRoot:"", dentalCrown:"" },
     plans:[],
     stress:{ p1:true, p2:false, er:"1", erBlood:"0", erXray:"0", erUS:"1", erMRI:"0", erCT:"1", days:"3", hospBlood:"0", hospXray:"0", hospUS:"0", hospMRI:"0", hospCT:"0", surgeries:"1" },
-    costs:{ er_visit:"", specialist_procedure:"", blood_work:"", xray:"", ultrasound:"", mri:"", ct:"", hospital_day:"", surgery:"" },
-    view:{ hide:{ s1:false, s2:false, s3:false, s4:false, hsaDetails:false, hsaCost:false }, secHide:{ household:true, costs:true, stress:true } },
+    costs:{ er_visit:"", specialist_procedure:"", blood_work:"", xray:"", ultrasound:"", mri:"", ct:"", hospital_day:"", surgery:"", dental_cleaning:"", dental_root_canal:"", dental_crown:"", rx_tier3:"", part_b_monthly:"" },
+    view:{ hide:{ s1:false, s2:false, s3:false, s4:false, hsaDetails:false, hsaCost:false }, secHide:{ household:true, costs:true, stress:true }, showStress:false },
     settings:{ year:"2027", family:"9000", self:"4500", catchUp:"1000", minDed:"3500", minDedSelf:"1750", maxOop:"17400", maxOopSelf:"8700", catchAge:"55", medicareAge:"65", taxFull:false }
   };
 }
@@ -556,12 +600,60 @@ function mkLine(p, o){
   }
   return { nx:o.nx || "", tag:o.tag, label:o.label, n:n, charged:charged, A:a, src:src, noPrice:noPrice, cs:c, cls:cls, S:S, first:first, Q:Q };
 }
+/* ---------- dental ----------
+   Dental is paid outside the medical deductible and the medical out-of-pocket maximum. It has its own optional deductible and annual
+   maximum (what the plan pays; you pay everything above it), both per person (a couple gets two). A dental service with no cost share
+   entered counts as not covered. */
+function mkDental(p, o){
+  let cs = o.cs || {};
+  const unset = !cs.structure || cs.structure === "unknown";
+  if (unset) cs = Object.assign({}, cs, { structure:"not_covered" });
+  /* "Max units" on a dental service is the number the plan covers per person per year (for example 2 cleanings).
+     Units above (max × people) are not covered: you pay their full price, outside the annual maximum. */
+  const mx = numOrNull(cs.max_units), covered = cs.structure === "copay" || cs.structure === "no_charge" || cs.structure === "coinsurance";
+  const limit = (covered && mx != null && mx > 0) ? Math.floor(mx) * Math.max(o.people || 1, 1) : 0;
+  const cov = limit > 0 ? Math.min(o.n, limit) : o.n;
+  const L = mkLine(p, Object.assign({}, o, { cs:Object.assign({}, cs, { max_units:"" }), n:cov }));
+  L.n = o.n; L.cov = cov; L.exN = o.n - cov; L.exS = L.A * L.exN; L.S = L.A * o.n;
+  L.limitPer = limit > 0 ? Math.floor(mx) : 0; L.limitAll = limit;
+  L.cls = "dental"; L.dk = o.dk; L.unset = unset; L.prev = !!o.prev;
+  return L;
+}
+function settleDental(p, lines, single){
+  const k = single ? 1 : 2, lim = p.limits;
+  const D = Math.max(0, num(lim.dental_deductible)) * k, Mx = Math.max(0, num(lim.dental_annual_max)) * k;
+  const prevCounts = lim.dental_preventive_counts_toward_max === "true";
+  let Drem = D, planPaid = 0;
+  const out = { rows:[], pay:0, S:0, ins:0, ded:0, over:0, D:D, Mx:Mx, prevCounts:prevCounts };
+  lines.forEach(L => {
+    const c = L.cs; let pay = 0, ded = 0, ins = 0, over = 0;
+    const exS = L.exS || 0, covS = L.S - exS; /* covS: units the plan covers; exS: units above the yearly limit, paid in full */
+    if (c.st === "not_covered") pay = L.S;
+    else if (c.st === "no_charge" || c.st === "not_applicable") ins = covS;
+    else {
+      ded = c.ded ? Math.min(covS, Drem) : 0; Drem -= ded;
+      const rest = covS - ded;
+      const share = c.st === "copay" ? Math.min(rest, (c.cop == null ? 0 : c.cop) * L.charged) : c.pct / 100 * rest;
+      pay = ded + share; ins = covS - pay;
+    }
+    if (c.st !== "not_covered" && ins > 0 && (!L.prev || prevCounts)){
+      if (Mx > 0){ const room = Math.max(0, Mx - planPaid), kept = Math.min(ins, room); over = ins - kept; ins = kept; pay += over; }
+      planPaid += ins;
+    }
+    if (c.st !== "not_covered") pay += exS;
+    out.rows.push({ L:L, ded:ded, pay:pay, ins:ins, over:over });
+    out.pay += pay; out.S += L.S; out.ins += ins; out.ded += ded; out.over += over;
+  });
+  out.planPaid = planPaid;
+  return out;
+}
 /* Deductible and max out-of-pocket are family amounts for a couple, individual amounts for a single person.
    The deductible is shared by the "ded" lines in proportion to their allowed price. */
 function settle(p, lines, single){
   const split = isMA(p);
   const Dm = planDed(p, single), Dr = split ? drugDedTotal(p, single) : 0, M = planOop(p, single), R = split ? drugCapTotal(p, single) : 0;
   let first = 0, firstRx = 0, Sm = 0, Qm = 0, Sr = 0, Qr = 0, nc = 0, gross = 0;
+  const dent = settleDental(p, lines.filter(L => L.cls === "dental"), single);
   lines.forEach(L => {
     gross += L.S;
     if (L.cls === "first"){ first += L.first; if (L.tag === "rx") firstRx += L.first; }
@@ -576,7 +668,7 @@ function settle(p, lines, single){
   const rxRaw = firstRx + fr * Sr + (1 - fr) * Qr, rxPaid = R > 0 ? Math.min(rxRaw, R) : rxRaw, rxOver = rxRaw - rxPaid, kr = rxRaw > 0 ? rxPaid / rxRaw : 1;
   const raw = rawPre - rxOver;
   const capped = M > 0 ? Math.min(raw, M) : raw;
-  return { split:split, D:D, Dm:Dm, Dr:Dr, M:M, first:first, S:S, Sm:Sm, Sr:Sr, Q:Q, fm:fm, fr:fr, f:fm, dedPart:dedPart, dedMed:fm * Sm, dedRx:fr * Sr, after:after, rawPre:rawPre, R:R, rxRaw:rxRaw, rxOver:rxOver, kr:kr, raw:raw, capped:capped, nc:nc, total:capped + nc, gross:gross };
+  return { split:split, D:D, Dm:Dm, Dr:Dr, M:M, first:first, S:S, Sm:Sm, Sr:Sr, Q:Q, fm:fm, fr:fr, f:fm, dedPart:dedPart, dedMed:fm * Sm, dedRx:fr * Sr, after:after, rawPre:rawPre, R:R, rxRaw:rxRaw, rxOver:rxOver, kr:kr, raw:raw, capped:capped, nc:nc, dental:dent, ncAll:nc + dent.pay, total:capped + nc + dent.pay, gross:gross };
 }
 /* How much of what you pay (after the out-of-pocket cap) is for medications, and per medication tier. */
 const fOf = (set, L) => set.split && L.tag === "rx" ? set.fr : set.fm;
@@ -599,7 +691,7 @@ function buildLines(p, h, s, costs){
   const psrc = k => numOrNull(p.prices[k]) != null ? "plan details: Evaluator price" : "Costs section (2)";
   const single = isSingle(h), n1 = p1Name(h), n2 = p2Name(h);
   const normal = [], stress = [];
-  const add = (arr, o) => { if (o.n > 0){ if (o.pk) o.psrc = psrc(o.pk); arr.push(mkLine(p, o)); } };
+  const add = (arr, o) => { if (o.n > 0){ if (o.pk) o.psrc = psrc(o.pk); if (o.dk) o.people = single ? 1 : 2; arr.push(o.dk ? mkDental(p, o) : mkLine(p, o)); } };
   const pv = sv.primary_care_visit, firstN = floorInt(pv.first_count);
   (single ? [[h.pcp1, n1]] : [[h.pcp1, n1], [h.pcp2, n2]]).forEach(x => {
     const v = floorInt(x[0]), a = Math.min(v, firstN);
@@ -620,6 +712,7 @@ function buildLines(p, h, s, costs){
   add(normal, { tag:"ucImg", label:"Urgent care ultrasound", cs:sv.imaging_ct_pet_mri, n:uc * floorInt(h.ucUS), nx:uc + " urgent care visit(s) × " + floorInt(h.ucUS) + " per visit", price:pr("ultrasound"), pk:"ultrasound" });
   add(normal, { tag:"ucImg", label:"Urgent care MRI", cs:sv.imaging_ct_pet_mri, n:uc * floorInt(h.ucMRI), nx:uc + " urgent care visit(s) × " + floorInt(h.ucMRI) + " per visit", price:pr("mri"), pk:"mri" });
   add(normal, { tag:"ucImg", label:"Urgent care CT", cs:sv.imaging_ct_pet_mri, n:uc * floorInt(h.ucCT), nx:uc + " urgent care visit(s) × " + floorInt(h.ucCT) + " per visit", price:pr("ct"), pk:"ct" });
+  DENTAL_DEFS.forEach(d => add(normal, { tag:"d_" + d.dk, dk:d.dk, prev:d.prev, label:d.label, cs:sv[d.key], n:floorInt(h[d.hk]), price:pr(d.key), pk:d.key }));
   DRUG_DEFS.forEach(d => add(normal, { tag:"rx", label:"Medication tier " + d.t, cs:p.drugs[d.k], n:floorInt(h["rx" + d.t]), price:pr("rx_tier" + d.t) }));
 
   const k = (s.p1 ? 1 : 0) + (!single && s.p2 ? 1 : 0), visits = floorInt(s.er), days = floorInt(s.days), surg = floorInt(s.surgeries);
@@ -664,17 +757,23 @@ function evaluate(state, plan){
   const u = { pcp:sumTag(N, "pcp"), spec:sumTag(N, "spec"), proc:sumTag(N, "proc"), imaging:sumTag(N, "img"), blood:sumTag(N, "blood"), xray:sumTag(N, "xray"),
     ucVisit:sumTag(N, "ucVisit"), ucBlood:sumTag(N, "ucBlood"), ucXray:sumTag(N, "ucXray"), ucImg:sumTag(N, "ucImg"), rx:sumTag(N, "rx") };
   u.uc = u.ucVisit + u.ucBlood + u.ucXray + u.ucImg;
-  u.total = u.pcp + u.spec + u.proc + u.imaging + u.blood + u.xray + u.uc + u.rx;
+  u.dCleaning = sumTag(N, "d_cleaning"); u.dRoot = sumTag(N, "d_root"); u.dCrown = sumTag(N, "d_crown");
+  u.dental = u.dCleaning + u.dRoot + u.dCrown;
+  u.total = u.pcp + u.spec + u.proc + u.imaging + u.blood + u.xray + u.uc + u.rx + u.dental;
   const st = { people:b.people, er:sumTag(X, "er"), erBlood:sumTag(X, "erBlood"), erXray:sumTag(X, "erXray"), erImg:sumTag(X, "erImg"), hosp:sumTag(X, "hosp"), hospTest:sumTag(X, "hospTest"), surg:sumTag(X, "surg") };
   st.total = st.er + st.erBlood + st.erXray + st.erImg + st.hosp + st.hospTest + st.surg;
   const single = isSingle(h), setBase = settle(plan, N, single), setAll = settle(plan, all, single);
   const isHsa = !!plan.identity.hsa_eligible;
   const enr = isMA(plan) ? (hsaLimit(state).medicare || (single ? 1 : 2)) : 1;
-  const premium = (num(plan.premium.monthly) + (isMA(plan) ? num(plan.premium.part_b_monthly) : 0)) * 12 * enr;
+  /* Part B premium: the plan's own amount, else the one in section 2 (Costs); Medicare plans only */
+  const pbOwn = numOrNull(plan.premium.part_b_monthly), pbCost = numOrNull(state.costs.part_b_monthly);
+  const partB = !isMA(plan) ? null : pbOwn != null ? pbOwn : pbCost, partBSrc = pbOwn != null ? "plan" : pbCost != null ? "Costs section (2)" : "";
+  const premium = (num(plan.premium.monthly) + (partB || 0)) * 12 * enr;
   const oopBase = setBase.total, oopAll = setAll.total;
   const missing = [];
   all.forEach(L => { if (L.noPrice && missing.indexOf(L.label) < 0) missing.push(L.label); });
-  const r = { plan, isHsa, enr, premium, u, st, lines:b, setBase, setAll, oopBase, oopAll, missing,
+  const dentalUnset = N.filter(L => L.cls === "dental" && L.unset).map(L => L.label);
+  const r = { plan, isHsa, enr, premium, partB, partBSrc, u, st, lines:b, setBase, setAll, oopBase, oopAll, missing, dentalUnset,
     completeGross: premium + u.total, complete: premium + oopBase,
     stressGross: premium + u.total + st.total, stress: premium + oopAll,
     stressAdded: oopAll - oopBase, hsa: null };
@@ -716,9 +815,9 @@ function m(n){
 }
 /* ---------- tooltips: how each number was calculated ---------- */
 function premText(p, r){
-  const mo = num(p.premium.monthly), pb = num(p.premium.part_b_monthly);
+  const mo = num(p.premium.monthly), pb = num(r.partB);
   if (!isMA(p)) return "Monthly premium " + m(mo) + " × 12 months = " + m(r.premium);
-  return "(Plan premium " + m(mo) + (pb ? " + Part B " + m(pb) : "") + ") × 12 months × " + r.enr + " enrolled " + (r.enr === 1 ? "person" : "people") + " = " + m(r.premium);
+  return "(Plan premium " + m(mo) + (pb ? " + Part B " + m(pb) + (r.partBSrc === "Costs section (2)" ? " (from the Costs section)" : "") : "") + ") × 12 months × " + r.enr + " enrolled " + (r.enr === 1 ? "person" : "people") + " = " + m(r.premium);
 }
 function dedText(c){ return c.ded ? "the deductible applies first" : "the deductible does not apply"; }
 function csText(c){
@@ -730,6 +829,33 @@ function csText(c){
     case "not_applicable": return "not applicable";
     default: return "cost share not entered, treated as " + c.pct + "% after the deductible";
   }
+}
+/* dental cost share in words (the dental deductible and annual maximum are per person, see settleDental) */
+function dentalCsText(L, d){
+  const c = L.cs;
+  switch (c.st){
+    case "copay": return m(c.cop == null ? 0 : c.cop) + " copay" + (L.limitPer > 0 ? " for the first " + L.limitPer + " per person a year" : "") + (c.ded && d.D > 0 ? ", after the dental deductible" : "");
+    case "coinsurance": return "you pay " + c.pct + "%" + (c.own ? "" : " (your general share)") + (L.limitPer > 0 ? " for the first " + L.limitPer + " per person a year" : "") + (c.ded && d.D > 0 ? ", after the dental deductible" : "");
+    case "no_charge": return "no charge" + (L.limitPer > 0 ? " for the first " + L.limitPer + " per person a year" : "");
+    case "not_applicable": return "not applicable";
+    default: return L.unset ? "no dental cost share entered, counted as not covered: you pay it all" : "not covered: you pay it all";
+  }
+}
+function dentalRowText(rw, d){
+  const L = rw.L, price = L.noPrice ? "NO PRICE ENTERED (counted as $0)" : m(L.A) + (L.src ? " (" + L.src + ")" : "");
+  return L.label + ": " + L.n + " × " + price + " = " + m(L.S) + "\n   → " + dentalCsText(L, d) +
+    (L.exN > 0 ? "\n   → covered: " + L.cov + " of " + L.n + " (limit " + L.limitPer + " per person a year); the other " + L.exN + " are not covered: " + m(L.exS) : "") + "\n   you pay " + m(rw.pay) +
+    (rw.over > 0 ? " (" + m(rw.over) + " of it is above the annual maximum)" : "");
+}
+function dentalTip(x, dk){
+  const d = x.dental, rows = d.rows.filter(rw => !dk || rw.L.dk === dk);
+  if (!rows.length) return "None planned = $0";
+  const out = rows.map(rw => dentalRowText(rw, d));
+  out.push("Listed prices total = " + m(rows.reduce((a, rw) => a + rw.L.S, 0)) + "; you pay " + m(rows.reduce((a, rw) => a + rw.pay, 0)));
+  if (d.D > 0) out.push("Dental deductible " + m(d.D) + " (per person × people covered); used " + m(d.ded) + ".");
+  if (d.Mx > 0) out.push("Annual maximum " + m(d.Mx) + " (per person × people covered): the plan pays at most this; " + (d.prevCounts ? "cleanings count toward it." : "cleanings do not count toward it.") + " The plan pays " + m(d.planPaid) + " toward it" + (d.over > 0 ? "; you pay the " + m(d.over) + " above it." : "."));
+  out.push("(Dental is outside the medical deductible and out-of-pocket maximum.)");
+  return out.join("\n");
 }
 function lineText(L){
   const price = L.noPrice ? "NO PRICE ENTERED (counted as $0)" : m(L.A) + (L.src ? " (" + L.src + ")" : "");
@@ -755,6 +881,7 @@ function insExplain(x){
   if (x.M > 0) L.push(x.raw > x.M ? "Capped at the max out-of-pocket of " + m(x.M) : "Below the max out-of-pocket of " + m(x.M) + ", so no cap applies");
   else L.push("No max out-of-pocket entered, so no cap");
   if (x.nc > 0) L.push("Not covered, paid in full: " + m(x.nc));
+  if (x.dental.rows.length) L.push("Dental, paid on top of the medical total (own deductible and annual maximum, outside the out-of-pocket maximum): " + m(x.dental.pay));
   L.push("= " + m(x.total));
   return L.join("\n");
 }
@@ -773,10 +900,12 @@ function buildTips(state, r){
   T.xray = catTip(N, ["xray"]);
   T.uc = catTip(N, ["ucVisit", "ucBlood", "ucXray", "ucImg"]);
   T.rx = catTip(N, ["rx"]);
-  T.totalGross = "PCP " + m(u.pcp) + " + specialist " + m(u.spec) + " + procedures " + m(u.proc) + " + imaging " + m(u.imaging) + " + blood work " + m(u.blood) + " + X-ray " + m(u.xray) + " + urgent care " + m(u.uc) + " + medications " + m(u.rx) + " = " + m(u.total) + "\n(Every listed price paid in full: no deductible, copay, coinsurance or cap.)";
+  T.dCleaning = dentalTip(r.setBase, "cleaning"); T.dRoot = dentalTip(r.setBase, "root"); T.dCrown = dentalTip(r.setBase, "crown");
+  T.dentalPay = dentalTip(r.setBase);
+  T.totalGross = "PCP " + m(u.pcp) + " + specialist " + m(u.spec) + " + procedures " + m(u.proc) + " + imaging " + m(u.imaging) + " + blood work " + m(u.blood) + " + X-ray " + m(u.xray) + " + urgent care " + m(u.uc) + " + medications " + m(u.rx) + " + dental " + m(u.dental) + " = " + m(u.total) + "\n(Every listed price paid in full: no deductible, copay, coinsurance or cap.)";
   T.oopBase = insExplain(r.setBase);
   T.segPrem = "Premium: " + premText(p, r) + "\n(Paid whether or not you use care.)";
-  const segOop = (oop, save, label, sg) => "Other out of pocket (" + label + "): care costs you pay " + m(oop) + " − medications " + m(sg.rxFull) + " = " + m(Math.max(oop - sg.rxFull, 0)) + (r.hsa ? "\n− HSA tax deduction " + m(save) + " = " + m(sg.other) : "") + "\n(Deductible, copays and coinsurance for everything except medications, up to the out-of-pocket maximum.)";
+  const segOop = (oop, save, label, sg) => "Other out of pocket (" + label + "): care costs you pay " + m(oop) + " − medications " + m(sg.rxFull) + " = " + m(Math.max(oop - sg.rxFull, 0)) + (r.hsa ? "\n− HSA tax deduction " + m(save) + " = " + m(sg.other) : "") + "\n(Deductible, copays and coinsurance for everything except medications, up to the out-of-pocket maximum" + (r.setBase.dental.rows.length ? ", plus what you pay for dental " + m(r.setBase.dental.pay) + ", which sits outside that maximum" : "") + ".)";
   const segRx = (label, sg) => {
     const L = ["Medications (" + label + "): you pay " + m(sg.rxFull) + " of the " + m(sg.rows.reduce((a, x) => a + x.S, 0)) + " total medication cost"];
     sg.rows.forEach(x => L.push("  " + x.label + ": " + x.n + " fill(s), price " + m(x.S) + ", you pay " + m(x.pay)));
@@ -868,6 +997,7 @@ function costedItems(p){
     ["Hospital day", sv.hospital_facility, pr("hospital_day")]
   ];
   DRUG_DEFS.forEach(d => it.push(["Medication tier " + d.t, p.drugs[d.k], pr("rx_tier" + d.t)]));
+  DENTAL_DEFS.forEach(d => { if (sv[d.key].structure) it.push([d.one, sv[d.key], pr(d.key)]); });
   return it;
 }
 /* Converts one schema 2.x document into an app plan. ctx = { newId } */
@@ -899,6 +1029,7 @@ function planFromSchema(doc, ctx){
   L.coinsurance_member_pct = sStr(lim.coinsurance_member_pct); L.not_counted_toward_oop_max = sList(lim.not_counted_toward_oop_max);
   L.deductible_out_of_network = sStr(lim.deductible_out_of_network); L.oop_max_combined = sStr(lim.oop_max_combined_in_and_out_of_network);
   L.drug_deductible_amount = sStr(plainObj(lim.drug_deductible) ? lim.drug_deductible.amount : null); L.drug_oop_max = sStr(lim.drug_oop_max);
+  L.dental_deductible = sStr(lim.dental_deductible); L.dental_annual_max = sStr(lim.dental_annual_max); L.dental_preventive_counts_toward_max = sBool(lim.dental_preventive_counts_toward_max);
   SERVICE_DEFS.forEach(df => {
     const v = sv[df.k];
     if (df.visit){
@@ -947,6 +1078,8 @@ function planFromSchema(doc, ctx){
       estimates.push(x[0] + ": " + m(c.cop) + " copay applies after the deductible; the full allowed price is not in the documents, so the copay is used as the allowed price");
     }
   });
+  const noDental = DENTAL_DEFS.filter(d => !p.services[d.key].structure);
+  if (noDental.length) estimates.push("Dental: no cost share for " + noDental.map(d => d.one.replace("Dental ", "").toLowerCase()).join(", ") + " in the file, counted as not covered (you pay the full price)");
   const sf = sv.outpatient_surgery_facility, sp = sv.outpatient_surgery_professional;
   if (numOrNull(pr.surgery) == null){
     const probes = [sf, sp].map(cs => mkLine(p, { tag:"", label:"Surgery", cs:csFrom(cs), n:1, price:null }));
@@ -957,6 +1090,7 @@ function planFromSchema(doc, ctx){
   }
   const hf = p.services.hospital_facility;
   if (numOrNull(hf.max_units) != null && hf.structure === "copay") notes.push("Hospital copay is limited to " + hf.max_units + " " + (hf.unit || "unit") + "(s) per stay; the calculation applies that limit.");
+  if (DENTAL_DEFS.some(d => p.services[d.key].structure)) notes.push("Dental: costed outside the medical deductible and out-of-pocket maximum, with the plan's own dental deductible and annual maximum (both per person; a couple gets two).");
   if (isMA(p)) notes.push("Medicare plan: premium is counted per enrolled person (those at or above the Medicare age); the medical deductible and the Part D drug deductible are separate (the drug deductible applies to drug tiers marked “deductible applies”); the prescription out-of-pocket cap limits what you pay for medications; out-of-network costs and the free first 20 skilled-nursing days are recorded but not costed.");
   if (missing.length) notes.push("Enter the dollar prices in section 2 (Costs) or above under “Evaluator prices” on this card (they are the allowed prices the deductible and coinsurance apply to).");
   const list = a => Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 20).map(x => x.slice(0, 400)) : [];
@@ -1020,8 +1154,8 @@ function renderHousehold(){
     pathField(single ? "Age" : "Age (spouse 1)", "household.p1.age", { min:0, max:120, step:1 }) +
     (single ? "" : pathField("Name (spouse 2)", "household.p2.name", { text:true }) +
     pathField("Age (spouse 2)", "household.p2.age", { min:0, max:120, step:1 })) +
-    pathField("Federal tax bracket incl. NIIT", "household.taxRate", { min:0, max:100, suf:"%" }) +
-    '</div><p class="hint" style="margin-top:6px">Enter one combined rate, e.g. 24% bracket + 3.8% NIIT = 27.8. Used only for HSA tax savings.</p>' +
+    pathField("Federal tax bracket incl. NIIT", "household.taxRate", { min:0, max:100, suf:"%", cls:"hsa-tax" }) +
+    '</div><p class="hint hsa-tax" style="margin-top:6px">Enter one combined rate, e.g. 24% bracket + 3.8% NIIT = 27.8. Used only for HSA tax savings.</p>' +
     '<h3>Visits and procedures</h3><div class="grid">' +
     pathField(single ? "PCP visits" : "PCP visits, <span class=\"nm1\">" + esc(h.p1.name) + "</span>", "household.pcp1", { min:0, step:1 }) +
     (single ? "" : pathField("PCP visits, <span class=\"nm2\">" + esc(h.p2.name) + "</span>", "household.pcp2", { min:0, step:1 })) +
@@ -1041,7 +1175,11 @@ function renderHousehold(){
     pathField("MRIs per visit", "household.ucMRI", { min:0, step:1 }) +
     pathField("CTs per visit", "household.ucCT", { min:0, step:1 }) +
     '</div><h3>Medications (annual fills)</h3><div class="grid">' +
-    [5,4,3,2,1].map(t => pathField("Tier " + t, "household.rx" + t, { min:0, step:1 })).join("") + "</div>";
+    [5,4,3,2,1].map(t => pathField("Tier " + t, "household.rx" + t, { min:0, step:1 })).join("") + "</div>" +
+    '<h3>Dental (per year)</h3><p class="hint" style="margin:0 0 8px">Number of procedures in a year' + (single ? "" : " for the whole household") + '. Dental is costed outside the medical deductible and out-of-pocket maximum.</p><div class="grid">' +
+    pathField("Cleanings", "household.dentalCleaning", { min:0, step:1 }) +
+    pathField("Root canals", "household.dentalRoot", { min:0, step:1 }) +
+    pathField("Crowns", "household.dentalCrown", { min:0, step:1 }) + "</div>";
   $("householdBox").innerHTML = html;
 }
 function renderCosts(){
@@ -1054,7 +1192,12 @@ function renderCosts(){
     pathField("MRI", "costs.mri", dollars()) +
     pathField("CT", "costs.ct", dollars()) +
     pathField("Hospital, cost per day", "costs.hospital_day", dollars()) +
-    pathField("Surgery (facility + surgeon, per procedure)", "costs.surgery", dollars()) + "</div>";
+    pathField("Surgery (facility + surgeon, per procedure)", "costs.surgery", dollars()) +
+    pathField("Medication tier 3, per fill", "costs.rx_tier3", dollars()) +
+    pathField("Medicare Part B premium, monthly per person", "costs.part_b_monthly", dollars()) +
+    pathField("Dental cleaning", "costs.dental_cleaning", dollars()) +
+    pathField("Dental root canal", "costs.dental_root_canal", dollars()) +
+    pathField("Dental crown", "costs.dental_crown", dollars()) + "</div>";
 }
 function applySecHide(){
   document.querySelectorAll("[data-sechide]").forEach(sec => {
@@ -1130,7 +1273,7 @@ function planCard(p){
       pf("Your coinsurance", path + ".coinsurance_pct", { min:0, max:100, suf:"%" }) +
       ps("Deductible applies first?", path + ".deductible_applies", TRI) +
       ps("Unit", path + ".unit", [["", "—"]].concat(UNITS.map(u => [u, u]))) +
-      pf("Max units charged", path + ".max_units", { min:0, step:1 }) +
+      pf(path.indexOf("services.dental_") === 0 ? "Max covered per person per year" : "Max units charged", path + ".max_units", { min:0, step:1 }) +
       pf("Limits or exceptions", path + ".limits", { text:true, cls:"span2" }) +
       pf("Source quote", path + ".source_text", { text:true, cls:"span2" }) + "</div></div>";
   const service = d => d.visit
@@ -1187,13 +1330,19 @@ function planCard(p){
     sec("svcFacility", "Services: surgery, emergency and hospital", "", group("svcFacility")) +
     sec("svcMental", "Services: mental health and maternity", "Recorded for reference; not used in the cost calculation.", group("svcMental")) +
     sec("svcOther", "Services: rehab, home care, equipment and children's", "Recorded for reference; not used in the cost calculation.", group("svcOther")) +
+    sec("svcDental", "Services: dental (cleaning, root canal, crown)", "Dental is costed <b>outside</b> the medical deductible and out-of-pocket maximum. A service with no cost share entered counts as not covered (you pay the full price). On a Medicare Advantage plan, cleanings come from the preventive dental benefit and root canals and crowns from the comprehensive dental benefit (see Supplemental benefits).",
+      group("svcDental") + '<div class="svc"><div class="svc-t">Dental deductible and annual maximum<span class="used" title="Used in the cost calculation">used in cost</span></div><div class="grid sm">' +
+        pf("Dental deductible (per person)", "limits.dental_deductible", dollars()) +
+        pf("Dental annual maximum the plan pays (per person)", "limits.dental_annual_max", dollars()) +
+        ps("Do cleanings count toward the annual maximum?", "limits.dental_preventive_counts_toward_max", TRI) + '</div>' +
+        '<p class="hint">Both amounts are per person; a couple gets two of each. The plan pays up to the annual maximum and you pay everything above it. The deductible applies only to services marked “deductible applies first”.</p></div>') +
 
     (ma ? sec("medicare", "Medicare facts", "Premium and out-of-pocket amounts on a Medicare plan are <b>per person</b>. The calculation counts the premium for each enrolled person.", '<div class="grid">' +
       pf("Medicare Star Rating (0-5)", "medicare.star_rating", { min:0, max:5, step:0.5 }) + ps("Includes Part D drug coverage?", "medicare.includes_part_d", TRI) +
       pf("Agent phone", "medicare.agent_phone", { text:true }) + pf("Plan page URL", "medicare.plan_page_url", { text:true }) +
       pf("Annual enrollment period", "medicare.annual_enrollment_period", { text:true, cls:"span2" }) + pf("Eligibility", "medicare.eligibility_note", { text:true, cls:"span2" }) +
       pf("Extra Help", "medicare.extra_help_note", { text:true, cls:"span2" }) + pf("Visitor/traveler program", "medicare.visitor_traveler_program", { text:true, cls:"span2" }) + "</div>") : "") +
-    (ma ? sec("supp", "Supplemental benefits (dental, vision, hearing, fitness)", "Recorded for comparison; not part of the cost calculation.", SUPP_DEFS.map(d => '<div class="svc"><div class="svc-t">' + d[1] + '</div><div class="grid sm">' +
+    (ma ? sec("supp", "Supplemental benefits (dental, vision, hearing, fitness)", "Recorded for comparison. Dental cleaning, root canal and crown are costed from the “Services: dental” section; the other benefits are not part of the cost calculation.", SUPP_DEFS.map(d => '<div class="svc"><div class="svc-t">' + d[1] + '</div><div class="grid sm">' +
       ps("Covered?", "supplemental_benefits." + d[0] + ".covered", TRI) + pf("Annual allowance", "supplemental_benefits." + d[0] + ".annual_allowance", dollars()) +
       pf("Frequency limit", "supplemental_benefits." + d[0] + ".frequency_limit", { text:true, cls:"span2" }) + '</div><div class="grid wide">' + pa("Details (one per line)", "supplemental_benefits." + d[0] + ".details", 3) + "</div></div>").join("")) : "") +
     (ma ? sec("oon", "Out-of-network cost shares", "What you pay with out-of-network providers (PPO plans). Recorded for reference; the calculation uses in-network costs.", OON_KEYS.map(k => {
@@ -1224,12 +1373,25 @@ function renderPlans(){
   $("plansBox").innerHTML = state.plans.length ? state.plans.map(planCard).join("") :
     '<p class="hint">No plans yet. Add one or load the example.</p>';
 }
+const VIEW_ROWS = [["s1","1. Premium"],["s2","2. Other costs"],["s3","3. Complete cost"],["s4","4. With stress"],["hsaDetails","HSA details"],["hsaCost","HSA plans: cost after tax"]];
+function rowsLabel(){
+  const n = VIEW_ROWS.filter(o => (o[0] !== "s4" || state.view.showStress) && state.view.hide[o[0]]).length;
+  return "Show/hide rows" + (n ? " (" + n + " hidden)" : "");
+}
 function renderViewOpts(){
-  const opts = [["s1","1. Premium"],["s2","2. Other costs"],["s3","3. Complete cost"],["s4","4. With stress"],["hsaDetails","HSA details"],["hsaCost","HSA plans: cost after tax"]];
-  $("viewOpts").innerHTML = "<b>Hide rows:</b>" + opts.map(o =>
-    '<label class="chk"><input type="checkbox" data-path="view.hide.' + o[0] + '"' + (state.view.hide[o[0]] ? " checked" : "") + "> " + o[1] + "</label>").join("");
+  $("viewOpts").innerHTML = '<details class="rowsmenu"><summary id="rowsLbl">' + rowsLabel() + '</summary><div class="menu">' +
+    VIEW_ROWS.filter(o => o[0] !== "s4" || state.view.showStress).map(o => '<label class="chk"><input type="checkbox" data-viewrow="' + o[0] + '"' + (state.view.hide[o[0]] ? "" : " checked") + "> " + o[1] + "</label>").join("") + "</div></details>";
+}
+document.addEventListener("click", e => { const d = document.querySelector(".rowsmenu[open]"); if (d && !d.contains(e.target)) d.removeAttribute("open"); });
+document.addEventListener("keydown", e => { if (e.key === "Escape"){ const d = document.querySelector(".rowsmenu[open]"); if (d){ d.removeAttribute("open"); d.querySelector("summary").focus(); } } });
+function applyStress(){
+  const on = !!state.view.showStress;
+  document.body.classList.toggle("stress-on", on);
+  const b = $("btnStress");
+  if (b){ b.textContent = "Stress scenario: " + (on ? "on" : "off"); b.setAttribute("aria-pressed", on ? "true" : "false"); }
 }
 function renderAll(){
+  applyStress();
   renderViewOpts(); renderHousehold(); renderCosts(); renderPlans(); renderStress(); renderSettings(); applySecHide(); renderResults();
 }
 
@@ -1240,9 +1402,25 @@ function lineDetail(L, x){
   if (L.cls === "first") pay = L.first;
   else if (L.cls === "ded"){ const f = fOf(x, L); ded = f * L.S; pay = ded + (1 - f) * L.Q; }
   else if (L.cls === "nc") pay = L.S;
+  else if (L.cls === "dental"){ const rw = x.dental.rows.find(q => q.L === L); if (rw){ ded = rw.ded; pay = rw.pay; } }
   return { ded:ded, pay:pay, ins:L.S - pay };
 }
+function detTipsDental(L, x, d){
+  const T = {}, c = L.cs, dn = x.dental, rw = dn.rows.find(q => q.L === L) || { over:0 };
+  T.units = (L.n ? "Planned " + L.n + " (from your annual dental needs in section 1)" : "") + (L.exN > 0 ? "\nThe plan covers " + L.limitPer + " per person a year (" + L.cov + " of the " + L.n + "). The other " + L.exN + " are not covered: you pay " + m(L.exS) + " for them." : "");
+  T.each = L.noPrice ? "No price entered and the plan gives no copay, so this is counted as $0." : "Allowed price per unit: " + m(L.A) + (L.src ? "\nSource: " + L.src : "");
+  T.total = L.n + " units × " + m(L.A) + " = " + m(L.S);
+  T.ded = c.ded && dn.D > 0 && c.st !== "not_covered" ? "Dental deductible " + m(dn.D) + " (per person × people covered), shared in the order cleanings, root canals, crowns. This line uses " + m(d.ded) + " of it." : "No dental deductible applies to this line.";
+  const share = c.st === "copay" ? L.charged + " charged unit(s) × " + m(c.cop == null ? 0 : c.cop) + " copay" : c.st === "coinsurance" ? c.pct + "% × " + m(L.S - d.ded) + " (after the dental deductible)" : "";
+  T.pay = (c.st === "not_covered" ? (L.unset ? "No dental cost share entered, counted as not covered: you pay the full " + m(L.S) + "." : "Not covered: you pay the full " + m(L.S) + ".")
+      : c.st === "no_charge" || c.st === "not_applicable" ? "No charge: $0" + (L.exN > 0 ? ", plus " + m(L.exS) + " for the " + L.exN + " above the yearly limit" : "") + (rw.over > 0 ? ", plus " + m(rw.over) + " above the annual maximum." : ".")
+      : "Dental deductible used " + m(d.ded) + (share ? " + " + share : "") + (L.exN > 0 ? " + " + m(L.exS) + " for the " + L.exN + " above the yearly limit" : "") + (rw.over > 0 ? " + " + m(rw.over) + " above the annual maximum of " + m(dn.Mx) : "") + " = " + m(d.pay)) +
+    "\n(Dental is outside the medical deductible and out-of-pocket maximum.)";
+  T.ins = "Base cost " + m(L.S) + " − you pay " + m(d.pay) + " = " + m(d.ins) + (dn.Mx > 0 ? "\nThe plan pays at most " + m(dn.Mx) + " a year for dental (per person × people covered); " + (L.prev && !dn.prevCounts ? "cleanings do not count toward it." : "this counts toward it.") : "");
+  return T;
+}
 function detTips(L, x, d){
+  if (L.cls === "dental") return detTipsDental(L, x, d);
   const T = {}, c = L.cs;
   T.units = (L.nx ? L.nx + " = " + L.n : "Planned " + L.n + " (from your annual needs in section 1)") + (L.charged < L.n ? "\nOnly " + L.charged + " of the " + L.n + " are charged a copay (the plan limits copays per stay)." : "");
   T.each = L.noPrice ? "No price entered and the plan gives no copay, so this is counted as $0." : "Allowed price per unit: " + m(L.A) + (L.src ? "\nSource: " + L.src : "");
@@ -1278,8 +1456,9 @@ function renderDetail(){
   const lines = stress ? r.lines.normal.concat(r.lines.stress) : r.lines.normal;
   const x = stress ? r.setAll : r.setBase;
   const groups = [
-    ["Visits, tests and imaging", lines.filter(L => r.lines.normal.indexOf(L) >= 0 && L.tag !== "rx")],
-    ["Medications", lines.filter(L => L.tag === "rx")]
+    ["Visits, tests and imaging", lines.filter(L => r.lines.normal.indexOf(L) >= 0 && L.tag !== "rx" && L.cls !== "dental")],
+    ["Medications", lines.filter(L => L.tag === "rx")],
+    ["Dental", lines.filter(L => L.cls === "dental")]
   ];
   if (stress) groups.push(["Stress scenario", r.lines.stress]);
   const cell = (v, cls, tip) => '<td' + (cls ? ' class="' + cls + '"' : "") + (tip ? ' data-tip="' + esc(tip) + '" tabindex="0"' : "") + ">" + v + "</td>";
@@ -1294,7 +1473,7 @@ function renderDetail(){
       const base = L.noPrice ? '<td class="unk" data-tip="' + esc(T.each) + '" tabindex="0">unknown<span class="src">counted as $0</span></td>'
         : '<td data-tip="' + esc(T.each) + '" tabindex="0">' + m(L.A) + (L.src ? '<span class="src">' + esc(L.src) + "</span>" : "") + "</td>";
       rows += "<tr><th class=\"l\">" + esc(L.label) + "</th>" + cell(L.n, "", T.units) + base + cell(m(L.S), "", T.total) +
-        '<td class="cov">' + esc(csText(L.cs)) + (L.charged < L.n ? "; " + L.charged + " of " + L.n + " units charged" : "") + "</td>" +
+        '<td class="cov">' + esc(L.cls === "dental" ? dentalCsText(L, x.dental) : csText(L.cs)) + (L.charged < L.n ? "; " + L.charged + " of " + L.n + " units charged" : "") + "</td>" +
         cell(d.ded > 0 ? m(d.ded) : "—", "", T.ded) + cell(m(d.pay), "", T.pay) + cell(m(d.ins), "", T.ins) + "</tr>";
     });
     rows += '<tr class="total"><th class="l">Subtotal, ' + g[0].toLowerCase() + "</th><td></td><td></td>" + cell(m(sb), "", "Sum of the base costs in this group = " + m(sb)) + '<td></td>' + cell(m(sd), "", "Sum of the deductible used in this group = " + m(sd)) + cell(m(sp), "", "Sum of what you pay in this group = " + m(sp) + "\n(Before the out-of-pocket maximum.)") + cell(m(si), "", "Sum of what insurance pays in this group = " + m(si)) + "</tr>";
@@ -1303,18 +1482,19 @@ function renderDetail(){
   const adj = x.capped - x.raw;
   const rxRow = x.rxOver > 0 ? '<tr class="cap"><th class="l">Prescription out-of-pocket cap of ' + m(x.R) + ' reached: reduction</th><td></td><td></td><td></td><td></td><td></td>' + cell(m(-x.rxOver), "", "What you would pay for medications " + m(x.rxRaw) + " − prescription out-of-pocket cap " + m(x.R) + " = " + m(x.rxOver) + " over the cap.\nYou pay only " + m(x.rxRaw - x.rxOver) + " for medications, so " + m(x.rxOver) + " moves to the insurer.") + cell("+" + m(x.rxOver), "", "Amount over the prescription out-of-pocket cap that insurance picks up instead of you = " + m(x.rxOver)) + "</tr>" : "";
   const foot = rxRow + (x.M > 0 && adj < 0 ? '<tr class="cap"><th class="l">Out-of-pocket maximum of ' + m(x.M) + ' reached: reduction</th><td></td><td></td><td></td><td></td><td></td>' + cell(m(adj), "", "Your payments before the cap " + m(x.raw) + " − out-of-pocket maximum " + m(x.M) + " = " + m(x.raw - x.M) + " over the cap.\nYou pay only " + m(x.capped) + " (plus anything not covered), so " + m(-adj) + " moves to the insurer.") + cell("+" + m(-adj), "", "Amount over the out-of-pocket maximum that insurance picks up instead of you = " + m(-adj)) + "</tr>" : "") +
-    '<tr class="total"><th class="l">Total (excluding premium)</th><td></td><td></td>' + cell(m(x.gross), "", "Sum of all base costs = " + m(x.gross)) + "<td></td>" + cell(m(x.dedPart), "", "Deductible used = " + m(x.dedPart) + (x.split ? " (medical " + m(x.dedMed) + " of " + m(x.Dm) + " + drugs " + m(x.dedRx) + " of " + m(x.Dr) + ", separate deductibles)" : " of " + m(x.D) + " (the lesser of the deductible and the allowed price of services it applies to, " + m(x.S) + ")")) + cell(m(x.total), "", "Copays and coinsurance from the first dollar " + m(x.first) + " + deductible used " + m(x.dedPart) + " + cost share after the deductible " + m(x.after) + " = " + m(x.rawPre) + (x.rxOver > 0 ? "\nLess the prescription out-of-pocket cap reduction " + m(x.rxOver) + " = " + m(x.raw) : "") + (x.M > 0 ? "\nLimited to the out-of-pocket maximum " + m(x.M) + " = " + m(x.capped) : "") + (x.nc > 0 ? "\n+ not covered, paid in full " + m(x.nc) + " = " + m(x.total) : "")) + cell(m(x.gross - x.total), "", "Total base cost " + m(x.gross) + " − you pay " + m(x.total) + " = " + m(x.gross - x.total)) + "</tr>";
+    '<tr class="total"><th class="l">Total (excluding premium)</th><td></td><td></td>' + cell(m(x.gross), "", "Sum of all base costs = " + m(x.gross)) + "<td></td>" + cell(m(x.dedPart + x.dental.ded), "", (x.dental.ded > 0 ? "Dental deductible used " + m(x.dental.ded) + " + medical " : "") + "Deductible used = " + m(x.dedPart) + (x.split ? " (medical " + m(x.dedMed) + " of " + m(x.Dm) + " + drugs " + m(x.dedRx) + " of " + m(x.Dr) + ", separate deductibles)" : " of " + m(x.D) + " (the lesser of the deductible and the allowed price of services it applies to, " + m(x.S) + ")")) + cell(m(x.total), "", "Copays and coinsurance from the first dollar " + m(x.first) + " + deductible used " + m(x.dedPart) + " + cost share after the deductible " + m(x.after) + " = " + m(x.rawPre) + (x.rxOver > 0 ? "\nLess the prescription out-of-pocket cap reduction " + m(x.rxOver) + " = " + m(x.raw) : "") + (x.M > 0 ? "\nLimited to the out-of-pocket maximum " + m(x.M) + " = " + m(x.capped) : "") + (x.nc > 0 ? "\n+ not covered, paid in full " + m(x.nc) : "") + (x.dental.rows.length ? "\n+ dental " + m(x.dental.pay) + " (own deductible and annual maximum; outside the out-of-pocket maximum)" : "") + (x.nc > 0 || x.dental.rows.length ? "\n= " + m(x.total) : "")) + cell(m(x.gross - x.total), "", "Total base cost " + m(x.gross) + " − you pay " + m(x.total) + " = " + m(x.gross - x.total)) + "</tr>";
   const prem = r.premium, you = x.total;
   box.innerHTML =
-    '<div class="detsum"><div><b>' + esc(pn(plan) || "Plan") + "</b>" + (r.isHsa ? " (HSA-eligible)" : "") + " · " + (stress ? "Normal year + stress scenario" : "Normal year") + "</div>" +
+    '<div class="detsum"><div class="lead"><b>' + esc(pn(plan) || "Plan") + "</b>" + (r.isHsa ? " (HSA-eligible)" : "") + " · " + (stress ? "Normal year + stress scenario" : "Normal year") + "</div>" +
       "<div>" + (x.split ? "Deductibles: medical " + (x.Dm > 0 ? m(x.dedMed) + " used of " + m(x.Dm) : "none") + " · drugs " + (x.Dr > 0 ? m(x.dedRx) + " used of " + m(x.Dr) : "none") : "Deductible: " + (x.D > 0 ? m(x.dedPart) + " used of " + m(x.D) : "none entered")) + "</div>" +
       "<div>Max out-of-pocket: " + (x.M > 0 ? m(x.M) : "none entered") + "</div>" +
+      (x.dental.rows.length ? "<div>Dental: " + (x.dental.D > 0 ? "deductible " + m(x.dental.ded) + " used of " + m(x.dental.D) : "no deductible") + " · annual max " + (x.dental.Mx > 0 ? m(x.dental.Mx) + " (plan pays " + m(x.dental.planPaid) + ")" : "none entered") + " · you pay " + m(x.dental.pay) + "</div>" : "") +
       (x.split ? "<div>Max out-of-pocket, drugs: " + (x.R > 0 ? m(x.R) + " (you pay " + m(x.rxRaw - x.rxOver) + ")" : "none entered") + "</div>" : "") +
       "<div data-tip=\"" + esc(premText(plan, r)) + "\" tabindex=\"0\">Premium: " + m(prem) + " / yr</div>" +
-      "<div data-tip=\"" + esc("Premium " + m(prem) + " + what you pay " + m(you) + " = " + m(prem + you)) + "\" tabindex=\"0\">You pay + premium: <b>" + m(prem + you) + "</b></div></div>" +
+      "<div class=\"pay\" data-tip=\"" + esc("Premium " + m(prem) + " + what you pay " + m(you) + " = " + m(prem + you)) + "\" tabindex=\"0\">You pay + premium: <b>" + m(prem + you) + "</b></div></div>" +
     '<div class="tablewrap"><table class="res det"><thead><tr><th class="l">Service / medication</th><th>Units</th><th>Base cost each</th><th>Base cost total</th><th class="l">Insurance coverage</th><th>Deductible used</th><th>You pay</th><th>Insurance pays</th></tr></thead><tbody>' +
     rows + foot + "</tbody></table></div>" +
-    '<p class="hint mt10">Base cost is the allowed price: the plan\'s own Evaluator price, else your cost in section 2, else the copay. “Deductible used” is the part of your payment that goes toward the deductible. Services that are not covered are paid in full and sit outside the out-of-pocket maximum.</p>';
+    '<p class="hint mt10">Base cost is the allowed price: the plan\'s own Evaluator price, else your cost in section 2, else the copay. “Deductible used” is the part of your payment that goes toward the deductible. Services that are not covered are paid in full and sit outside the out-of-pocket maximum. Dental has its own deductible and annual maximum and also sits outside the medical out-of-pocket maximum.</p>';
 }
 const tabScroll = { main:0, detail:0 };
 function setTab(t){
@@ -1322,10 +1502,22 @@ function setTab(t){
   tabScroll[ui.tab] = window.scrollY;
   ui.tab = t;
   $("tabMain").hidden = t !== "main"; $("tabDetail").hidden = t !== "detail";
-  $("tabBtnMain").classList.toggle("active", t === "main"); $("tabBtnDetail").classList.toggle("active", t === "detail");
+  [["main", "tabBtnMain"], ["detail", "tabBtnDetail"]].forEach(x => {
+    const b = $(x[1]), on = t === x[0];
+    b.classList.toggle("active", on); b.setAttribute("aria-selected", on ? "true" : "false"); b.tabIndex = on ? 0 : -1;
+  });
+  $("jumpRes").hidden = t !== "main";
   if (t === "detail") renderDetail();
   window.scrollTo(0, tabScroll[t] || 0);
 }
+document.querySelector(".tabs").addEventListener("keydown", e => {
+  const order = ["main", "detail"], k = e.key;
+  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(k)) return;
+  e.preventDefault();
+  const cur = order.indexOf(ui.tab);
+  const next = k === "Home" ? 0 : k === "End" ? order.length - 1 : (cur + (k === "ArrowRight" ? 1 : order.length - 1)) % order.length;
+  setTab(order[next]); $(next ? "tabBtnDetail" : "tabBtnMain").focus();
+});
 document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest("button[data-tab]"); if (b) setTab(b.dataset.tab); });
 document.addEventListener("change", e => {
   const c = e.target.closest && e.target.closest("#bars .bsel");
@@ -1414,10 +1606,11 @@ const mr = set => set.M > 0 ? Math.max(set.M - set.capped, 0) : 0, mr1 = e => mr
 const sv1 = e => e.isHsa ? e.hsa.saveOnSpend : 0, sv2 = e => e.isHsa ? e.hsa.saveOnSpendStress : 0;
 function ensureSel(){
   if (!state.plans.some(p => String(p.id) === String(ui.planId))) ui.planId = state.plans.length ? String(state.plans[0].id) : "";
-  if (ui.scen !== "stress") ui.scen = "normal";
+  if (ui.scen !== "stress" || !state.view.showStress) ui.scen = "normal";
 }
 function syncSel(){
   ensureSel();
+  if (lastEvs.length && document.activeElement !== $("sumPlan")) renderBarSum(lastEvs);
   document.querySelectorAll("#bars .brow").forEach(r => r.querySelectorAll(".bsel").forEach(c => { c.checked = r.dataset.pid === String(ui.planId) && c.dataset.scen === ui.scen; }));
 }
 /* x axis: $10k divided by 1, 2, 4 or 5 (times a power of 10 for small or large totals).
@@ -1434,13 +1627,39 @@ function axisLabel(v){
   if (v >= 1000) return "$" + +(v / 1000).toFixed(2) + "k";
   return "$" + +v.toFixed(2);
 }
+function legendHtml(){
+  return '<div class="legend">' + [
+    ["l1", "Normal year", "Top bar of each plan: a normal year (premium + what you pay)."],
+    ["l2", "+ stress", "Bottom bar of each plan: the normal year plus the stress scenario."],
+    ["l4", "Premium", "Darkest part of the bar: the annual premium."],
+    ["l6", "Other costs", "Lightest part of the bar: out-of-pocket costs other than medications."],
+    ["l7", "Medications", "Striped part of the bar: what you pay for medications."],
+    ["l3", "HSA savings", "Dotted bar: HSA tax savings (not counted in the total)."],
+    ["l5", "Max possible", "Dashed outline: the most the year can cost, premium + out-of-pocket maximum."]
+  ].map(x => '<span class="' + x[0] + (x[0] === "l2" ? " stress-only" : "") + '" data-tip="' + esc(x[2]) + '" tabindex="0">' + x[1] + "</span>").join("") + "</div>";
+}
+/* Collapsed blue pane: one row with the selected plan's totals (and a plan picker). */
+let lastEvs = [];
+function renderBarSum(evs){
+  const box = $("barsum");
+  if (!evs.length){ box.textContent = "Add at least one plan to see results."; return; }
+  ensureSel();
+  const names = barNames(evs);
+  const i = Math.max(0, evs.findIndex(e => String(e.plan.id) === String(ui.planId))), e = evs[i];
+  box.innerHTML = '<label>Plan: <select id="sumPlan" aria-label="Plan shown in the collapsed pane">' +
+      evs.map((x, k) => '<option value="' + esc(x.plan.id) + '"' + (k === i ? " selected" : "") + ">" + esc(names[k]) + "</option>").join("") + "</select></label>" +
+    '<span>Normal year <b class="sv1">' + fmt(e.net) + "</b></span>" + (state.view.showStress ? "<span>With stress <b class=\"sv2\">" + fmt(e.netStress) + "</b></span>" : "") +
+    "<span>Premium " + fmt(e.premium) + " / yr</span>";
+}
 function renderBars(evs){
+  lastEvs = evs;
+  renderBarSum(evs);
   const box = $("bars");
   if (!evs.length){ box._sig = ""; box.innerHTML = '<div class="bars-empty">Add at least one plan to see results.</div>'; return; }
   if (!box.querySelector(".legend")){
-    box.innerHTML = '<div class="legend"><span class="l1">Normal year</span><span class="l2">Normal year + stress scenario</span><span class="l4">Premium (darkest)</span><span class="l6">Other out of pocket (lightest)</span><span class="l7">Medications (striped)</span><span class="l3">HSA tax savings (not counted in total)</span><span class="l5">Maximum possible: premium + out-of-pocket max</span></div>';
+    box.innerHTML = legendHtml();
   }
-  const maxV = Math.max.apply(null, evs.map(e => Math.max(e.net + sv1(e) + mr1(e), e.netStress + sv2(e) + mr2(e), 1)));
+  const maxV = Math.max.apply(null, evs.map(e => Math.max(e.net + sv1(e) + mr1(e), state.view.showStress ? e.netStress + sv2(e) + mr2(e) : 0, 1)));
   const rows = {};
   box.querySelectorAll(".brow").forEach(r => { rows[r.dataset.pid] = r; });
   const keep = {};
@@ -1453,7 +1672,7 @@ function renderBars(evs){
       r = document.createElement("div"); r.className = "brow"; r.dataset.pid = id;
       r.innerHTML = '<div class="bn"></div><div>' +
         '<div class="bl"><input type="checkbox" class="bsel" data-scen="normal" aria-label="Show this plan, normal year, in Line-item detail" data-tip="Show this plan and scenario in Line-item detail"><div class="btrack"><div class="b b1"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div><div class="bd" data-tip="" tabindex="0"></div></div><div class="bm bm1" data-tip="" tabindex="0"><div class="bx bx1" data-tip="" tabindex="0"></div></div></div><span class="bv v1" tabindex="0"></span><span class="bmx bmx1" data-tip="" tabindex="0"></span></div>' +
-        '<div class="bl"><input type="checkbox" class="bsel" data-scen="stress" aria-label="Show this plan, normal year plus stress scenario, in Line-item detail" data-tip="Show this plan and scenario in Line-item detail"><div class="btrack"><div class="b b2"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div><div class="bd" data-tip="" tabindex="0"></div></div><div class="bm bm2" data-tip="" tabindex="0"><div class="bx bx2" data-tip="" tabindex="0"></div></div></div><span class="bv v2" tabindex="0"></span><span class="bmx bmx2" data-tip="" tabindex="0"></span></div></div>';
+        '<div class="bl stress-only"><input type="checkbox" class="bsel" data-scen="stress" aria-label="Show this plan, normal year plus stress scenario, in Line-item detail" data-tip="Show this plan and scenario in Line-item detail"><div class="btrack"><div class="b b2"><div class="bp" data-tip="" tabindex="0"></div><div class="bo" data-tip="" tabindex="0"></div><div class="bd" data-tip="" tabindex="0"></div></div><div class="bm bm2" data-tip="" tabindex="0"><div class="bx bx2" data-tip="" tabindex="0"></div></div></div><span class="bv v2" tabindex="0"></span><span class="bmx bmx2" data-tip="" tabindex="0"></span></div></div>';
       box.appendChild(r); rows[id] = r; fresh.push(r);
     }
     const shownName = shownNames[evs.indexOf(e)];
@@ -1473,9 +1692,9 @@ function renderBars(evs){
       r.querySelector(".bx" + a[0]).dataset.tip = a[5] || "";
       const set = a[0] === "1" ? e.setBase : e.setAll, rem = mr(set);
       const mx = r.querySelector(".bmx" + a[0]);
-      mx.textContent = set.M > 0 ? "max " + fmt(e.premium + set.nc + set.M) : "no max";
-      mx.dataset.tip = set.M > 0 ? "Maximum possible cost for the year: premium " + fmt(e.premium) + " + out-of-pocket maximum " + fmt(set.M) + (set.nc > 0 ? " + not-covered costs " + fmt(set.nc) : "") + " = " + fmt(e.premium + set.nc + set.M) + (e.isHsa ? "\n(Before HSA tax savings.)" : "") : "No out-of-pocket maximum is entered for this plan.";
-      r.querySelector(".bm" + a[0]).dataset.tip = set.M > 0 ? "Maximum possible cost for the year: premium " + fmt(e.premium) + " + out-of-pocket maximum " + fmt(set.M) + " = " + fmt(e.premium + set.M) + (e.isHsa ? "\n(Before HSA tax savings.)" : "") + (set.nc > 0 ? "\n(Not-covered costs are extra.)" : "") + "\n\nThis scenario: " + fmt(e.premium + a[2]) + " before tax savings.\nRoom left before the maximum: " + fmt(rem) + "." : "";
+      mx.textContent = set.M > 0 ? "max " + fmt(e.premium + set.ncAll + set.M) : "no max";
+      mx.dataset.tip = set.M > 0 ? "Maximum possible cost for the year: premium " + fmt(e.premium) + " + out-of-pocket maximum " + fmt(set.M) + (set.nc > 0 ? " + not-covered costs " + fmt(set.nc) : "") + (set.dental.pay > 0 ? " + dental " + fmt(set.dental.pay) : "") + " = " + fmt(e.premium + set.ncAll + set.M) + (e.isHsa ? "\n(Before HSA tax savings.)" : "") : "No out-of-pocket maximum is entered for this plan.";
+      r.querySelector(".bm" + a[0]).dataset.tip = set.M > 0 ? "Maximum possible cost for the year: premium " + fmt(e.premium) + " + out-of-pocket maximum " + fmt(set.M) + " = " + fmt(e.premium + set.M) + (e.isHsa ? "\n(Before HSA tax savings.)" : "") + (set.ncAll > 0 ? "\n(Not-covered and dental costs are extra.)" : "") + "\n\nThis scenario: " + fmt(e.premium + a[2]) + " before tax savings.\nRoom left before the maximum: " + fmt(rem) + "." : "";
     });
     r._w1 = (e.net / maxV * 100).toFixed(1) + "%"; r._w2 = (e.netStress / maxV * 100).toFixed(1) + "%";
     [["1", sv1(e), mr1(e)], ["2", sv2(e), mr2(e)]].forEach(a => {
@@ -1488,9 +1707,11 @@ function renderBars(evs){
   });
   Object.keys(rows).forEach(id => { if (!keep[id]) rows[id].remove(); });
   /* keep DOM order equal to plan order (only touch the DOM when it differs, so running transitions are not cancelled) */
-  const want = evs.map(e => String(e.plan.id)).join(",");
+  /* bars are sorted from the lowest to the highest normal-year cost; with stress on, each plan's normal and stress bars stay together */
+  const sorted = evs.map((e, i) => [e, i]).sort((a, b) => (a[0].net - b[0].net) || (a[1] - b[1])).map(x => x[0]);
+  const want = sorted.map(e => String(e.plan.id)).join(",");
   const have = Array.prototype.map.call(box.querySelectorAll(".brow"), r => r.dataset.pid).join(",");
-  if (want !== have) evs.forEach(e => box.appendChild(rows[String(e.plan.id)]));
+  if (want !== have) sorted.forEach(e => box.appendChild(rows[String(e.plan.id)]));
   /* new rows start at 0 and grow; existing rows glide from their old width to the new one */
   const apply = () => evs.forEach(e => { const r = rows[String(e.plan.id)]; ["1", "2"].forEach(k => { r.querySelector(".b" + k + " .bp").style.width = r["_p" + k]; r.querySelector(".b" + k + " .bo").style.width = r["_o" + k]; r.querySelector(".b" + k + " .bd").style.width = r["_d" + k]; }); r.querySelector(".b1").style.width = r._w1; r.querySelector(".b2").style.width = r._w2; ["1", "2"].forEach(k => { const m = r.querySelector(".bm" + k), x = r.querySelector(".bx" + k); m.style.width = r["_m" + k]; m.classList.toggle("off", r["_mo" + k]); x.style.width = r["_x" + k]; x.classList.toggle("off", r["_xo" + k]); }); });
   let ax = box.querySelector(".baxis");
@@ -1518,36 +1739,57 @@ function renderResults(){
 function renderResultsMain(){
   const evs = state.plans.map(p => evaluate(state, p));
   const n = evs.length;
-  const notices = [];
+  document.body.classList.toggle("no-hsa", !evs.some(e => e.isHsa));
+  const short = barNames(evs);
+  const notices = [];   /* [class, html] or [class, html, plan evaluation]; plan notes with the same text are merged below */
   const lim = hsaLimit(state);
   if (!n){
     $("notices").innerHTML = '<div class="note info">Add at least one plan to see results.</div>';
     renderBars([]); $("resTable").innerHTML = ""; return;
   }
-  if (!state.stress.p1 && (isSingle(state.household) || !state.stress.p2)) notices.push(["info", "No one is selected in the stress scenario, so the stress rows equal the normal-year rows."]);
+  if (state.view.showStress && !state.stress.p1 && (isSingle(state.household) || !state.stress.p2)) notices.push(["info", "No one is selected in the stress scenario, so the stress rows equal the normal-year rows."]);
   if (evs.some(e => e.isHsa)){
     if (lim.medicare) notices.push(["", lim.medicare + (lim.single ? " person is" : " spouse(s)") + " at or above the Medicare age. Anyone enrolled in Medicare cannot contribute to an HSA, so check your eligibility; the maximum shown assumes the " + (lim.single ? "self-only" : "family") + " limit still applies."]);
     if (lim.catchers) notices.push(["info", lim.catchers + (lim.single ? " person qualifies" : " spouse(s) qualify") + " for the catch-up contribution, included in the HSA maximum."]);
-    evs.filter(e => e.isHsa).forEach(e => e.hsa.warnings.forEach(w => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> " + esc(w)])));
-    evs.filter(e => e.isHsa && e.hsa.overLimit).forEach(e => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> planned contribution exceeds the maximum; the maximum is used."]));
+    evs.filter(e => e.isHsa).forEach(e => e.hsa.warnings.forEach(w => notices.push(["", esc(w), e])));
+    evs.filter(e => e.isHsa && e.hsa.overLimit).forEach(e => notices.push(["", "planned contribution exceeds the maximum; the maximum is used.", e]));
   }
   const maEvs = evs.filter(e => isMA(e.plan));
   if (maEvs.length){
     notices.push(["info", lim.medicare ? "Medicare plan premiums are counted for " + lim.medicare + " enrolled " + (lim.medicare === 1 ? "person" : "people") + " (those at or above the Medicare age)." :
       "No one in the household is at or above the Medicare age, so Medicare Advantage plans may not be available yet. Premiums are counted for every person."]);
-    maEvs.forEach(e => notices.push(["info", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> " + (numOrNull(e.plan.premium.part_b_monthly) == null ? "Part B premium counts only if entered. " : "") +
+    maEvs.forEach(e => notices.push(["info", (e.partB == null ? "No Part B premium is entered (plan card or section 2), so it is not counted. " : "") +
       (drugCap(e.plan) > 0 ? "" : "No prescription out-of-pocket cap is entered, so medication costs are not capped. ") +
-      "Out-of-network costs and the free first 20 skilled-nursing days are not modeled."]));
+      "Out-of-network costs and the free first 20 skilled-nursing days are not modeled.", e]));
   }
-  if (isSingle(state.household)) evs.filter(e => singleEstimates(e.plan).length).forEach(e => notices.push(["info", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> no " + esc(singleEstimates(e.plan).join(" or ")) + " is entered, so half the family amount is used for a single person. Enter the individual amount on the plan card for an exact result."]));
-  evs.filter(e => e.missing.length).forEach(e => notices.push(["", "<b>" + esc(shortName(pn(e.plan), 32)) + ":</b> no price is entered for " + esc(e.missing.join(", ")) + ", so " + (e.missing.length === 1 ? "it counts" : "they count") + " as $0. Enter the price in section 2 (Costs) or under “Evaluator prices” on the plan card."]));
-  $("notices").innerHTML = notices.map(x => '<div class="note ' + x[0] + '">' + x[1] + "</div>").join("");
+  if (isSingle(state.household)) evs.filter(e => singleEstimates(e.plan).length).forEach(e => notices.push(["info", "no " + esc(singleEstimates(e.plan).join(" or ")) + " is entered, so half the family amount is used for a single person. Enter the individual amount on the plan card for an exact result.", e]));
+  evs.filter(e => e.missing.length).forEach(e => notices.push(["", "no price is entered for " + esc(e.missing.join(", ")) + ", so " + (e.missing.length === 1 ? "it counts" : "they count") + " as $0. Enter the price in section 2 (Costs) or under “Evaluator prices” on the plan card.", e]));
+  evs.filter(e => e.dentalUnset.length).forEach(e => notices.push(["", "no dental cost share is entered for " + esc(e.dentalUnset.join(", ").toLowerCase()) + ", so " + (e.dentalUnset.length === 1 ? "it counts" : "they count") + " as not covered (you pay the full price). Enter it under “Services: dental” on the plan card.", e]));
+  /* Same wording for several plans -> one notice naming them (short names, full name on hover). */
+  const nameTip = list => esc(list.map(e => pn(e.plan) || "(unnamed plan)").join("\n"));
+  const nameOf = e => '<span class="pname" data-tip="' + nameTip([e]) + '" tabindex="0">' + esc(short[evs.indexOf(e)]) + "</span>";
+  const merged = [], byKey = {};
+  notices.forEach(x => {
+    if (!x[2]){ merged.push({ cls:x[0], html:x[1] }); return; }
+    const k = x[0] + "|" + x[1];
+    if (!byKey[k]){ byKey[k] = { cls:x[0], text:x[1], es:[] }; merged.push(byKey[k]); }
+    byKey[k].es.push(x[2]);
+  });
+  $("notices").innerHTML = merged.map(g => {
+    let html = g.html;
+    if (!html){
+      const es = g.es, who = es.length <= 3 ? es.map(nameOf).join(", ").replace(/, ([^,]*)$/, es.length > 1 ? " and $1" : ", $1") :
+        nameOf(es[0]) + ", " + nameOf(es[1]) + ' and <span class="pname" data-tip="' + nameTip(es.slice(2)) + '" tabindex="0">' + (es.length - 2) + " others</span>";
+      html = "<b>" + who + ":</b> " + g.text;
+    }
+    return '<div class="note ' + g.cls + '">' + html + "</div>";
+  }).join("");
 
   renderBars(evs);
 
   const col = f => evs.map(f);
   const T = k => evs.map(e => e.tip[k]);
-  let t = '<thead><tr><th>Annual cost</th>' + evs.map(e => "<th>" + nameHtml(pn(e.plan)) + (e.isHsa ? '<span class="tag">HSA</span>' : "") + "</th>").join("") + "</tr></thead><tbody>";
+  let t = '<thead><tr><th>Annual cost</th>' + evs.map((e, k) => "<th>" + nameHtml(pn(e.plan), short[k]) + (e.isHsa ? '<span class="tag">HSA</span>' : "") + "</th>").join("") + "</tr></thead><tbody>";
   let hideCur = false;
   const add = s => { if (!hideCur) t += s; };
   const sec = (key, label) => { hideCur = !!state.view.hide[key]; if (!hideCur) t += secRow(label, n); };
@@ -1562,23 +1804,29 @@ function renderResultsMain(){
   add(resRow("X-ray", col(e => e.u.xray), { cls:"sub" }, T("xray")));
   add(resRow("Urgent care (visits, blood work, X-ray, imaging)", col(e => e.u.uc), { cls:"sub" }, T("uc")));
   add(resRow("Medications", col(e => e.u.rx), { cls:"sub" }, T("rx")));
+  add(resRow("Dental cleanings", col(e => e.u.dCleaning), { cls:"sub" }, T("dCleaning")));
+  add(resRow("Dental root canals", col(e => e.u.dRoot), { cls:"sub" }, T("dRoot")));
+  add(resRow("Dental crowns", col(e => e.u.dCrown), { cls:"sub" }, T("dCrown")));
   add(resRow("Total, no deductible limit (listed prices in full)", col(e => e.u.total), { best:true }, T("totalGross")));
   add(resRow("Total, with deductible, coinsurance and max out-of-pocket", col(e => e.oopBase), { best:true, cls:"total" }, T("oopBase")));
+  add(resRow("of which dental (you pay, outside the max out-of-pocket)", col(e => e.setBase.dental.pay), { cls:"sub" }, T("dentalPay")));
   sec("s3", "3. Complete cost (1 + 2)");
   add(resRow("No deductible limit", col(e => e.completeGross), { best:true }, T("completeGross")));
   add(resRow("With deductible", col(e => e.complete), { best:true, cls:"total" }, T("complete")));
-  sec("s4", "4. Complete cost + stress scenario");
-  add(resRow("Stress: ER visits", col(e => e.st.er), { cls:"sub" }, T("stEr")));
-  add(resRow("Stress: blood work during ER", col(e => e.st.erBlood), { cls:"sub" }, T("stBlood")));
-  add(resRow("Stress: X-ray during ER", col(e => e.st.erXray), { cls:"sub" }, T("stXray")));
-  add(resRow("Stress: imaging during ER", col(e => e.st.erImg), { cls:"sub" }, T("stImg")));
-  add(resRow("Stress: hospital days", col(e => e.st.hosp), { cls:"sub" }, T("stHosp")));
-  add(resRow("Stress: tests and imaging during hospital stay", col(e => e.st.hospTest), { cls:"sub" }, T("stHospTest")));
-  add(resRow("Stress: surgeries", col(e => e.st.surg), { cls:"sub" }, T("stSurg")));
-  add(resRow("Stress total, listed prices", col(e => e.st.total), null, T("stTotal")));
-  add(resRow("Complete + stress, no deductible limit", col(e => e.stressGross), { best:true }, T("stressGross")));
-  add(resRow("Complete + stress, with deductible", col(e => e.stress), { best:true, cls:"total" }, T("stress")));
-  add(resRow("Extra cost the stress adds (with deductible)", col(e => e.stressAdded), { best:true, cls:"sub" }, T("stressAdded")));
+  const SS = !!state.view.showStress;
+  if (SS) sec("s4", "4. Complete cost + stress scenario");
+  const addS = s => { if (SS) add(s); };
+  addS(resRow("Stress: ER visits", col(e => e.st.er), { cls:"sub" }, T("stEr")));
+  addS(resRow("Stress: blood work during ER", col(e => e.st.erBlood), { cls:"sub" }, T("stBlood")));
+  addS(resRow("Stress: X-ray during ER", col(e => e.st.erXray), { cls:"sub" }, T("stXray")));
+  addS(resRow("Stress: imaging during ER", col(e => e.st.erImg), { cls:"sub" }, T("stImg")));
+  addS(resRow("Stress: hospital days", col(e => e.st.hosp), { cls:"sub" }, T("stHosp")));
+  addS(resRow("Stress: tests and imaging during hospital stay", col(e => e.st.hospTest), { cls:"sub" }, T("stHospTest")));
+  addS(resRow("Stress: surgeries", col(e => e.st.surg), { cls:"sub" }, T("stSurg")));
+  addS(resRow("Stress total, listed prices", col(e => e.st.total), null, T("stTotal")));
+  addS(resRow("Complete + stress, no deductible limit", col(e => e.stressGross), { best:true }, T("stressGross")));
+  addS(resRow("Complete + stress, with deductible", col(e => e.stress), { best:true, cls:"total" }, T("stress")));
+  addS(resRow("Extra cost the stress adds (with deductible)", col(e => e.stressAdded), { best:true, cls:"sub" }, T("stressAdded")));
   if (evs.some(e => e.isHsa)){
     const h = f => col(e => e.isHsa ? f(e.hsa) : null);
     sec("hsaDetails", "HSA details and tax effect");
@@ -1587,18 +1835,18 @@ function renderResultsMain(){
     add(resRow("Federal tax savings on the contribution", h(x => x.taxSavings), { cls:"sub" }, T("hsaTax")));
     add(resRow("Real contribution after the tax deduction", h(x => x.realCost), { cls:"total" }, T("hsaReal")));
     add(resRow("Unspent HSA balance after a normal year", h(x => x.balance), { cls:"sub" }, T("hsaBalance")));
-    add(resRow("Unspent HSA balance after the stress year", h(x => x.balanceStress), { cls:"sub" }, T("hsaBalanceStress")));
+    addS(resRow("Unspent HSA balance after the stress year", h(x => x.balanceStress), { cls:"sub" }, T("hsaBalanceStress")));
     sec("hsaCost", "HSA plans: cost after tax reduction");
     add(resRow("Complete cost (3)", col(e => e.isHsa ? e.complete : null), { cls:"sub" }, T("complete")));
     add(resRow("− Tax reduction from HSA", h(x => x.saveOnSpend), { cls:"sub" }, T("hsaSave")));
     add(resRow("Complete cost − tax reduction", col(e => e.isHsa ? e.net : null), { best:true, cls:"total" }, T("net")));
-    add(resRow("Complete cost with stress (4)", col(e => e.isHsa ? e.stress : null), { cls:"sub" }, T("stress")));
-    add(resRow("− Tax reduction from HSA (stress year)", h(x => x.saveOnSpendStress), { cls:"sub" }, T("hsaSaveStress")));
-    add(resRow("Complete cost with stress − tax reduction", col(e => e.isHsa ? e.netStress : null), { best:true, cls:"total" }, T("netStress")));
+    addS(resRow("Complete cost with stress (4)", col(e => e.isHsa ? e.stress : null), { cls:"sub" }, T("stress")));
+    addS(resRow("− Tax reduction from HSA (stress year)", h(x => x.saveOnSpendStress), { cls:"sub" }, T("hsaSaveStress")));
+    addS(resRow("Complete cost with stress − tax reduction", col(e => e.isHsa ? e.netStress : null), { best:true, cls:"total" }, T("netStress")));
   }
   sec("net", "Net cost after HSA tax savings");
   add(resRow("Complete cost, net (3)", col(e => e.net), { best:true, cls:"total" }, T("net")));
-  add(resRow("Complete + stress, net (4)", col(e => e.netStress), { best:true, cls:"total" }, T("netStress")));
+  addS(resRow("Complete + stress, net (4)", col(e => e.netStress), { best:true, cls:"total" }, T("netStress")));
   t += "</tbody>";
   $("resTable").innerHTML = t;
 }
@@ -1631,6 +1879,9 @@ document.addEventListener("input", ev => {
   const el = ev.target;
   if (!(el instanceof HTMLInputElement || el instanceof HTMLSelectElement || el instanceof HTMLTextAreaElement)) return;
   const val = el.type === "checkbox" ? el.checked : el.value;
+  if (el.dataset.viewrow){
+    state.view.hide[el.dataset.viewrow] = !val; $("rowsLbl").textContent = rowsLabel(); renderResults(); autosave(); return;
+  }
   if (el.dataset.sechideBox){
     state.view.secHide[el.dataset.sechideBox] = !!val; applySecHide(); autosave(); return;
   }
@@ -1715,6 +1966,7 @@ function normalizeState(raw){
   out.settings = Object.assign({}, base.settings, src.settings || {});
   out.view = { hide: Object.assign({}, base.view.hide) };
   out.view.secHide = Object.assign({}, base.view.secHide);
+  out.view.showStress = !!(src.view && src.view.showStress === true);
   if (src.view && plainObj(src.view.secHide)) Object.keys(base.view.secHide).forEach(k => { if (typeof src.view.secHide[k] === "boolean") out.view.secHide[k] = src.view.secHide[k]; });
   if (src.view && src.view.hide) Object.keys(base.view.hide).forEach(k => { out.view.hide[k] = src.view.hide[k] === true; });
   /* plans saved before 2.1.0 have one flat price per service (no "identity" block); convert them */
@@ -1854,7 +2106,8 @@ function loadExample(){
   state.household.p1 = { name:"Alex", age:"56" };
   state.household.p2 = { name:"Sam", age:"54" };
   state.household.taxRate = "27.8";
-  Object.assign(state.household, { pcp1:"3", pcp2:"2", spec:"4", proc:"2", us:"1", mri:"1", ct:"0", bloodWork:"4", xray:"1", ucVisits:"1", ucBlood:"1", ucXray:"1", ucUS:"0", ucMRI:"0", ucCT:"0", rx5:"0", rx4:"0", rx3:"12", rx2:"12", rx1:"24" });
+  Object.assign(state.household, { pcp1:"3", pcp2:"2", spec:"4", proc:"2", us:"1", mri:"1", ct:"0", bloodWork:"4", xray:"1", ucVisits:"1", ucBlood:"1", ucXray:"1", ucUS:"0", ucMRI:"0", ucCT:"0", rx5:"0", rx4:"0", rx3:"12", rx2:"12", rx1:"24", dentalCleaning:"4", dentalRoot:"1", dentalCrown:"1" });
+  Object.assign(state.costs, { dental_cleaning:"150", dental_root_canal:"1200", dental_crown:"1400" });
   state.stress = { p1:true, p2:false, er:"1", erBlood:"2", erXray:"1", erUS:"1", erMRI:"0", erCT:"1", days:"3", hospBlood:"1", hospXray:"0", hospUS:"0", hospMRI:"0", hospCT:"0", surgeries:"1" };
   state.plans = [
     examplePlan({ name:"Gold PPO (example)", premium:"1650", deductible:"1500", coins:"20", oopMax:"8000",
@@ -1877,6 +2130,11 @@ function loadExample(){
   cp(gold.services.specialist_visit, 60, { unit:"visit" }); cp(gold.services.urgent_care_visit, 75, { unit:"visit" });
   gold.prices.specialist_visit = ""; gold.prices.urgent_care_visit = "";
   DRUG_DEFS.forEach(d => { cp(gold.drugs[d.k], [0,10,30,60,150,300][d.t], { unit:"prescription" }); gold.prices["rx_tier" + d.t] = ""; });
+  /* Dental in the example: the Gold plan has a dental benefit, the other two have none (counted as not covered) */
+  cp(gold.services.dental_cleaning, 0, { structure:"no_charge", unit:"visit" });
+  [gold.services.dental_root_canal, gold.services.dental_crown].forEach(cs => Object.assign(cs, { structure:"coinsurance", coinsurance_pct:"50", deductible_applies:"false" }));
+  Object.assign(gold.limits, { dental_annual_max:"1500", dental_preventive_counts_toward_max:"false" });
+  state.plans.slice(1).forEach(p => DENTAL_DEFS.forEach(d => { p.services[d.key].structure = "not_covered"; }));
   state.plans.forEach(p => { p.hide.svcMental = true; });
   renderAll(); autosave(true);
   setStatus("Loaded illustrative example data. For safety, Auto-save to file is now off and the remembered save file was cleared, so no real file can be overwritten. Use Save as… to pick a new file.");
@@ -1897,6 +2155,10 @@ function doPrint(resultsOnly){
   window.print();
 }
 $("btnPrint").addEventListener("click", () => doPrint(false));
+$("btnStress").addEventListener("click", () => {
+  state.view.showStress = !state.view.showStress;
+  applyStress(); renderViewOpts(); renderResults(); autosave();
+});
 $("btnPrintRes").addEventListener("click", () => doPrint(true));
 
 /* ---------- tooltips ---------- */
@@ -1915,6 +2177,24 @@ document.addEventListener("click", e => { const el = e.target.closest("[data-tip
 document.addEventListener("focusin", e => { const el = e.target.closest && e.target.closest("[data-tip]"); if (el){ const r = el.getBoundingClientRect(); showTip(el, r.left, r.bottom - 18); } });
 document.addEventListener("focusout", hideTip);
 document.addEventListener("scroll", hideTip, true);
+
+/* ---------- blue pane: collapse, jump link, collapsed plan picker ---------- */
+const PANE_KEY = "healthPlanEvaluator.paneCollapsed";
+function setPane(collapsed, save){
+  document.querySelector("header.top").classList.toggle("collapsed", collapsed);
+  const b = $("btnPane");
+  b.textContent = collapsed ? "▾ Expand" : "▴ Collapse"; b.setAttribute("aria-expanded", collapsed ? "false" : "true");
+  b.title = collapsed ? "Show the result bars again" : "Shrink the blue pane to one row";
+  if (save){ try { localStorage.setItem(PANE_KEY, collapsed ? "1" : "0"); } catch (e) {} }
+}
+$("btnPane").addEventListener("click", () => setPane(!document.querySelector("header.top").classList.contains("collapsed"), true));
+$("jumpRes").addEventListener("click", e => { e.preventDefault(); $("secResults").scrollIntoView({ behavior:REDUCE_MOTION ? "auto" : "smooth", block:"start" }); });
+$("barsum").addEventListener("change", e => {
+  if (e.target.id !== "sumPlan") return;
+  ui.planId = e.target.value; syncSel();
+  if (ui.tab === "detail") renderDetail();
+});
+try { if (localStorage.getItem(PANE_KEY) === "1") setPane(true, false); } catch (e) {}
 
 /* ---------- init ---------- */
 $("ver").textContent = APP_VERSION;

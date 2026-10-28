@@ -2,6 +2,57 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.23.1] - 2026-10-27
+
+### Changed
+- The cost bars are sorted from the lowest to the highest normal-year cost. With the stress scenario on, each plan's normal and stress bars move together as a pair.
+- Every bar row now has the same height, so the gaps between bars are equal whether a plan name takes one line or two.
+
+## [2.23.0] - 2026-10-27
+
+### Added
+- **Stress scenario button.** The toolbar has a **Stress scenario: off/on** button. It is **off by default** (and for files saved before this version). While off, section 3 (Stress scenario), the second bar of each plan and its legend entry, the "With stress" total in the collapsed blue pane, the stress rows of the results table (section 4, the HSA stress rows and "Complete + stress, net") and the "4. With stress" entry of the Show/hide rows menu are all hidden, and the bar scale ignores the stress totals. The choice is saved with the file (`view.showStress`) and in the browser.
+
+### Fixed
+- **Dental services limited per year (for example 2 cleanings).** "Max units" on a dental service now means the number the plan covers per person per year. Units above it (per person × people covered) are not covered: you pay their full price, outside the dental annual maximum. Before, a no-charge cleaning limit was ignored (every cleaning counted as free) and a copay limit was applied to the whole household instead of per person. The Max field on dental services is labeled "Max covered per person per year"; the dental tooltips and Line-item detail say how many units are covered and what the extra units cost.
+- The Humana Gold Plus, Humana Value Choice, Kaiser Essential King and Kaiser Optimal plan files now carry `max_units: 2` for dental cleanings (the "2 per year" limit was only in the `limits` text). The schema description of `max_units` and the fill prompt explain the dental meaning.
+
+## [2.22.0] - 2026-10-27
+
+### Added
+- Section 2 (Costs) has two new fields: **Medication tier 3, per fill** and **Medicare Part B premium, monthly per person**. Each is used by every plan that has no value of its own (the plan's tier 3 Evaluator price, the plan's Part B premium). A value on the plan card still wins. The Part B premium applies to Medicare Advantage plans only and is multiplied by the enrolled people, as before.
+
+## [2.21.0] - 2026-10-27
+
+### Added
+- **Dental.** Section 1 has a yearly **Dental** needs block (cleanings, root canals, crowns) and section 2 has the price of each. Every plan card has a **Services: dental** section with a cost share for each, a dental deductible, a dental annual maximum and a "cleanings count toward the maximum" choice.
+- Dental is costed outside the medical deductible and out-of-pocket maximum. The deductible and the annual maximum are per person (a couple gets two). The plan pays up to the maximum; you pay everything above it. A dental service with no cost share entered counts as not covered, and a notice says so.
+- **Results:** three listed-price rows (dental cleanings, root canals, crowns), an "of which dental" row under the with-deductible total, and dental in the "no deductible limit" total and the bar tooltips. The "max possible" outline includes dental.
+- **Line-item detail:** a Dental group with units, base cost, deductible used, what you pay and what insurance pays, a dental summary line, and tooltips that show the deductible and annual maximum.
+- Schema 2.2 (2.0 and 2.1 files still load): `services.dental_cleaning`, `dental_root_canal`, `dental_crown`, `limits.dental_deductible`, `dental_annual_max`, `dental_preventive_counts_toward_max`, and the three dental prices under `evaluator_inputs.prices`.
+- All nine plan files in `plans/` now carry dental cost shares (Aetna, Humana, Kaiser and Ambetter), with the choices made from the plan pages listed in each file's assumptions. The prompt (`fill-health-plan-prompt.md`) explains how to fill dental.
+
+### Changed
+- Results with no dental needs entered are identical to 2.20.0.
+
+## [2.20.0] - 2026-10-27
+
+### Added
+- **Collapse button for the blue top pane.** Collapsed, the pane is one row: the toolbar, the tabs and the selected plan's totals (normal year, with stress, premium), with a plan picker. The choice is remembered in the browser.
+- **Jump to results** link next to the tabs.
+- **Show/hide rows** dropdown in Results replaces the six checkboxes (a checked row is shown; the label says how many are hidden). The saved file format is unchanged.
+
+### Changed
+- The blue pane is about 28 % shorter with five plans (411 px to about 290 px): smaller toolbar buttons, tighter bar rows, and a one-line legend whose explanations are on hover.
+- Notices and Annual cost table headers use the short plan names of the bars ("KP MA Key King (HMO)") with the full name on hover.
+- Notices with identical wording for several plans are merged into one ("Aetna MCR Enhanced, Aetna MCR Signature and 3 others: …").
+- The federal tax bracket field and its hint show only when a plan is HSA-eligible.
+- Line-item detail summary chips sit in a grid; "You pay + premium" is last and bold.
+- Reset is separated from the other buttons at the far end of the toolbar and is labeled "Reset…" (it still asks for confirmation).
+
+### Fixed
+- The Evaluator / Line-item detail tabs now expose `aria-selected`, `aria-controls` and arrow-key navigation, and the two views are labeled tab panels.
+
 ## [2.19.2] - 2026-10-27
 
 ### Changed

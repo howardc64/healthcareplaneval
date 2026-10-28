@@ -23,8 +23,8 @@ Everything runs locally in your browser. No server, no build step, no dependenci
 | `index.html` | The whole app (HTML, CSS, JavaScript) |
 | `README.md` | This file |
 | `CHANGELOG.md` | Version history |
-| `health-plan.schema.json` | Common JSON Schema (2.1) for one health plan: marketplace (SBC + plan-details page) or Medicare Advantage (plan-details page, Summary of Benefits) |
-| `fill-health-plan-prompt.md` | Prompt for the LLM to fill a plan file (schema 2.1, marketplace and Medicare) |
+| `health-plan.schema.json` | Common JSON Schema (2.2) for one health plan: marketplace (SBC + plan-details page) or Medicare Advantage (plan-details page, Summary of Benefits) |
+| `fill-health-plan-prompt.md` | Prompt for the LLM to fill a plan file (schema 2.2, marketplace and Medicare) |
 | `plans/AB_Vital_Gold.plan.json`, `plans/AB_Select_Bronze_HSA.plan.json` | Filled plan files (Ambetter Cascade Select Vital Gold and Select Bronze HSA, 2027) |
 | `plans/Aetna_Medicare_Enhanced_PPO.plan.json`, `plans/Aetna_Medicare_Signature_PPO.plan.json` | Filled Medicare Advantage plan files (Aetna Enhanced H5521-687 and Signature H5521-431, King County WA, 2027) |
 
@@ -35,10 +35,10 @@ Sections 1, 2 and 3 each have a **Hide** checkbox in the upper right (hidden by 
 **1. Household annual health needs**
 Start with **Coverage for**: *Married couple (family plan)* or *Single person (self-only plan)*. A single person has one name, age and PCP visit count, one person in the stress scenario, the plan's **individual** deductible and out-of-pocket maximum (half the family amount, with a notice, if only the family amount is entered), and the self-only HSA limit, HDHP minimum deductible and HDHP out-of-pocket cap. A couple uses the family amounts. Switching back and forth keeps everything you entered.
 
-Names and ages of both spouses, your combined federal tax rate (include NIIT, e.g. 24 + 3.8 = 27.8), and your expected annual use: PCP visits per spouse, specialist visits, specialist procedures, blood work, X-rays, ultrasounds, MRIs, CTs, urgent care (visits per year, with blood work, X-rays, ultrasounds, MRIs and CTs per visit), and medication fills by tier (tier 5 to tier 1).
+Names and ages of both spouses, your combined federal tax rate (include NIIT, e.g. 24 + 3.8 = 27.8), and your expected annual use: PCP visits per spouse, specialist visits, specialist procedures, blood work, X-rays, ultrasounds, MRIs, CTs, urgent care (visits per year, with blood work, X-rays, ultrasounds, MRIs and CTs per visit), medication fills by tier (tier 5 to tier 1), and your yearly **dental** needs: cleanings, root canals and crowns (household totals).
 
 **2. Costs**
-Your estimate of the allowed price per unit for ER visit, specialist procedure, labs (blood work), X-ray, ultrasound, MRI, CT, hospital cost per day and surgery (facility + surgeon, per procedure). The deductible and coinsurance are applied to these prices for every plan. A price in a plan's *Evaluator prices* overrides it for that plan; with neither, the app uses the copay.
+Your estimate of the allowed price per unit for ER visit, specialist procedure, labs (blood work), X-ray, ultrasound, MRI, CT, hospital cost per day, surgery (facility + surgeon, per procedure) the dental cleaning, root canal and crown, the medication tier 3 price per fill and the Medicare Part B monthly premium. Each of these fills in for any plan whose own field is empty: the plan's *Evaluator price* for tier 3 and the plan's *Part B premium* win when they have a value; the Part B premium is used by Medicare Advantage plans only. The deductible and coinsurance are applied to these prices for every plan. A price in a plan's *Evaluator prices* overrides it for that plan (and a plan with no value in a field uses the section 2 value); with neither, the app uses the copay.
 
 **3. Stress scenario**
 Tick one spouse or both, then enter ER visits, blood work, X-ray and imaging per ER visit (blood work, X-ray, US, MRI, CT), days hospitalized (with blood work, X-ray, US, MRI and CT per hospital day), and surgeries.
@@ -54,10 +54,12 @@ Add as many plans as you like (add, duplicate, delete). Tick **Hide** in the upp
 
 Every section has a **Hide** checkbox so a plan is never overwhelming; **Hide all sections** / **Show all sections** sit next to Duplicate and Delete. Sections that do not change the cost (identity, network, mental health and maternity, rehab and other services, the text lists, coverage examples, extraction notes) start hidden. Hidden sections keep their values and still count; the choice is saved with your file.
 
-Services tagged **used in cost** feed the results (primary care, specialist, urgent care, lab / blood work, X-ray and ultrasound, CT / MRI, outpatient surgery, ER, hospital, drug tiers 1 to 5). The others are recorded for reference only.
+Services tagged **used in cost** feed the results (primary care, specialist, urgent care, lab / blood work, X-ray and ultrasound, CT / MRI, outpatient surgery, ER, hospital, drug tiers 1 to 5, dental cleaning, root canal and crown). The others are recorded for reference only.
+
+**Dental** has its own section on each plan card (**Services: dental**): a cost share for cleaning, root canal and crown, a dental deductible, a dental annual maximum (what the plan pays; you pay everything above it) and whether cleanings count toward that maximum. The deductible and the maximum are per person; a couple gets two of each.
 
 **Line-item detail tab**
-Click the **Line-item detail** tab (next to **Evaluator**) and pick a plan (and, if you like, the normal year or the normal year plus the stress scenario). Every service and medication in your annual needs is listed with its units, base (allowed) cost, how the plan covers it, how much of the deductible it uses, what you pay and what the insurer pays. Subtotals, the out-of-pocket maximum reduction and the totals match the results table. Rows are one per kind of service (not one per visit), because the deductible is shared across services in proportion to their allowed price.
+Click the **Line-item detail** tab (next to **Evaluator**) and pick a plan (and, if you like, the normal year or the normal year plus the stress scenario). Every service, medication and dental procedure in your annual needs is listed with its units, base (allowed) cost, how the plan covers it, how much of the deductible it uses, what you pay and what the insurer pays. Subtotals, the out-of-pocket maximum reduction and the totals match the results table. Rows are one per kind of service (not one per visit), because the deductible is shared across services in proportion to their allowed price.
 
 Both this table and the Annual cost table scroll inside their own frame. The frame is sized to fit below the blue top pane, so you can scroll to the last row with the column headers still in view. In a very short window the frame keeps a minimum height of 220 px.
 
@@ -71,7 +73,7 @@ Both this table and the Annual cost table scroll inside their own frame. The fra
 6. For HSA plans, an explicit block: complete cost − tax reduction, and complete cost with stress − tax reduction
 7. Net cost after HSA tax savings
 
-Long plan names are truncated; hover or tap a name to see it in full. The "Hide rows" checkboxes above the table collapse sections 1, 2, 3, 4, HSA details and HSA plans (all shown by default). The lowest cost in each comparison row is highlighted green. Hover over (or tap) any dollar amount to see exactly how it was calculated.
+Plan names use the short form shown on the bars; hover or tap a name to see it in full. The **Show/hide rows** dropdown above the table collapses sections 1, 2, 3, 4, HSA details and HSA plans (all shown by default). The lowest cost in each comparison row is highlighted green. Hover over (or tap) any dollar amount to see exactly how it was calculated.
 
 **Load a plan from plan documents**
 
@@ -124,13 +126,14 @@ Deductible and out-of-pocket amounts are **family** (household) amounts; if only
   - *Deductible applies*: the allowed price counts toward the deductible. You pay 100% of it until the deductible is met, then the copay or coinsurance. When several services share the deductible it is spread across them in proportion to their allowed price.
   - *Not covered*: you pay the full price, outside the max out-of-pocket.
   - *Not entered / unknown*: treated as your general coinsurance % after the deductible (this is also how specialist procedures are costed).
-- **Max units charged** limits how many copays are charged (for example 5 hospital days per stay, per person).
+- **Max units charged** limits how many copays are charged (for example 5 hospital days per stay, per person). On a **dental** service the same field is **Max covered per person per year** (for example 2 cleanings): units above it are not covered and you pay their full price, outside the dental annual maximum.
 - **Primary care** = the discounted first visits per person per year, then the regular cost share.
 - **Surgery** = facility fee + surgeon fee. A surgery price in *Evaluator prices* is split evenly between the two.
+- **Dental** is costed outside the medical deductible and the medical out-of-pocket maximum. Each procedure (cleanings, then root canals, then crowns) takes its cost share (copay, coinsurance, no charge or not covered) after the dental deductible, if the share says the deductible applies. The plan pays at most the dental annual maximum (cleanings count toward it only if the plan says so); you pay everything above it. A dental service with no cost share entered counts as not covered. Dental is in the results as three listed-price rows and as an "of which dental" row under the with-deductible total, and as its own group in Line-item detail.
 - **Urgent care** = visits × visit cost + visits × (blood work, X-rays and imaging per visit × their costs).
 - **No deductible limit total** = every listed price paid in full, with no deductible, copay, coinsurance or cap.
 - **With deductible total** = first-dollar copays and coinsurance + the deductible part + the after-deductible copays/coinsurance, capped at the max out-of-pocket (a blank or 0 max means no cap), plus anything not covered.
-- **Stress scenario**: counts apply to each selected spouse. Blood work, X-ray and imaging counts are per ER visit. The stress charges are added to the normal-year charges **before** the deductible and cap are applied, so the deductible is never counted twice. "Extra cost the stress adds" is the difference.
+- **Stress scenario**: hidden by default; turn it on with the **Stress scenario** button in the toolbar. Counts apply to each selected spouse. Blood work, X-ray and imaging counts are per ER visit. The stress charges are added to the normal-year charges **before** the deductible and cap are applied, so the deductible is never counted twice. "Extra cost the stress adds" is the difference.
 - **HSA maximum** = family limit + the catch-up amount for each spouse at or above the catch-up age and below the Medicare age.
 - **Real contribution after tax** = contribution × (1 − tax rate). **Tax savings** = contribution × tax rate.
 - **Tax reduction from HSA** = tax rate × the amount of care paid from the HSA (the smaller of your contribution and your out-of-pocket spending). Tick "Count tax savings on the full HSA contribution" in the HSA panel to use the whole contribution instead.

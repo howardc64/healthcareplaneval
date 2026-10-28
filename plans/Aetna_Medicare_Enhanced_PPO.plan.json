@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.1",
+  "schema_version": "2.2",
   "plan": {
     "identity": {
       "name": "Aetna Medicare Enhanced (PPO)",
@@ -64,7 +64,9 @@
         ]
       },
       "drug_oop_max": 2400,
-      "not_counted_toward_oop_max": []
+      "not_counted_toward_oop_max": [],
+      "dental_annual_max": 1000,
+      "dental_preventive_counts_toward_max": false
     },
     "services": {
       "preventive_care": {
@@ -246,6 +248,24 @@
         "deductible_applies": false,
         "limits": "Dexcom and Freestyle Libre only at network pharmacies; all CGMs at DME providers.",
         "source_text": "20% ... as well as all continuous glucose monitors (CGM)"
+      },
+      "dental_cleaning": {
+        "structure": "no_charge",
+        "unit": "visit",
+        "source_text": "Preventive dental services: $0 for oral exams, cleanings, x-rays"
+      },
+      "dental_root_canal": {
+        "structure": "coinsurance",
+        "coinsurance_pct": 20,
+        "deductible_applies": false,
+        "source_text": "In-network: 20% endodontic (comprehensive dental)"
+      },
+      "dental_crown": {
+        "structure": "coinsurance",
+        "coinsurance_pct": 50,
+        "deductible_applies": false,
+        "limits": "Restorative services are 20% to 50% in network; 50% used because the page does not say which services are 20%.",
+        "source_text": "In-network: 20%-50% restorative; 50% fixed prosthodontics"
       }
     },
     "out_of_network_services": {
@@ -698,13 +718,15 @@
       "The drug tier fields hold the preferred pharmacy, 30-day retail amounts. Standard retail and mail order are in drugs.pharmacy_channels.",
       "Urgent care in person is set to $40, the figure listed under telehealth 'Urgently Needed Services'.",
       "General coinsurance after the deductible is not stated for this plan, so coinsurance_member_pct is null.",
-      "The 2027 coverage start of January 1, 2027 is the standard Medicare plan-year start, not printed on the page."
+      "The 2027 coverage start of January 1, 2027 is the standard Medicare plan-year start, not printed on the page.",
+      "Dental: the cleaning is the preventive dental benefit ($0). The root canal uses the 20% endodontic share. The crown uses 50%, the top of the 20%-50% restorative range, because the page does not say which restorative services cost 20%. The $1,000 annual allowance is per person and preventive services do not count toward it."
     ],
     "notes": [
       "Ambulatory surgery center price is in outpatient_surgery_facility; surgeon and hospital professional fees are 'unknown' because the page does not list them.",
       "Skilled nursing: $0 days 1-20, then a daily copay for days 21-100.",
       "Star rating is 4 of 5 stars.",
-      "Part B standard premium for 2027 is not on the plan page, so part_b_monthly is null."
+      "Part B standard premium for 2027 is not on the plan page, so part_b_monthly is null.",
+      "Rechecked on 2026-10-27 against the Aetna plan details page (H5521-687): premium, deductibles, out-of-pocket maximums and the dental terms (cleaning, root canal, crown, annual maximum) match this file."
     ]
   }
 }

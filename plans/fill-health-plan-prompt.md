@@ -1,10 +1,10 @@
-# Prompt: fill a health plan file (schema 2.1)
+# Prompt: fill a health plan file (schema 2.2)
 
 Give an LLM that reads PDFs: `health-plan.schema.json`, the plan's documents, and this prompt. Save its JSON answer as `<name>.plan.json` and load it with **Load health plan**.
 
 ---
 
-You fill one JSON file that follows `health-plan.schema.json` (schema_version "2.1").
+You fill one JSON file that follows `health-plan.schema.json` (schema_version "2.2").
 
 Documents: for a marketplace plan, the Summary of Benefits and Coverage plus the marketplace plan-details page (premium). For a Medicare Advantage plan, the carrier's plan-details page and, if provided, the Summary of Benefits and Evidence of Coverage.
 
@@ -18,4 +18,5 @@ Rules:
 7. Hospital copays per day with a day limit: unit "day" and `max_units` (for example 5). Put anything the structure cannot hold (such as free first days) in `limits`.
 8. Put your own dollar estimates only in `evaluator_inputs.prices`, never in `services`.
 9. Fill `extraction`: confidence (high, medium, low), assumptions (what you inferred or took from a different line), and notes.
-10. Answer with the JSON only.
+10. Dental: fill `services.dental_cleaning`, `dental_root_canal` and `dental_crown`. When the plan limits the service per year (for example "2 cleanings per year"), put the number per person in `max_units`; extra units are costed as not covered. Marketplace plans that exclude adult dental: `not_covered`. Medicare Advantage: the cleaning is the preventive dental benefit, the root canal (endodontic) and crown (restorative or prosthodontic) come from the comprehensive dental benefit; use the percentage the documents give for that kind of service and say in `extraction.assumptions` when you had to pick one from a range. Put the dental deductible (per person) in `limits.dental_deductible`, the most the plan pays for dental in a year (per person) in `limits.dental_annual_max`, and whether cleanings count toward it in `limits.dental_preventive_counts_toward_max`. An optional dental add-on that is not part of the plan goes in `extraction.notes`, not in the cost shares.
+11. Answer with the JSON only.

@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.0",
+  "schema_version": "2.2",
   "plan": {
     "identity": {
       "name": "Ambetter Cascade Select Vital Gold: Standard Gold On Exchange Plan",
@@ -288,6 +288,18 @@
       "children_dental_checkup": {
         "structure": "not_covered",
         "source_text": "Children's dental check-up: Not covered"
+      },
+      "dental_cleaning": {
+        "structure": "not_covered",
+        "source_text": "Excluded services: Dental care (Adult)"
+      },
+      "dental_root_canal": {
+        "structure": "not_covered",
+        "source_text": "Excluded services: Dental care (Adult)"
+      },
+      "dental_crown": {
+        "structure": "not_covered",
+        "source_text": "Excluded services: Dental care (Adult)"
       }
     },
     "drugs": {
@@ -390,13 +402,15 @@
     "assumptions": [
       "Deductible applies = true for hospital, delivery facility, mental health inpatient, inpatient rehabilitation and habilitation, and skilled nursing: they are not on the plan page's list of services covered before the deductible.",
       "Deductible applies = true for durable medical equipment for the same reason.",
-      "The primary care price equals every sick visit ($15); an annual preventive visit is no charge."
+      "The primary care price equals every sick visit ($15); an annual preventive visit is no charge.",
+      "Dental: adult dental care is listed under excluded services, so cleanings, root canals and crowns are recorded as not covered."
     ],
     "notes": [
       "Tier 3 and Tier 4 drugs are coinsurance with no dollar price in the documents.",
       "The SBC does not state whether the deductible applies to lab and x-ray at other places of service ($350 copay), so it is left unset.",
       "Mail order is 90 days at 2.5x the retail copay for Tier 1 and Tier 2; Tier 4 is 30 days.",
-      "SBC coverage examples are self-only coverage."
+      "SBC coverage examples are self-only coverage.",
+      "Rechecked on 2026-10-27 against AB Vital Gold 61836WA0050016-01.pdf and the Healthplanfinder compare page: premium, deductibles, out-of-pocket maximums and the dental terms (cleaning, root canal, crown, annual maximum) match this file."
     ]
   }
 }

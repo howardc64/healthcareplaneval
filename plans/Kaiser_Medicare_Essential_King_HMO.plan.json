@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.1",
+  "schema_version": "2.2",
   "plan": {
     "identity": {
       "name": "Kaiser Permanente Medicare Advantage Essential King (HMO)",
@@ -248,6 +248,21 @@
         "unit": "item",
         "limits": "Glucose monitor, test strips, lancets and control solutions; therapeutic shoes/inserts for severe diabetic foot disease. Prior authorization may be required.",
         "source_text": "Diabetic supplies, including therapeutic shoes/inserts† $0"
+      },
+      "dental_cleaning": {
+        "structure": "no_charge",
+        "unit": "visit",
+        "limits": "Exams and cleanings 2 per year. Delta Dental PPO Plus Premier network.",
+        "source_text": "Preventive and diagnostic dental services $0",
+        "max_units": 2
+      },
+      "dental_root_canal": {
+        "structure": "not_covered",
+        "source_text": "Comprehensive dental is not part of the base plan"
+      },
+      "dental_crown": {
+        "structure": "not_covered",
+        "source_text": "Comprehensive dental is not part of the base plan"
       }
     },
     "drugs": {
@@ -662,14 +677,16 @@
     "confidence": "high",
     "assumptions": [
       "Quoted for the Essential King plan; Essential Pierce, Snohomish and Thurston differ on Tier 5 coinsurance (31%).",
-      "The drug tier fields hold the preferred retail, up to 30-day amounts."
+      "The drug tier fields hold the preferred retail, up to 30-day amounts.",
+      "Dental: the base plan covers preventive dental only. The optional Advantage Plus dental add-on (extra monthly premium, $100 deductible, 50% coinsurance, $1,500 annual maximum) is not included in the premium or the dental costs; to evaluate it, add its premium and enter 50% for the root canal and crown, a $100 dental deductible and a $1,500 annual maximum."
     ],
     "notes": [
       "Outpatient hospital services are $0 to a per-visit maximum and are not a separate schema field; the ambulatory surgery center price is used for outpatient surgery.",
       "Surgeon and hospital physician fees are 'unknown' because the Summary of Benefits does not list them.",
       "The star rating and Part B standard premium are not in the Summary of Benefits, so they are null.",
       "The booklet covers 8 plans (Essential and Key for King, Pierce, Snohomish and Thurston) under PBP 024-031. It does not say which PBP is King, so plan_id is null.",
-      "Mail-order Tier 2 is $10 for up to 30 days and $0 for longer supplies."
+      "Mail-order Tier 2 is $10 for up to 30 days and $0 for longer supplies.",
+      "Rechecked on 2026-10-27 against summary-of-benefits-essential-key-wa.pdf: premium, deductibles, out-of-pocket maximums and the dental terms (cleaning, root canal, crown, annual maximum) match this file."
     ]
   }
 }

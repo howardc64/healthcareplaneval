@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/health-plan.schema.json",
   "title": "Health plan summary (common schema)",
-  "description": "One health insurance plan: a marketplace plan (SBC + plan-details page) or a Medicare Advantage plan (Aetna-style plan-details page, Summary of Benefits, EOC). Facts only: record what the documents say, with a short source quote. Anything the documents do not state (for example dollar prices for services charged as coinsurance) is left null here and, if you want the evaluator to use an estimate, goes in evaluator_inputs.prices. Schema 2.1 is backward compatible with 2.0: every 2.0 file is still valid. New in 2.1: plan.identity.plan_category, out-of-network cost shares (plan.out_of_network_services), per-plan Medicare block (plan.medicare), supplemental benefits (dental, vision, hearing, fitness, transportation, meals), Part D drug deductible and out-of-pocket cap, pharmacy channels, and six more services.",
+  "description": "One health insurance plan: a marketplace plan (SBC + plan-details page) or a Medicare Advantage plan (Aetna-style plan-details page, Summary of Benefits, EOC). Facts only: record what the documents say, with a short source quote. Anything the documents do not state (for example dollar prices for services charged as coinsurance) is left null here and, if you want the evaluator to use an estimate, goes in evaluator_inputs.prices. Schema 2.1 is backward compatible with 2.0: every 2.0 file is still valid. New in 2.1: plan.identity.plan_category, out-of-network cost shares (plan.out_of_network_services), per-plan Medicare block (plan.medicare), supplemental benefits (dental, vision, hearing, fitness, transportation, meals), Part D drug deductible and out-of-pocket cap, pharmacy channels, and six more services. New in 2.2: dental services costed by the evaluator (plan.services.dental_cleaning, dental_root_canal, dental_crown), plan.limits.dental_deductible, dental_annual_max and dental_preventive_counts_toward_max, and evaluator_inputs.prices.dental_cleaning, dental_root_canal, dental_crown. Every 2.0 and 2.1 file is still valid.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -77,7 +77,7 @@
             "null"
           ],
           "minimum": 0,
-          "description": "Cap on charged units, for example 5 (copays per hospital stay)."
+          "description": "Cap on charged units, for example 5 (copays per hospital stay). For dental services it is the number of units the plan covers per person per year, for example 2 cleanings; units above it are not covered and you pay their full price."
         },
         "limits": {
           "type": "string",
@@ -392,6 +392,18 @@
         },
         "continuous_glucose_monitor": {
           "$ref": "#/$defs/costShare"
+        },
+        "dental_cleaning": {
+          "$ref": "#/$defs/costShare",
+          "description": "Routine dental cleaning (preventive dental). Medicare Advantage: take it from supplemental_benefits.dental_preventive. Marketplace adult dental is usually excluded: use not_covered."
+        },
+        "dental_root_canal": {
+          "$ref": "#/$defs/costShare",
+          "description": "Root canal (endodontic service). Medicare Advantage: take it from supplemental_benefits.dental_comprehensive. Your share of the dentist's charge, before the annual maximum."
+        },
+        "dental_crown": {
+          "$ref": "#/$defs/costShare",
+          "description": "Crown (restorative or prosthodontic service). Medicare Advantage: take it from supplemental_benefits.dental_comprehensive."
         }
       }
     }
@@ -401,9 +413,10 @@
       "type": "string",
       "enum": [
         "2.0",
-        "2.1"
+        "2.1",
+        "2.2"
       ],
-      "description": "Use 2.1 for any file that uses a 2.1 field (all Medicare files)."
+      "description": "Use 2.2 for any file that uses a 2.2 field (dental cleaning, root canal and crown cost shares, dental limits, dental prices). Use 2.1 for any file that uses a 2.1 field (all Medicare files)."
     },
     "plan": {
       "type": "object",
@@ -693,6 +706,21 @@
             "drug_oop_max": {
               "$ref": "#/$defs/money",
               "description": "Annual prescription out-of-pocket cap (Part D)."
+            },
+            "dental_deductible": {
+              "$ref": "#/$defs/money",
+              "description": "Separate dental deductible, per person (for example the optional Kaiser dental add-on). Null when there is none."
+            },
+            "dental_annual_max": {
+              "$ref": "#/$defs/money",
+              "description": "Most the plan pays for dental in a year, per person (the dental benefit amount or allowance). You pay everything above it. Null when the documents state no maximum."
+            },
+            "dental_preventive_counts_toward_max": {
+              "type": [
+                "boolean",
+                "null"
+              ],
+              "description": "true when cleanings and other preventive dental count toward dental_annual_max, false when they do not, null when not stated."
             }
           }
         },
@@ -1000,6 +1028,27 @@
               "minimum": 0
             },
             "rx_tier5": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "dental_cleaning": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "dental_root_canal": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "dental_crown": {
               "type": [
                 "number",
                 "null"
