@@ -22,15 +22,16 @@
         "zip": "98074"
       },
       "source_documents": [
+        "Y0001_H5521_687_PQ27_SB2027_M.pdf (Aetna 2027 Summary of Benefits, form date 20260818)",
         "Aetna_Enhanced__PPO__H5521-687_Details___Aetna.pdf (Aetna plan details page, printed 10/26/26)",
-        "Summary of Benefits and Evidence of Coverage: linked from the plan page, not provided"
+        "Evidence of Coverage: linked from the Summary of Benefits, not provided"
       ]
     },
     "network": {
       "out_of_network_covered": true,
-      "primary_care_provider_required": false,
+      "primary_care_provider_required": true,
       "specialist_referral_required": false,
-      "emergency_out_of_network_pays_in_network_rates": null
+      "emergency_out_of_network_pays_in_network_rates": true
     },
     "premium": {
       "monthly": 63,
@@ -38,7 +39,7 @@
       "part_b_premium_continues": true,
       "part_b_monthly": null,
       "per_person": true,
-      "note": "Aetna plan page, per enrolled person. You must continue to pay your Part B premium if you have one. A couple enrolling in the same plan pays this twice."
+      "note": "Aetna 2027 Summary of Benefits, per enrolled person. You must continue to pay your Medicare Part B premium. A couple enrolling in the same plan pays this twice."
     },
     "limits": {
       "deductible_individual": 0,
@@ -72,20 +73,21 @@
       "preventive_care": {
         "structure": "no_charge",
         "deductible_applies": false,
-        "source_text": "$0 for all preventive services covered under Original Medicare"
+        "source_text": "Preventive care In-network: $0 copay"
       },
       "annual_physical": {
         "structure": "no_charge",
         "deductible_applies": false,
         "unit": "visit",
-        "source_text": "Annual physical In-Network $0"
+        "source_text": "Annual physical In-Network $0",
+        "limits": "Annual physical is not listed in the Summary of Benefits; $0 comes from the plan details page."
       },
       "primary_care_visit": {
         "cost_share": {
           "structure": "no_charge",
           "deductible_applies": false,
           "unit": "visit",
-          "source_text": "Primary care provider (PCP) In-Network $0"
+          "source_text": "PCP In-network: $0 copay"
         },
         "first_visits": null
       },
@@ -94,22 +96,22 @@
         "copay_amount": 50,
         "deductible_applies": false,
         "unit": "visit",
-        "limits": "$0 for services provided in a nursing home; $50 for services outside a nursing home.",
-        "source_text": "Specialist In-Network $0 for services provided in a nursing home; $50 for services provided outside a nursing home"
+        "limits": "$50 per visit. The $0 nursing-home exception comes from the plan details page; the Summary of Benefits does not list it.",
+        "source_text": "Specialist In-network: $50 copay"
       },
       "urgent_care_visit": {
         "structure": "copay",
         "copay_amount": 40,
         "deductible_applies": false,
         "unit": "visit",
-        "limits": "The plan page shows $40 for 'Urgently Needed Services' only under additional telehealth services; the in-person urgent care price is not listed separately. Verify in the Summary of Benefits.",
-        "source_text": "Additional telehealth services In-Network: $40 for Urgently Needed Services"
+        "limits": "In the U.S.: $40 for urgent care in and out of network. Outside the U.S.: $115 for urgent care.",
+        "source_text": "Emergency and urgent care (inside the U.S.): $115 copay for emergency care, $40 copay for urgent care"
       },
       "virtual_care_visit": {
         "structure": "no_charge",
         "deductible_applies": false,
         "unit": "visit",
-        "limits": "Telehealth in-network: $0 PCP; $50 specialist; $40 urgently needed; $40 mental health and psychiatric (group and individual).",
+        "limits": "Telehealth in-network: $0 PCP; $50 specialist; $40 urgently needed; $40 mental health and psychiatric (group and individual). (Telehealth is not listed in the Summary of Benefits; from the plan details page.)",
         "source_text": "Additional telehealth services In-Network $0 for PCP; $50 for Specialist"
       },
       "lab_test": {
@@ -117,70 +119,72 @@
         "copay_amount": 20,
         "deductible_applies": false,
         "unit": "visit",
-        "limits": "$0 for Hemoglobin A1C tests.",
-        "source_text": "Lab services In-Network $0 for Hemoglobin A1C tests; $20 for other lab services"
+        "limits": "$0 for certain lab services including hemoglobin A1c, urine protein, prothrombin (protime), urine albumin, fecal immunochemical test (FIT), kidney health evaluation (KED) and COVID-19 testing.",
+        "source_text": "Lab services In-network: $20 copay; $0 copay for certain lab services including hemoglobin A1c"
       },
       "xray_diagnostic_imaging": {
         "structure": "no_charge",
         "deductible_applies": false,
         "unit": "test",
-        "source_text": "Imaging In-Network Xray: $0"
+        "source_text": "Outpatient x-rays In-network: $0 copay"
       },
       "diagnostic_procedure": {
         "structure": "copay",
         "copay_amount": 20,
         "deductible_applies": false,
         "unit": "test",
-        "limits": "$0 for certain Medicare-covered diagnostic tests including retinal fundus, spirometry and peripheral arterial disease (PAD).",
-        "source_text": "$0 for certain Medicare-covered diagnostic tests ...; $20 for other diagnostic procedures and tests"
+        "limits": "$0 for certain Medicare-covered diagnostic tests including retinal fundus, spirometry and peripheral arterial disease (PAD) testing.",
+        "source_text": "Diagnostic tests and procedures In-network: $20 copay; $0 for certain tests incl. retinal fundus, spirometry, PAD"
       },
       "imaging_ct_pet_mri": {
         "structure": "copay",
         "copay_amount": 275,
         "deductible_applies": false,
         "unit": "test",
-        "limits": "The same $275 applies to CT scans and to diagnostic radiology other than CT (this covers MRI and ultrasound). Mammogram is $0.",
-        "source_text": "CT Scans: $275; Diagnostic Radiology other than CT Scans: $275"
+        "limits": "Diagnostic radiology such as CT/CAT scan and MRI. Plan details page: ultrasound is in the same diagnostic radiology group; mammogram is $0.",
+        "source_text": "Diagnostic radiology services, such as CT/CAT scan and MRI In-network: $275 copay"
       },
       "mammogram": {
         "structure": "no_charge",
         "deductible_applies": false,
         "unit": "test",
-        "source_text": "Diagnostic Radiology Mammogram: $0"
+        "source_text": "Diagnostic Radiology Mammogram: $0",
+        "limits": "Not listed in the Summary of Benefits; $0 from the plan details page."
       },
       "colonoscopy_preventive_diagnostic": {
         "structure": "no_charge",
         "deductible_applies": false,
         "unit": "visit",
-        "source_text": "$0 for preventive and diagnostic colonoscopy"
+        "source_text": "$0 for preventive and diagnostic colonoscopy",
+        "limits": "Not listed in the Summary of Benefits; $0 from the plan details page."
       },
       "outpatient_surgery_facility": {
         "structure": "copay",
         "copay_amount": 325,
         "deductible_applies": false,
         "unit": "visit",
-        "limits": "Ambulatory surgery center. Preventive and diagnostic colonoscopy is $0.",
-        "source_text": "Ambulatory surgery center (ASC) In-Network $325 all other ambulatory surgical center services"
+        "limits": "Ambulatory surgical center $325. Outpatient hospital $375 copay; outpatient hospital observation $425 copay.",
+        "source_text": "Ambulatory surgical center In-network: $325 copay; Outpatient hospital $375 copay"
       },
       "outpatient_surgery_professional": {
         "structure": "unknown",
-        "limits": "Surgeon/professional fee is not shown on the plan page. See the Summary of Benefits or EOC."
+        "limits": "Surgeon/professional fee is not shown in the Summary of Benefits or plan page. See the EOC."
       },
       "emergency_room": {
         "structure": "copay",
         "copay_amount": 115,
         "deductible_applies": false,
         "unit": "visit",
-        "limits": "Cost share may be waived if you are admitted to the hospital within 24 hours.",
-        "source_text": "Emergency room $115 If you are admitted to the hospital within 24 hours your cost share may be waived"
+        "limits": "$115 in and out of network. Outside the U.S. emergency care is also $115, up to $250,000 combined for emergency care, urgent care and emergency ambulance abroad. Plan page: cost share may be waived if admitted within 24 hours.",
+        "source_text": "Emergency care $115 copay in and out of network (inside and outside the U.S.)"
       },
       "emergency_transport": {
         "structure": "copay",
         "copay_amount": 300,
         "deductible_applies": false,
         "unit": "trip",
-        "limits": "Ground ambulance, $300 in or out of network. Routine transportation is not covered.",
-        "source_text": "Ground Ambulance In-Network $300; Out-of-Network $300"
+        "limits": "Ground ambulance $300 per one-way trip; air ambulance 20% coinsurance. Same in and out of network. Routine non-emergency transportation is not covered.",
+        "source_text": "Ambulance (ground or air, one-way trip): $300 copay ground; 20% coinsurance air"
       },
       "hospital_facility": {
         "structure": "copay",
@@ -188,12 +192,12 @@
         "deductible_applies": false,
         "unit": "day",
         "max_units": 5,
-        "limits": "$425 per day for days 1-5; $0 per day for days 6-90.",
-        "source_text": "Inpatient hospital In-Network $425 per day, days 1-5; $0 per day, days 6-90"
+        "limits": "$425 per day for days 1-5; $0 per day for days 6-90; $0 for additional days (unlimited days).",
+        "source_text": "Inpatient (unlimited number of days) $425 per day, days 1-5; $0 per day, days 6-90; $0 for additional days"
       },
       "hospital_professional": {
         "structure": "unknown",
-        "limits": "Physician fees during an inpatient stay are not shown on the plan page. See the Summary of Benefits or EOC."
+        "limits": "Physician fees during an inpatient stay are not shown in the Summary of Benefits or plan page. See the EOC."
       },
       "mental_health_outpatient_office": {
         "cost_share": {
@@ -201,8 +205,8 @@
           "copay_amount": 40,
           "deductible_applies": false,
           "unit": "visit",
-          "limits": "Same $40 for mental health and psychiatric individual sessions.",
-          "source_text": "$40 for Mental Health - Individual Sessions"
+          "limits": "$40 for individual mental health and psychiatric therapy sessions.",
+          "source_text": "Outpatient mental health therapy: $40 copay for individual sessions"
         },
         "first_visits": null
       },
@@ -211,14 +215,15 @@
         "copay_amount": 40,
         "deductible_applies": false,
         "unit": "visit",
-        "limits": "Group sessions (mental health and psychiatric).",
-        "source_text": "$40 for Mental Health - Group Sessions"
+        "limits": "Group mental health and psychiatric therapy sessions.",
+        "source_text": "Outpatient mental health therapy: $40 copay for group sessions"
       },
       "home_health": {
         "structure": "no_charge",
         "deductible_applies": false,
         "unit": "visit",
-        "source_text": "Home health care In-Network $0"
+        "source_text": "Home health care In-network: $0 copay for Medicare-covered home health care services",
+        "limits": "Medicare-covered home health care only; non-Medicare home health is not covered."
       },
       "skilled_nursing": {
         "structure": "copay",
@@ -226,46 +231,76 @@
         "deductible_applies": false,
         "unit": "day",
         "max_units": 80,
-        "limits": "$0 per day for days 1-20; $218 per day for days 21-100. max_units 80 = the charged days 21-100; the evaluator cannot model the free first 20 days exactly.",
-        "source_text": "Skilled nursing facility (SNF) In-Network $0 per day, days 1-20; $218 per day, days 21-100"
+        "limits": "$0 per day for days 1-20; $218 per day for days 21-100 (up to 100 days per benefit period). max_units 80 = the charged days 21-100; the evaluator cannot model the free first 20 days exactly.",
+        "source_text": "SNF care $0 per day, days 1-20; $218 per day, days 21-100"
       },
       "durable_medical_equipment": {
         "structure": "coinsurance",
         "coinsurance_pct": 20,
         "deductible_applies": false,
-        "source_text": "Durable medical equipment (DME) In-Network 20%"
+        "source_text": "Durable medical equipment (DME), such as wheelchairs, crutches, and oxygen equipment: 20% coinsurance",
+        "limits": "Prosthetics (braces, artificial limbs) are also 20%."
       },
       "diabetic_supplies": {
         "structure": "no_charge",
         "deductible_applies": false,
         "unit": "item",
-        "limits": "$0 only for Accu-Chek/Roche and TRUE/Trividia meters and medical diabetic supplies. 20% for other brands with prior authorization.",
-        "source_text": "0% for Accu-Chek/Roche and TRUE/Trividia blood glucose meters (BGM) and medical diabetic supplies"
+        "limits": "$0 for Accu-Chek/Roche and TRUE/Trividia meters and medical diabetic supplies (the only preferred brands). 20% for meters and supplies from other makers with prior authorization. Medicare-covered diabetic supplies range 0%-20%.",
+        "source_text": "0% coinsurance for Accu-Chek/Roche and TRUE/Trividia blood glucose meters (BGM) and medical diabetic supplies"
       },
       "continuous_glucose_monitor": {
         "structure": "coinsurance",
         "coinsurance_pct": 20,
         "deductible_applies": false,
-        "limits": "Dexcom and Freestyle Libre only at network pharmacies; all CGMs at DME providers.",
-        "source_text": "20% ... as well as all continuous glucose monitors (CGM)"
+        "limits": "Medicare-covered CGMs. Plan details page: Dexcom and Freestyle Libre only at network pharmacies; all CGMs at DME providers.",
+        "source_text": "20% coinsurance for Medicare-covered continuous glucose monitors (CGMs)"
       },
       "dental_cleaning": {
         "structure": "no_charge",
         "unit": "visit",
-        "source_text": "Preventive dental services: $0 for oral exams, cleanings, x-rays"
+        "source_text": "Dental services (non-Medicare covered): $0 copay for preventive services (oral exams, cleanings, x-rays)"
       },
       "dental_root_canal": {
         "structure": "coinsurance",
         "coinsurance_pct": 20,
         "deductible_applies": false,
-        "source_text": "In-network: 20% endodontic (comprehensive dental)"
+        "source_text": "In-network: 20% endodontic (comprehensive dental)",
+        "limits": "Summary of Benefits gives 20%-50% for comprehensive services; 20% endodontic comes from the plan details page."
       },
       "dental_crown": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
-        "limits": "Restorative services are 20% to 50% in network; 50% used because the page does not say which services are 20%.",
+        "limits": "Summary of Benefits gives 20%-50% for comprehensive services (fillings, extractions, crowns and more); 50% is used because the plan details page lists 50% for fixed prosthodontics and does not say which restorative services cost 20%.",
         "source_text": "In-network: 20%-50% restorative; 50% fixed prosthodontics"
+      },
+      "mental_health_inpatient": {
+        "structure": "copay",
+        "copay_amount": 415,
+        "deductible_applies": false,
+        "unit": "day",
+        "max_units": 5,
+        "limits": "$415 per day for days 1-5; $0 per day for days 6-90. 190-day lifetime limit for inpatient psychiatric hospital stays.",
+        "source_text": "Inpatient psychiatric hospital stay: $415 per day, days 1-5; $0 per day, days 6-90"
+      },
+      "rehabilitation_outpatient": {
+        "structure": "copay",
+        "copay_amount": 35,
+        "deductible_applies": false,
+        "unit": "visit",
+        "limits": "Physical and speech therapy $35; occupational therapy $35.",
+        "source_text": "Physical and speech therapy $35 copay; Occupational therapy $35 copay"
+      },
+      "chiropractic": {
+        "cost_share": {
+          "structure": "copay",
+          "copay_amount": 15,
+          "deductible_applies": false,
+          "unit": "visit",
+          "limits": "Medicare-covered chiropractic only (fixing a subluxation). Non-Medicare chiropractic is not covered.",
+          "source_text": "Chiropractic services: $15 copay for Medicare-covered chiropractic visits"
+        },
+        "first_visits": null
       }
     },
     "out_of_network_services": {
@@ -273,8 +308,8 @@
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
-        "limits": "0% for pneumonia, influenza, Hepatitis B and Covid-19 vaccines.",
-        "source_text": "50% for all other preventive services covered under Original Medicare"
+        "limits": "0% coinsurance for pneumonia, flu/influenza, hepatitis B and COVID-19 vaccines; 50% for all other Medicare-covered preventive services.",
+        "source_text": "Preventive care Out-of-network: 0% - 50% coinsurance"
       },
       "annual_physical": {
         "structure": "coinsurance",
@@ -289,7 +324,7 @@
           "coinsurance_pct": 50,
           "deductible_applies": false,
           "unit": "visit",
-          "source_text": "Primary care provider (PCP) Out-of-Network 50%"
+          "source_text": "PCP Out-of-network: 50% coinsurance"
         },
         "first_visits": null
       },
@@ -298,50 +333,66 @@
         "coinsurance_pct": 50,
         "deductible_applies": false,
         "unit": "visit",
-        "source_text": "Specialist Out-of-Network 50%"
+        "source_text": "Specialist Out-of-network: 50% coinsurance"
+      },
+      "urgent_care_visit": {
+        "structure": "copay",
+        "copay_amount": 40,
+        "deductible_applies": false,
+        "unit": "visit",
+        "source_text": "Urgent care (inside the U.S.) Out-of-network: $40 copay"
       },
       "lab_test": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
-        "source_text": "Lab services Out-of-Network 50%"
+        "source_text": "Lab services Out-of-network: 50% coinsurance"
       },
       "xray_diagnostic_imaging": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
-        "source_text": "Imaging Out-of-Network 50%"
+        "source_text": "Outpatient x-rays Out-of-network: 50% coinsurance"
       },
       "diagnostic_procedure": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
-        "source_text": "Diagnostic procedures Out-of-Network 50%"
+        "source_text": "Diagnostic tests and procedures Out-of-network: 50% coinsurance"
       },
       "imaging_ct_pet_mri": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
-        "source_text": "Imaging Out-of-Network 50%"
+        "source_text": "Diagnostic radiology services Out-of-network: 50% coinsurance"
       },
       "outpatient_surgery_facility": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
-        "source_text": "Ambulatory surgery center (ASC) Out-of-Network 50%"
+        "source_text": "Ambulatory surgical center Out-of-network: 50% coinsurance"
+      },
+      "emergency_room": {
+        "structure": "copay",
+        "copay_amount": 115,
+        "deductible_applies": false,
+        "unit": "visit",
+        "source_text": "Emergency care Out-of-network: $115 copay"
       },
       "emergency_transport": {
         "structure": "copay",
         "copay_amount": 300,
         "unit": "trip",
-        "source_text": "Ground Ambulance Out-of-Network $300"
+        "source_text": "Ambulance Out-of-network: $300 copay ground; 20% coinsurance air",
+        "deductible_applies": false,
+        "limits": "Ground ambulance $300; air ambulance 20% coinsurance."
       },
       "hospital_facility": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
         "unit": "stay",
-        "source_text": "Inpatient hospital Out-of-Network 50% per stay"
+        "source_text": "Inpatient Out-of-network: 50% per stay"
       },
       "mental_health_outpatient_office": {
         "cost_share": {
@@ -349,7 +400,7 @@
           "coinsurance_pct": 50,
           "deductible_applies": false,
           "unit": "visit",
-          "source_text": "50% for Mental Health Services - Individual Sessions"
+          "source_text": "Outpatient mental health therapy Out-of-network: 50% coinsurance for individual sessions"
         },
         "first_visits": null
       },
@@ -358,52 +409,78 @@
         "coinsurance_pct": 50,
         "deductible_applies": false,
         "unit": "visit",
-        "source_text": "50% for Mental Health Services- Group Sessions"
+        "source_text": "Outpatient mental health therapy Out-of-network: 50% coinsurance for group sessions"
       },
       "home_health": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
-        "source_text": "Home health care Out-of-Network 50%"
+        "source_text": "Home health care Out-of-network: 50% coinsurance"
       },
       "skilled_nursing": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
         "unit": "stay",
-        "source_text": "Skilled nursing facility (SNF) Out-of-Network 50% per stay"
+        "source_text": "SNF care Out-of-network: 50% per stay"
       },
       "durable_medical_equipment": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
         "deductible_applies": false,
-        "source_text": "Durable medical equipment (DME) Out-of-Network 50%"
+        "source_text": "Durable medical equipment (DME) Out-of-network: 50% coinsurance"
       },
       "diabetic_supplies": {
         "structure": "no_charge",
         "unit": "item",
-        "limits": "$0 only for Accu-Chek/Roche and TRUE/Trividia. 50% for other brands with prior authorization.",
-        "source_text": "0% for Accu-Chek/Roche and TRUE/Trividia blood glucose meters (BGM) and medical diabetic supplies"
+        "limits": "$0 only for Accu-Chek/Roche and TRUE/Trividia. 20% for other makers with prior authorization. Medicare-covered diabetic supplies range 0%-20%.",
+        "source_text": "0% coinsurance for Accu-Chek/Roche and TRUE/Trividia meters and medical diabetic supplies",
+        "deductible_applies": false
       },
       "continuous_glucose_monitor": {
         "structure": "coinsurance",
         "coinsurance_pct": 50,
-        "source_text": "50% for continuous glucose monitors (CGM)"
+        "source_text": "50% coinsurance for Medicare-covered continuous glucose monitors (CGMs)",
+        "deductible_applies": false
+      },
+      "mental_health_inpatient": {
+        "structure": "coinsurance",
+        "coinsurance_pct": 50,
+        "deductible_applies": false,
+        "unit": "stay",
+        "source_text": "Inpatient psychiatric hospital stay Out-of-network: 50% per stay"
+      },
+      "rehabilitation_outpatient": {
+        "structure": "coinsurance",
+        "coinsurance_pct": 50,
+        "deductible_applies": false,
+        "unit": "visit",
+        "source_text": "Physical, speech and occupational therapy Out-of-network: 50% coinsurance"
+      },
+      "chiropractic": {
+        "cost_share": {
+          "structure": "coinsurance",
+          "coinsurance_pct": 50,
+          "deductible_applies": false,
+          "unit": "visit",
+          "source_text": "Medicare-covered chiropractic visits Out-of-network: 50% coinsurance"
+        },
+        "first_visits": null
       }
     },
     "drugs": {
       "tier_labels": [
-        "Preferred generic drugs",
-        "Generic drugs",
-        "Preferred brand drugs",
-        "Non-preferred drugs",
-        "Specialty drugs"
+        "Preferred Generic",
+        "Generic",
+        "Preferred Brand",
+        "Non-Preferred Drug",
+        "Specialty"
       ],
       "tier1_generic": {
         "structure": "no_charge",
         "deductible_applies": false,
         "unit": "prescription",
-        "source_text": "Preferred pharmacy - Retail, 30-day: Tier 1 - Preferred generic drugs $0 copay"
+        "source_text": "Preferred Retail 30-day: Tier 1: Preferred Generic $0"
       },
       "tier2_preferred_brand": {
         "structure": "copay",
@@ -411,31 +488,31 @@
         "deductible_applies": false,
         "unit": "prescription",
         "limits": "Medicare Tier 2 is 'Generic drugs' (the key name is positional).",
-        "source_text": "Tier 2 - Generic drugs $5 copay"
+        "source_text": "Preferred Retail 30-day: Tier 2: Generic $5"
       },
       "tier3_non_preferred_brand": {
         "structure": "coinsurance",
         "coinsurance_pct": 17,
         "deductible_applies": true,
         "unit": "prescription",
-        "limits": "Medicare Tier 3 is 'Preferred brand drugs'. Applies after the $700 drug deductible.",
-        "source_text": "Tier 3 - Preferred brand drugs 17% coinsurance"
+        "limits": "Medicare Tier 3 is 'Preferred Brand'. Applies after the $700 drug deductible (deductible applies to Tiers 3, 4 and 5).",
+        "source_text": "Preferred Retail 30-day: Tier 3: Preferred Brand 17%"
       },
       "tier4_specialty": {
         "structure": "coinsurance",
         "coinsurance_pct": 28,
         "deductible_applies": true,
         "unit": "prescription",
-        "limits": "Medicare Tier 4 is 'Non-preferred drugs'. Applies after the $700 drug deductible.",
-        "source_text": "Tier 4 - Non-preferred drugs 28% coinsurance"
+        "limits": "Medicare Tier 4 is 'Non-Preferred Drug'. Applies after the $700 drug deductible.",
+        "source_text": "Preferred Retail 30-day: Tier 4: Non-Preferred Drug 28%"
       },
       "tier5": {
         "structure": "coinsurance",
         "coinsurance_pct": 25,
         "deductible_applies": true,
         "unit": "prescription",
-        "limits": "Medicare Tier 5 is 'Specialty drugs'. Applies after the $700 drug deductible.",
-        "source_text": "Tier 5 - Specialty drugs 25% coinsurance"
+        "limits": "Medicare Tier 5 is 'Specialty'. Applies after the $700 drug deductible. A long-term supply is not available for Tier 5.",
+        "source_text": "Preferred Retail 30-day: Tier 5: Specialty 25%"
       },
       "insulin_30_day_cap": 35,
       "retail_days_supply": 30,
@@ -476,7 +553,7 @@
             "unit": "prescription"
           },
           "insulin_cap": 35,
-          "note": "Copays for tiers 3-5 are coinsurance after the $700 drug deductible."
+          "note": "Tiers 3-5 are coinsurance and apply after the $700 drug deductible."
         },
         {
           "name": "Standard pharmacy - Retail",
@@ -515,7 +592,7 @@
           "insulin_cap": 35
         },
         {
-          "name": "Mail-order pharmacy",
+          "name": "Preferred mail-order pharmacy",
           "channel": "mail_order",
           "days_supply": 100,
           "tier1": {
@@ -543,18 +620,227 @@
           },
           "tier5": {
             "structure": "not_applicable",
-            "limits": "No tier 5 price is listed for a 100-day supply."
+            "limits": "A long-term supply is not available for drugs on Tier 5."
+          },
+          "insulin_cap": 105,
+          "note": "Preferred mail, 100-day supply. Tiers 3-5 are coinsurance and apply after the $700 drug deductible."
+        },
+        {
+          "name": "Preferred pharmacy - Retail (100-day)",
+          "channel": "preferred_retail",
+          "days_supply": 100,
+          "tier1": {
+            "structure": "no_charge",
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 15,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 17,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 28,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "not_applicable",
+            "limits": "A long-term supply is not available for drugs on Tier 5."
           },
           "insulin_cap": 105
+        },
+        {
+          "name": "Standard pharmacy - Retail (100-day)",
+          "channel": "standard_retail",
+          "days_supply": 100,
+          "tier1": {
+            "structure": "copay",
+            "copay_amount": 15,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 36,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 17,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 28,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "not_applicable",
+            "limits": "A long-term supply is not available for drugs on Tier 5."
+          },
+          "insulin_cap": 105
+        },
+        {
+          "name": "Preferred mail-order pharmacy (30-day)",
+          "channel": "mail_order",
+          "days_supply": 30,
+          "tier1": {
+            "structure": "no_charge",
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 5,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 17,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 28,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 25,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "insulin_cap": 35
+        },
+        {
+          "name": "Standard mail-order pharmacy (30-day)",
+          "channel": "mail_order",
+          "days_supply": 30,
+          "tier1": {
+            "structure": "copay",
+            "copay_amount": 5,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 12,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 17,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 28,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 25,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "insulin_cap": 35
+        },
+        {
+          "name": "Standard mail-order pharmacy (100-day)",
+          "channel": "mail_order",
+          "days_supply": 100,
+          "tier1": {
+            "structure": "copay",
+            "copay_amount": 15,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 36,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 17,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 28,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "not_applicable",
+            "limits": "A long-term supply is not available for drugs on Tier 5."
+          },
+          "insulin_cap": 105
+        },
+        {
+          "name": "Long-term care (LTC) pharmacy (31-day)",
+          "channel": "other",
+          "days_supply": 31,
+          "tier1": {
+            "structure": "copay",
+            "copay_amount": 5,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier2": {
+            "structure": "copay",
+            "copay_amount": 12,
+            "deductible_applies": false,
+            "unit": "prescription"
+          },
+          "tier3": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 17,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier4": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 28,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "tier5": {
+            "structure": "coinsurance",
+            "coinsurance_pct": 25,
+            "deductible_applies": true,
+            "unit": "prescription"
+          },
+          "insulin_cap": 35
         }
       ]
     },
     "medicare": {
       "includes_part_d": true,
       "star_rating": 4,
-      "eligibility_note": "Requires Medicare Parts A and B and residence in the plan's service area (King County, WA).",
+      "eligibility_note": "Requires Medicare Part A and Part B and residence in the plan's service area (Washington: King, Kitsap, Pierce, Snohomish, Thurston).",
       "extra_help_note": "Costs may be lower if you qualify for Extra Help (Low-Income Subsidy). The figures here assume you do not receive Extra Help.",
-      "visitor_traveler_program": "See an Aetna PPO participating provider anywhere in the United States and pay in-network cost sharing, or use out-of-network benefits.",
+      "visitor_traveler_program": "Explorer: you can stay in the plan up to 12 months while outside the service area. In the U.S. you can see an Aetna Medicare participating provider and pay in-network cost shares; out-of-network providers may cost more. You must select a PCP in the visitor area.",
       "enrollment": {
         "agent_phone": "1-833-771-7864",
         "tty": "711",
@@ -577,7 +863,11 @@
           "limits": "Oral exams, cleanings and x-rays."
         },
         "frequency_limit": "Frequencies vary by covered dental service.",
-        "source_text": "Preventive dental services: $0 for oral exams, cleanings, x-rays"
+        "source_text": "Dental services (non-Medicare covered): $0 copay for preventive services; 50% coinsurance out of network",
+        "details": [
+          "Oral exams, cleanings and x-rays. $0 in network. Out of network you may have to pay in full and submit for reimbursement (50% coinsurance).",
+          "Uses the Aetna Dental PPO Network, which is separate from the medical network."
+        ]
       },
       "dental_comprehensive": {
         "covered": true,
@@ -593,11 +883,12 @@
         "allowance_basis": "per_year",
         "frequency_limit": "Frequencies and medical necessity requirements vary by covered dental service.",
         "details": [
+          "Summary of Benefits: 20%-50% coinsurance in network and 50%-70% out of network for comprehensive services (fillings, extractions, crowns and more); per-service percentages below come from the plan details page.",
           "In-network: 20%-50% restorative; 20% endodontic; 20%-50% periodontic; 50% removable prosthodontics; 50% fixed prosthodontics; 20%-50% oral and maxillofacial surgery; 20%-50% adjunctive services",
           "Out-of-network: 50%-70% restorative; 50% endodontic; 50%-70% periodontic; 70% removable prosthodontics; 70% fixed prosthodontics; 50%-70% oral and maxillofacial surgery; 50%-70% adjunctive services",
           "Preventive services do not count toward the $1,000 annual allowance."
         ],
-        "source_text": "$1,000 benefit amount (allowance) every year in and out-of-network for covered comprehensive dental services."
+        "source_text": "Annual benefit amount (allowance) of $1,000 for covered comprehensive services. You are responsible for the cost of any comprehensive services over this amount."
       },
       "eye_exam_routine": {
         "covered": true,
@@ -611,7 +902,11 @@
           "unit": "visit",
           "limits": "Routine exam covered up to $50 out of network. Medicare-covered eye exams are 50%."
         },
-        "frequency_limit": "One non-Medicare routine eye exam per calendar year, in or out of network."
+        "frequency_limit": "One non-Medicare routine eye exam per calendar year, in or out of network.",
+        "details": [
+          "Diagnostic eye exams (including diabetic eye exams) and glaucoma screening: $0 in network, 50% out of network."
+        ],
+        "source_text": "Routine eye exam (one exam every year): $0 copay with an EyeMed network provider; out-of-network covered up to $50"
       },
       "eyewear": {
         "covered": true,
@@ -626,7 +921,10 @@
         "annual_allowance": 150,
         "allowance_basis": "per_year",
         "frequency_limit": "One annual allowance for non-Medicare prescription eyewear, in or out of network.",
-        "source_text": "$150 annual benefit amount (allowance) for non-Medicare covered prescription eyewear"
+        "source_text": "Annual benefit amount (allowance) of $150 for covered prescription eyewear",
+        "details": [
+          "Allowance applies at the time of purchase with an EyeMed network provider. Out of network you may pay up front and request reimbursement up to the allowance."
+        ]
       },
       "hearing_exam_routine": {
         "covered": true,
@@ -640,23 +938,24 @@
           "coinsurance_pct": 50,
           "unit": "visit"
         },
-        "frequency_limit": "One non-Medicare hearing exam and one hearing aid fitting/evaluation per year."
+        "frequency_limit": "One non-Medicare hearing exam and one hearing aid fitting/evaluation per year.",
+        "source_text": "Routine hearing exam: $0 copay in network; 50% coinsurance out of network. One routine exam every year."
       },
       "hearing_aids": {
         "covered": true,
         "in_network": {
           "structure": "no_charge",
           "unit": "item",
-          "limits": "$0 up to the allowance."
+          "limits": "$0 up to the allowance when you use NationsHearing; you pay the difference above it."
         },
         "out_of_network": {
           "structure": "unknown",
-          "limits": "Hearing aids must be purchased through NationsHearing."
+          "limits": "Without NationsHearing you pay up front and request reimbursement at a lower rate, up to the allowable amount."
         },
         "annual_allowance": 1250,
         "allowance_basis": "per_ear_per_year",
         "frequency_limit": "Maximum two hearing aids every year.",
-        "source_text": "$1,250 benefit amount (allowance) per ear, every year for hearing aids"
+        "source_text": "Annual benefit amount (allowance) of $1,250 per ear. If the cost is over the benefit amount, you pay the difference."
       },
       "fitness": {
         "covered": true,
@@ -667,38 +966,70 @@
           "Basic SilverSneakers membership at any participating facility.",
           "Online classes and one at-home fitness kit per year if you do not live near a participating facility."
         ],
-        "source_text": "Fitness benefit that includes a basic membership to any SilverSneakers participating fitness facility."
+        "source_text": "Basic SilverSneakers fitness membership: $0 copay when you use our authorized vendor, SilverSneakers",
+        "out_of_network": {
+          "structure": "unknown",
+          "limits": "Without the authorized vendor (SilverSneakers) you pay up front for an equivalent membership and request reimbursement at a lower rate, up to the allowable amount."
+        }
       },
       "routine_transportation": {
         "covered": false,
         "in_network": {
           "structure": "not_covered"
         },
-        "source_text": "Transportation Not Covered"
+        "source_text": "Routine, non-emergency transportation: Not Covered",
+        "out_of_network": {
+          "structure": "not_covered"
+        }
       },
       "meals": {
         "covered": false,
         "in_network": {
           "structure": "not_covered"
         },
-        "source_text": "Meals Not Covered"
+        "source_text": "Meals Not Covered",
+        "details": [
+          "Meals are not listed in the Summary of Benefits; 'not covered' comes from the plan details page."
+        ]
       },
       "worldwide_emergency": {
         "covered": true,
+        "in_network": {
+          "structure": "copay",
+          "copay_amount": 115,
+          "unit": "visit",
+          "limits": "Outside the U.S.: $115 emergency care, $115 urgent care, $300 ambulance."
+        },
+        "out_of_network": {
+          "structure": "copay",
+          "copay_amount": 115,
+          "unit": "visit",
+          "limits": "Same cost shares out of network."
+        },
         "details": [
-          "Listed under Plan highlights. The plan page does not show a separate cost; the $115 emergency room copay is the stated emergency cost share. Verify worldwide terms in the EOC."
-        ]
+          "Maximum coverage $250,000 for the combined cost of emergency care, urgent care and emergency ambulance services received outside the U.S."
+        ],
+        "source_text": "Maximum coverage: $250,000. This is the most we will pay for the combined cost of emergency care, urgent care, and emergency ambulance services received outside of the U.S."
       }
     },
     "excluded_services": [
       "Routine transportation",
-      "Meals"
+      "Meals",
+      "Non-Medicare covered acupuncture, chiropractic, podiatry and home health"
     ],
     "other_covered_services": [
       "SilverSneakers fitness membership",
-      "Telehealth",
-      "Worldwide emergency",
-      "Visitor/traveler program"
+      "Telehealth (plan details page)",
+      "Worldwide emergency and urgent care (up to $250,000)",
+      "Visitor/traveler program (Explorer)",
+      "Acupuncture: $50 copay in network for Medicare-covered visits (chronic low back pain only); 50% out of network",
+      "Podiatry: $50 copay in network for Medicare-covered visits; 50% out of network",
+      "Outpatient substance use disorder services: $40 copay individual and group; 50% out of network",
+      "Part B drugs: 20% coinsurance in network (chemotherapy and other); Part B insulin $35",
+      "Prosthetics (braces, artificial limbs): 20% coinsurance in network",
+      "Diagnostic and glaucoma eye exams: $0 in network",
+      "24-Hour Nurse Line: $0",
+      "Resources For Living (community service connections and coaching)"
     ],
     "coverage_examples": []
   },
@@ -712,21 +1043,24 @@
     ]
   },
   "extraction": {
-    "confidence": "medium",
+    "confidence": "high",
     "assumptions": [
-      "Source is the Aetna plan details web page only; the Summary of Benefits and Evidence of Coverage were not read.",
-      "The drug tier fields hold the preferred pharmacy, 30-day retail amounts. Standard retail and mail order are in drugs.pharmacy_channels.",
-      "Urgent care in person is set to $40, the figure listed under telehealth 'Urgently Needed Services'.",
+      "Primary source is the Aetna 2027 Summary of Benefits (form date 20260818). The plan details page (printed 10/26/26) fills items the Summary of Benefits does not list; the EOC was not provided.",
+      "Items taken only from the plan details page: annual physical, mammogram, colonoscopy, telehealth, the nursing-home specialist exception, CGM pharmacy detail, meals, star rating, and the per-service dental percentages.",
+      "The drug tier fields hold the preferred pharmacy, 30-day retail amounts. All channels (preferred and standard retail, preferred and standard mail, 30 and 100 day, and LTC) are in drugs.pharmacy_channels.",
+      "Insulin cap for 100-day channels is recorded as $105 (3 x $35), carried over from the earlier file; the Summary of Benefits states $35 per one-month supply.",
       "General coinsurance after the deductible is not stated for this plan, so coinsurance_member_pct is null.",
-      "The 2027 coverage start of January 1, 2027 is the standard Medicare plan-year start, not printed on the page.",
-      "Dental: the cleaning is the preventive dental benefit ($0). The root canal uses the 20% endodontic share. The crown uses 50%, the top of the 20%-50% restorative range, because the page does not say which restorative services cost 20%. The $1,000 annual allowance is per person and preventive services do not count toward it."
+      "emergency_out_of_network_pays_in_network_rates is true because the Summary of Benefits lists the same $115 emergency copay in and out of network.",
+      "Hospital and mental health inpatient copays are per day for days 1-5 (max_units 5); days 6-90 are $0.",
+      "Dental: the cleaning is the preventive benefit ($0). The Summary of Benefits gives only ranges for comprehensive care (20%-50% in network, 50%-70% out of network), so the root canal uses the 20% endodontic share and the crown uses 50% (top of the restorative range / fixed prosthodontics) from the plan details page. The $1,000 annual allowance is per person; preventive services do not count toward it."
     ],
     "notes": [
-      "Ambulatory surgery center price is in outpatient_surgery_facility; surgeon and hospital professional fees are 'unknown' because the page does not list them.",
+      "Ambulatory surgery center price is in outpatient_surgery_facility; outpatient hospital and observation prices are in its limits. Surgeon and hospital professional fees are 'unknown' because they are not listed.",
       "Skilled nursing: $0 days 1-20, then a daily copay for days 21-100.",
-      "Star rating is 4 of 5 stars.",
-      "Part B standard premium for 2027 is not on the plan page, so part_b_monthly is null.",
-      "Rechecked on 2026-10-27 against the Aetna plan details page (H5521-687): premium, deductibles, out-of-pocket maximums and the dental terms (cleaning, root canal, crown, annual maximum) match this file."
+      "Star rating is 4 of 5 stars (plan details page).",
+      "Part B standard premium for 2027 is not in the documents, so part_b_monthly is null.",
+      "Summary of Benefits non-member line: 1-844-509-6254 (TTY 711); Oct 1-Mar 31 8 AM-8 PM 7 days, Apr 1-Sep 30 8 AM-8 PM Mon-Fri. enrollment.agent_phone is the earlier agent line from the plan page.",
+      "Updated 2026-10-27 from the 2027 Summary of Benefits (H5521-687): premium, deductibles, out-of-pocket maximums, drug tiers and the in-network and out-of-network cost shares above match it."
     ]
   }
 }
