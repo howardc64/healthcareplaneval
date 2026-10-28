@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.26.0] - 2026-10-28
+
+### Added
+- **Hide checkbox on section 4 (Health plans)**, like sections 1 to 3. Hiding it folds away the Defaults, every plan card and the Add / Load buttons. Nothing is removed: hidden plans keep their values, still count in the results and are saved with the file (`view.secHide.plans`, visible by default).
+- **Defaults block inside Health plans.** Values used for any plan that has no value of its own:
+  - **Cleanings covered per person per year** (default 2). Used when a plan's dental cleaning has no "Max covered per person per year"; cleanings above it are not covered and you pay their full price. The tooltips and Line-item detail say when the Default was used.
+  - **Medication tier 3, per fill** (default $250), used when the plan has no Evaluator price for it.
+  - **Part B premium, monthly, in 2026** (default $203) with a **yearly increase** (default 5.25%, compounded). Each Medicare Advantage plan uses the premium for its own plan year (2027 is $213.66, 2028 is $224.87), and a plan's own Part B premium still wins. An optional **override** replaces the calculated amount for every year. A preview of the next years is shown under the fields.
+
+### Changed
+- The tier 3 price and the Part B premium moved from section 2 (Costs) to the Defaults block. Saved files are upgraded on load: an old tier 3 price becomes the Default tier 3 price and an old Part B premium becomes the Part B override, so those files give the same results as before. Files that had left them empty now use the new defaults ($250 tier 3, calculated Part B).
+- Aetna Medicare Enhanced and Signature plan files updated from the 2027 Summary of Benefits.
+
 ## [2.25.1] - 2026-10-27
 
 ### Changed

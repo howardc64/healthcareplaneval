@@ -30,7 +30,7 @@ Everything runs locally in your browser. No server, no build step, no dependenci
 
 ## How to use
 
-Sections 1, 2 and 3 each have a **Hide** checkbox in the upper right (hidden by default; the choice is saved with your file).
+Sections 1, 2, 3 and 4 each have a **Hide** checkbox in the upper right (hidden by default; the choice is saved with your file).
 
 **1. Household annual health needs**
 Start with **Coverage for**: *Married couple (family plan)* or *Single person (self-only plan)*. A single person has one name, age and PCP visit count, one person in the stress scenario, the plan's **individual** deductible and out-of-pocket maximum (half the family amount, with a notice, if only the family amount is entered), and the self-only HSA limit, HDHP minimum deductible and HDHP out-of-pocket cap. A couple uses the family amounts. Switching back and forth keeps everything you entered.
@@ -38,12 +38,14 @@ Start with **Coverage for**: *Married couple (family plan)* or *Single person (s
 Names and ages of both spouses, your combined federal tax rate (include NIIT, e.g. 24 + 3.8 = 27.8), and your expected annual use: PCP visits per spouse, specialist visits, specialist procedures, blood work, X-rays, ultrasounds, MRIs, CTs, urgent care (visits per year, with blood work, X-rays, ultrasounds, MRIs and CTs per visit), medication fills by tier (tier 5 to tier 1), and your yearly **dental** needs: cleanings, root canals and crowns (household totals).
 
 **2. Costs**
-Your estimate of the allowed price per unit for ER visit, specialist procedure, labs (blood work), X-ray, ultrasound, MRI, CT, hospital cost per day, surgery (facility + surgeon, per procedure) the dental cleaning, root canal and crown, the medication tier 3 price per fill and the Medicare Part B monthly premium. Each of these fills in for any plan whose own field is empty: the plan's *Evaluator price* for tier 3 and the plan's *Part B premium* win when they have a value; the Part B premium is used by Medicare Advantage plans only. The deductible and coinsurance are applied to these prices for every plan. A price in a plan's *Evaluator prices* overrides it for that plan (and a plan with no value in a field uses the section 2 value); with neither, the app uses the copay.
+Your estimate of the allowed price per unit for ER visit, specialist procedure, labs (blood work), X-ray, ultrasound, MRI, CT, hospital cost per day, surgery (facility + surgeon, per procedure) the dental cleaning, root canal and crown,  Each of these fills in for any plan whose own field is empty. The medication tier 3 price and the Part B premium are in **Defaults** (section 4). The deductible and coinsurance are applied to these prices for every plan. A price in a plan's *Evaluator prices* overrides it for that plan (and a plan with no value in a field uses the section 2 value); with neither, the app uses the copay.
 
 **3. Stress scenario**
 Tick one spouse or both, then enter ER visits, blood work, X-ray and imaging per ER visit (blood work, X-ray, US, MRI, CT), days hospitalized (with blood work, X-ray, US, MRI and CT per hospital day), and surgeries.
 
 **4. Health plans**
+At the top is a **Defaults** block, used for any plan that has no value of its own: *cleanings covered per person per year* (2; applies when a plan's dental cleaning has no max), the *medication tier 3 price per fill* ($250; the plan's Evaluator price wins) and the *Part B premium* ($203 a month in 2026, growing 5.25% a year; each Medicare Advantage plan uses its own plan year, the plan's own Part B premium wins, and an optional override replaces the calculation). Tick **Hide** in the section's upper right corner to fold the whole section away; hidden plans still count and are saved.
+
 Add as many plans as you like (add, duplicate, delete). Tick **Hide** in the upper right corner of a plan to collapse it to its name. Each plan card holds every field of `health-plan.schema.json`, grouped into sections:
 
 - Identity and source documents, network rules, premium, deductible / out-of-pocket maximum / coinsurance
