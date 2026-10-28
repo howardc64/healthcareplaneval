@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.25.1] - 2026-10-27
+
+### Changed
+- Tooltips on the cost bars, the totals, the medical max and the legend are now one or two short lines (for example "Medical max $9,258 = premium $2,508 + out-of-pocket max $6,750. Dental not included."). The detailed step-by-step explanations stay on the results table and Line-item detail.
+
+## [2.25.0] - 2026-10-27
+
+### Changed
+- **Dental is drawn as its own bar.** Dental out of pocket is no longer part of the "Other costs" segment. It is a violet bar directly below each cost bar, touching its bottom edge and starting where the bar above ends. Space for it is reserved on every row, with or without dental and with or without the stress scenario, so the gaps between rows stay equal. The total at the right of each bar still includes dental.
+- **Medical max.** The maximum at the end of each row is now a column labeled "Medical max" (the label is above the values, the rows show only the amount). It no longer includes dental: it is the premiums (plan premium and Part B) + the out-of-pocket maximum + not-covered services. The dashed outline ends at the same value, and the bar scale takes the dental bar into account.
+- **Amounts inside the segments.** Premium, other costs, medications and dental show their amount inside the segment, right-aligned, when the segment is wide enough; narrower segments show no label (their tooltips still do). Bars are slightly taller (14 px) to hold the text.
+- Tooltips for the other-costs segment, the dental bar, the max and the legend are updated to match.
+
+## [2.24.0] - 2026-10-27
+
+### Changed
+- **Top pane colors.** The pane is a deep navy (darker still in dark mode) instead of mid blue. The normal year is teal and the stress scenario amber, each with its own darker premium segment, lighter other-costs segment and striped medications segment, so the two scenarios and their parts are easy to tell apart. Light and dark themes have their own values.
+- **Costs section.** The prices are grouped under headings (visits, hospital and surgery; tests and imaging; dental; medications and Medicare premium) on one five-column grid, with short one-line labels so every input lines up.
+- The "max possible" tooltips now say premiums are included and itemize them (plan premium and Part B, per enrolled person).
+
 ## [2.23.1] - 2026-10-27
 
 ### Changed
