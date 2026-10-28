@@ -2,6 +2,34 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [2.28.1] - 2026-10-28
+
+### Changed
+- **HSA tax reduction is now always tax rate × the full contribution**, because the deduction does not depend on how much care is paid from the HSA. The contribution is treated as a long-term investment, not a cost.
+
+### Removed
+- The "Count tax savings on the full HSA contribution" checkbox and the two "Unspent HSA balance" result rows. Saved files that contain the old setting still open; it is ignored.
+
+## [2.28.0] - 2026-10-28
+
+### Changed
+- **HSA limits and rules** is now a regular section with a **Hide** checkbox (like Household, Costs, Stress scenario and Health plans) instead of a triangle that opens and closes. It starts hidden, and the whole section only appears when a plan is marked HSA-eligible. The input boxes are bottom-aligned so they line up when a label wraps to two lines.
+- **Section headings are no longer numbered**, and text that said "section 2" or "section 4" now names the section (Costs, Defaults).
+- **Opening a file no longer shows the "Opened ... (nothing was written)" message.** The Current file name in the header still shows the file.
+
+### Removed
+- **Plan year and Medicare age settings.** Medicare age is fixed at 65 (the statutory age). A plan's own plan year is used for the Part B premium; a plan with no year uses another plan's year in the list. Saved files that contain the old values still open; the values are ignored.
+
+## [2.27.1] - 2026-10-28
+
+### Changed
+- The Medical max amounts (and their column label) are right-aligned so the digits line up.
+
+## [2.27.0] - 2026-10-28
+
+### Changed
+- **HSA features appear only when a plan is marked HSA-eligible.** With no HSA plan the app hides: the HSA limits and HDHP fields and the "count tax savings on the full contribution" option in Settings (the section is renamed "Settings: plan year and Medicare age", and Plan year and Medicare age stay because Medicare plans use them), the federal tax rate hint, the "HSA details" and "HSA plans: cost after tax" entries of the Show/hide rows menu, the "HSA savings" legend entry, and the duplicate "Net cost after HSA tax savings" rows of the results table (they equal the complete cost). Tick **HSA-eligible plan** on any plan card and everything returns. The **HSA-eligible plan** checkbox itself is always shown.
+
 ## [2.26.0] - 2026-10-28
 
 ### Added

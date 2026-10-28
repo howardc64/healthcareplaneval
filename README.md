@@ -32,13 +32,15 @@ Everything runs locally in your browser. No server, no build step, no dependenci
 
 Sections 1, 2, 3 and 4 each have a **Hide** checkbox in the upper right (hidden by default; the choice is saved with your file).
 
+HSA features (HSA limits in Settings, the tax rate, HSA rows and legend entry, net-after-tax rows) are shown only while at least one plan is marked **HSA-eligible plan**.
+
 **1. Household annual health needs**
 Start with **Coverage for**: *Married couple (family plan)* or *Single person (self-only plan)*. A single person has one name, age and PCP visit count, one person in the stress scenario, the plan's **individual** deductible and out-of-pocket maximum (half the family amount, with a notice, if only the family amount is entered), and the self-only HSA limit, HDHP minimum deductible and HDHP out-of-pocket cap. A couple uses the family amounts. Switching back and forth keeps everything you entered.
 
 Names and ages of both spouses, your combined federal tax rate (include NIIT, e.g. 24 + 3.8 = 27.8), and your expected annual use: PCP visits per spouse, specialist visits, specialist procedures, blood work, X-rays, ultrasounds, MRIs, CTs, urgent care (visits per year, with blood work, X-rays, ultrasounds, MRIs and CTs per visit), medication fills by tier (tier 5 to tier 1), and your yearly **dental** needs: cleanings, root canals and crowns (household totals).
 
 **2. Costs**
-Your estimate of the allowed price per unit for ER visit, specialist procedure, labs (blood work), X-ray, ultrasound, MRI, CT, hospital cost per day, surgery (facility + surgeon, per procedure) the dental cleaning, root canal and crown,  Each of these fills in for any plan whose own field is empty. The medication tier 3 price and the Part B premium are in **Defaults** (section 4). The deductible and coinsurance are applied to these prices for every plan. A price in a plan's *Evaluator prices* overrides it for that plan (and a plan with no value in a field uses the section 2 value); with neither, the app uses the copay.
+Your estimate of the allowed price per unit for ER visit, specialist procedure, labs (blood work), X-ray, ultrasound, MRI, CT, hospital cost per day, surgery (facility + surgeon, per procedure) the dental cleaning, root canal and crown,  Each of these fills in for any plan whose own field is empty. The medication tier 3 price and the Part B premium are in **Defaults** (in Health plans). The deductible and coinsurance are applied to these prices for every plan. A price in a plan's *Evaluator prices* overrides it for that plan (and a plan with no value in a field uses the Costs value); with neither, the app uses the copay.
 
 **3. Stress scenario**
 Tick one spouse or both, then enter ER visits, blood work, X-ray and imaging per ER visit (blood work, X-ray, US, MRI, CT), days hospitalized (with blood work, X-ray, US, MRI and CT per hospital day), and surgeries.
@@ -71,11 +73,11 @@ Both this table and the Annual cost table scroll inside their own frame. The fra
 2. All other costs: itemized, then the total with no deductible limit (listed prices paid in full) and the total with deductible, coinsurance and max out-of-pocket applied
 3. Complete cost (1 + 2), both ways
 4. Complete cost + stress scenario, both ways
-5. HSA plans: maximum HSA contribution, contribution used, tax savings, real contribution after the tax deduction, and unspent balance
+5. HSA plans: maximum HSA contribution, contribution used, tax savings, and real contribution after the tax deduction
 6. For HSA plans, an explicit block: complete cost − tax reduction, and complete cost with stress − tax reduction
 7. Net cost after HSA tax savings
 
-Plan names use the short form shown on the bars; hover or tap a name to see it in full. The **Show/hide rows** dropdown above the table collapses sections 1, 2, 3, 4, HSA details and HSA plans (all shown by default). The lowest cost in each comparison row is highlighted green. Hover over (or tap) any dollar amount to see exactly how it was calculated.
+Plan names use the short form shown on the bars; hover or tap a name to see it in full. The **Show/hide rows** dropdown above the table collapses Household, Costs, Stress scenario, Health plans, HSA details and HSA plans (all shown by default). The lowest cost in each comparison row is highlighted green. Hover over (or tap) any dollar amount to see exactly how it was calculated.
 
 **Load a plan from plan documents**
 
@@ -86,7 +88,7 @@ Plan names use the short form shown on the bars; hover or tap a name to see it i
 
 The plan file records **facts from the documents**: for every service a cost share (copay amount, coinsurance percentage, whether the deductible applies, limits) with a source quote. The optional `evaluator_inputs.prices` block holds **your own dollar estimates** and is kept separate from the facts. The app picks each price like this:
 
-- A number in `evaluator_inputs.prices` wins over the section 2 cost (use it for services the documents price only as coinsurance, for copays charged after the deductible, and for anything not listed, such as specialist procedures).
+- A number in `evaluator_inputs.prices` wins over the Costs value (use it for services the documents price only as coinsurance, for copays charged after the deductible, and for anything not listed, such as specialist procedures).
 - Otherwise a copay is used as the allowed price, and "no charge" is $0.
 - Coinsurance has no dollar price in an SBC, so the price is left empty and listed in the import note.
 
@@ -110,7 +112,7 @@ Set **Plan category** to *Medicare Advantage* at the top of a plan card (loading
 
 How the numbers change for a Medicare plan:
 
-- **Premium** = (plan premium + optional Part B premium) × 12 × the number of enrolled people. Enrolled people are those at or above the Medicare age in section 1; if nobody is, every person is counted and a notice says so.
+- **Premium** = (plan premium + optional Part B premium) × 12 × the number of enrolled people. Enrolled people are those at or above the Medicare age in Household; if nobody is, every person is counted and a notice says so.
 - **Deductible and maximum out-of-pocket** are per person; a couple uses 2 × the individual amounts (Medicare plans have no family amounts).
 - **Separate deductibles**: a Medicare plan has a medical deductible (often $0) and a separate per-person Part D drug deductible. The medical deductible applies only to medical services; the drug deductible applies only to drug tiers marked "deductible applies". Marketplace plans keep one deductible shared by medical and drugs.
 - **Prescription out-of-pocket cap**: if a Medicare plan has a prescription out-of-pocket cap (per person, field on the plan card), what you pay for medications is limited to it (a couple uses 2 × the amount). The cap is applied to the medication cost share first; the combined out-of-pocket maximum then applies to what is left. Line-item detail shows the reduction as its own row. If no cap is entered, medication costs are not capped and a notice says so.
@@ -121,7 +123,7 @@ How the numbers change for a Medicare plan:
 Deductible and out-of-pocket amounts are **family** (household) amounts; if only the individual amount is given, 2 × that is used.
 
 - **Annual premium** = monthly premium × 12.
-- **Allowed price per unit** = your number in the plan's *Evaluator prices* if there is one, otherwise your cost in section 2, otherwise the copay amount. A service that is only coinsurance and has no price counts as $0, and the results show a notice naming it.
+- **Allowed price per unit** = your number in the plan's *Evaluator prices* if there is one, otherwise your cost in Costs, otherwise the copay amount. A service that is only coinsurance and has no price counts as $0, and the results show a notice naming it.
 - **Each service line** (units × allowed price) goes into one bucket according to its cost share:
   - *No charge / not applicable*: you pay $0.
   - *Deductible does not apply*: you pay the copay (per charged unit) or your coinsurance % of the allowed price from the first dollar. It counts toward the max out-of-pocket but not toward the deductible.
@@ -138,8 +140,8 @@ Deductible and out-of-pocket amounts are **family** (household) amounts; if only
 - **Stress scenario**: hidden by default; turn it on with the **Stress scenario** button in the toolbar. Counts apply to each selected spouse. Blood work, X-ray and imaging counts are per ER visit. The stress charges are added to the normal-year charges **before** the deductible and cap are applied, so the deductible is never counted twice. "Extra cost the stress adds" is the difference.
 - **HSA maximum** = family limit + the catch-up amount for each spouse at or above the catch-up age and below the Medicare age.
 - **Real contribution after tax** = contribution × (1 − tax rate). **Tax savings** = contribution × tax rate.
-- **Tax reduction from HSA** = tax rate × the amount of care paid from the HSA (the smaller of your contribution and your out-of-pocket spending). Tick "Count tax savings on the full HSA contribution" in the HSA panel to use the whole contribution instead.
-- **Net cost after HSA tax savings** = complete cost − tax reduction. Unspent contributions stay in your account and are shown as the unspent balance rather than counted as a cost.
+- **Tax reduction from HSA** = tax rate × the full HSA contribution. The deduction depends on the contribution, not on how much care is paid from the HSA. The contribution is treated as a long-term investment, not a cost, so no unspent balance is tracked.
+- **Net cost after HSA tax savings** = complete cost − tax reduction.
 
 Hover over (or tap) any dollar amount to see the calculation. For services the tooltip lists each line: units × price, where the price came from, and the cost share applied; the "with deductible" total shows the first-dollar amount, the deductible part, the after-deductible part, the cap and anything not covered.
 
@@ -158,7 +160,7 @@ The app warns if an HSA plan falls outside the HDHP deductible or out-of-pocket 
 
 ## Save file format
 
-A JSON object: `{ "app": "health-plan-evaluator", "version": "...", "savedAt": "...", "state": { "household": {...}, "plans": [...], "stress": {...}, "settings": {...} } }`. `costs` holds the section 2 prices and `view.secHide` the hide state of sections 1 to 3. Each plan mirrors the schema (`identity`, `network`, `premium`, `limits`, `services`, `drugs`, `prices`, ...) plus `hide`, `collapsed` and `hsaContrib`. Missing fields are filled with defaults when a file is opened. Saves from 2.0.0 and earlier (one flat price per service) are converted on open; their primary care copays become flat copays.
+A JSON object: `{ "app": "health-plan-evaluator", "version": "...", "savedAt": "...", "state": { "household": {...}, "plans": [...], "stress": {...}, "settings": {...} } }`. `costs` holds the Costs prices and `view.secHide` the hide state of sections 1 to 3. Each plan mirrors the schema (`identity`, `network`, `premium`, `limits`, `services`, `drugs`, `prices`, ...) plus `hide`, `collapsed` and `hsaContrib`. Missing fields are filled with defaults when a file is opened. Saves from 2.0.0 and earlier (one flat price per service) are converted on open; their primary care copays become flat copays.
 
 ## Limitations
 

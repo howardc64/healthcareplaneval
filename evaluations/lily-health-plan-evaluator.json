@@ -1,7 +1,7 @@
 {
   "app": "health-plan-evaluator",
-  "version": "2.25.1",
-  "savedAt": "2026-10-28T02:23:37.546Z",
+  "version": "2.28.1",
+  "savedAt": "2026-10-28T06:09:49.124Z",
   "state": {
     "household": {
       "status": "single",
@@ -40,7 +40,7 @@
     },
     "plans": [
       {
-        "id": "plmvrg5uco22",
+        "id": "plmvrprye510",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -1228,7 +1228,7 @@
         }
       },
       {
-        "id": "plmvrg5uco24",
+        "id": "plmvrprye512",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -2416,7 +2416,7 @@
         }
       },
       {
-        "id": "plmvrhnqrt29",
+        "id": "plmvrprye514",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -3604,7 +3604,7 @@
         }
       },
       {
-        "id": "plmvrho3ir30",
+        "id": "plmvrprye516",
         "collapsed": true,
         "hide": {
           "identity": true,
@@ -4821,9 +4821,14 @@
       "surgery": "6000",
       "dental_cleaning": "175",
       "dental_root_canal": "2500",
-      "dental_crown": "2500",
+      "dental_crown": "2500"
+    },
+    "defaults": {
+      "dental_cleanings_per_year": "2",
       "rx_tier3": "250",
-      "part_b_monthly": "209"
+      "part_b_base": "203",
+      "part_b_growth": "5.25",
+      "part_b_override": "209"
     },
     "view": {
       "hide": {
@@ -4837,12 +4842,13 @@
       "secHide": {
         "household": true,
         "costs": true,
-        "stress": true
+        "stress": false,
+        "plans": true,
+        "settings": true
       },
       "showStress": false
     },
     "settings": {
-      "year": "2027",
       "family": "9000",
       "self": "4500",
       "catchUp": "1000",
@@ -4850,9 +4856,7 @@
       "minDedSelf": "1750",
       "maxOop": "17400",
       "maxOopSelf": "8700",
-      "catchAge": "55",
-      "medicareAge": "65",
-      "taxFull": false
+      "catchAge": "55"
     }
   }
 }

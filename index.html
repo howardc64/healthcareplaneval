@@ -65,7 +65,7 @@ header.top{
   & .bx{position:absolute;left:0;top:0;bottom:0;width:0;transition:width var(--bar-anim);--hc:var(--w55);background-image:radial-gradient(circle,var(--hc) 0 1.3px,transparent 1.6px);background-size:7px 100%;background-position:0 center;background-repeat:repeat-x;cursor:help}
   & .bm{position:relative;height:14px;box-sizing:border-box;width:0;flex:0 0 auto;border:1px dashed var(--w28);border-left:0;border-radius:0 4px 4px 0;transition:width var(--bar-anim);cursor:help}
   & .bm.off{visibility:hidden}
-  & .bmx{flex:0 0 auto;width:84px;font-size:11px;color:var(--w60);white-space:nowrap;font-variant-numeric:tabular-nums}
+  & .bmx{flex:0 0 auto;width:84px;text-align:right;font-size:11px;color:var(--w60);white-space:nowrap;font-variant-numeric:tabular-nums}
   & .bx.off{visibility:hidden}
   & .bx1{--hc:var(--hbar1)}
   & .bx2{--hc:var(--hbar2)}
@@ -145,7 +145,7 @@ h3{font-size:14px;margin:14px 0 8px;text-transform:uppercase;letter-spacing:.04e
 #notices .note.info{background:var(--info-bg);color:var(--info-ink)}
 #notices .note .pname{max-width:none;white-space:normal;overflow:visible;vertical-align:baseline;text-decoration:underline dotted currentColor;text-underline-offset:3px}
 #notices .note .pname[data-tip]{text-decoration:underline dotted currentColor}
-body.no-hsa .hsa-tax{display:none}
+body.no-hsa .hsa-tax,body.no-hsa .hsa-set,body.no-hsa .legend .l3{display:none}
 #secResults{scroll-margin-top:calc(var(--hdr,160px) + 8px)}
 .rowsmenu{position:relative}
 .rowsmenu>summary{display:inline-block;list-style:none;border:1px solid var(--line);background:var(--field);border-radius:7px;padding:4px 12px;font-weight:500;cursor:pointer}
@@ -224,6 +224,7 @@ table.res thead .pname{max-width:170px;white-space:normal;overflow:visible;text-
 .inp select{border:0;outline:0;background:transparent;font:inherit;color:var(--ink);padding:7px 2px;width:100%;min-width:0}
 .fld textarea{font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:7px;padding:6px 8px;resize:vertical;width:100%}
 .fld textarea:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 2px rgba(31,95,191,.18)}
+.hsa-grid{align-items:end}
 .sec-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .sec-head h2{margin:0 0 4px;font-size:18px}
 section.is-hidden .sec-body{display:none}
@@ -278,7 +279,7 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
       <button type="button" id="btnExample">Load example</button>
       <button type="button" id="btnPrint">Print</button>
       <button type="button" id="btnPrintRes">Print results only</button>
-      <button type="button" id="btnStress" aria-pressed="false" title="Show or hide the stress scenario (section 3, the second bar, the stress rows)">Stress scenario: off</button>
+      <button type="button" id="btnStress" aria-pressed="false" title="Show or hide the stress scenario (the second bar, the stress rows)">Stress scenario: off</button>
       <button type="button" id="btnReset" class="sep" title="Clear all inputs and plans (asks to confirm)">Reset…</button>
       <input type="file" id="fileIn" accept="application/json,.json" hidden>
     </div>
@@ -304,7 +305,7 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
 
   <div id="tabMain" role="tabpanel" aria-labelledby="tabBtnMain">
   <section class="card not-results" id="secHousehold" data-sechide="household">
-    <div class="sec-head"><h2>1. Household annual health needs</h2>
+    <div class="sec-head"><h2>Household annual health needs</h2>
       <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="household"> Hide</label></div>
     <div class="sec-body">
     <p class="hint">Enter what you expect to use in a typical year. Medication counts are annual fills (a monthly prescription is 12).</p>
@@ -313,16 +314,16 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
   </section>
 
   <section class="card not-results" id="secCosts" data-sechide="costs">
-    <div class="sec-head"><h2>2. Costs</h2>
+    <div class="sec-head"><h2>Costs</h2>
       <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="costs"> Hide</label></div>
     <div class="sec-body">
-    <p class="hint">Your estimate of the <b>allowed price per unit</b> for each service. The deductible and coinsurance are applied to these prices for every plan. A price entered under a plan's <b>Evaluator prices</b> overrides it for that plan; if both are blank the app uses the plan's copay amount. Every field here fills in for any plan that has no value of its own. The medication tier 3 price and the Medicare Part B premium are in <b>Defaults</b>, inside section 4 (Health plans).</p>
+    <p class="hint">Your estimate of the <b>allowed price per unit</b> for each service. The deductible and coinsurance are applied to these prices for every plan. A price entered under a plan's <b>Evaluator prices</b> overrides it for that plan; if both are blank the app uses the plan's copay amount. Every field here fills in for any plan that has no value of its own. The medication tier 3 price and the Medicare Part B premium are in <b>Defaults</b>, inside Health plans.</p>
     <div id="costsBox"></div>
     </div>
   </section>
 
   <section class="card not-results" id="secStress" data-sechide="stress">
-    <div class="sec-head"><h2>3. Stress scenario</h2>
+    <div class="sec-head"><h2>Stress scenario</h2>
       <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="stress"> Hide</label></div>
     <div class="sec-body">
     <p class="hint">A bad year layered on top of normal use. Counts apply to <b>each</b> selected person (select both to double them). Blood work, X-ray and imaging counts are per ER visit, or per hospital day where labeled.</p>
@@ -331,11 +332,11 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
   </section>
 
   <section class="card not-results" id="secPlans" data-sechide="plans">
-    <div class="sec-head"><h2>4. Health plans</h2>
+    <div class="sec-head"><h2>Health plans</h2>
       <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="plans"> Hide</label></div>
     <div class="sec-body">
     <div id="defaultsBox" class="defaults-box"></div>
-    <p class="hint">Add one card per plan. Tick <b>Hide</b> in a plan's upper right corner to collapse the whole plan to its name. Every field of <code>health-plan.schema.json</code> is on the card, grouped into sections; tick <b>Hide</b> on a section to fold it away (sections that do not affect the cost start hidden). Each service has its own cost share: a flat copay or a coinsurance percentage, and whether the deductible applies first. Deductible and max out-of-pocket are the <b>family</b> amounts. Prices come from section 2 (Costs) and the Defaults above; a price under a plan's <b>Evaluator prices</b> overrides it for that plan, and with neither the app uses the copay amount.</p>
+    <p class="hint">Add one card per plan. Tick <b>Hide</b> in a plan's upper right corner to collapse the whole plan to its name. Every field of <code>health-plan.schema.json</code> is on the card, grouped into sections; tick <b>Hide</b> on a section to fold it away (sections that do not affect the cost start hidden). Each service has its own cost share: a flat copay or a coinsurance percentage, and whether the deductible applies first. Deductible and max out-of-pocket are the <b>family</b> amounts. Prices come from Costs and the Defaults above; a price under a plan's <b>Evaluator prices</b> overrides it for that plan, and with neither the app uses the copay amount.</p>
     <div id="plansBox"></div>
     <div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
       <button type="button" class="primary" id="btnAddPlan">+ Add plan</button>
@@ -346,12 +347,13 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
     </div>
   </section>
 
-  <section class="card not-results" id="secSettings">
-    <details>
-      <summary>HSA limits and rules (editable)</summary>
-      <p class="hint" style="margin-top:8px">Defaults are the IRS 2027 figures (Rev. Proc. 2026-24) for family and self-only HDHP coverage. A single person uses the self-only figures. Update them for other years.</p>
+  <section class="card not-results hsa-set" id="secSettings" data-sechide="settings">
+    <div class="sec-head"><h2>HSA limits and rules</h2>
+      <label class="chk hidechk no-print"><input type="checkbox" data-sechide-box="settings"> Hide</label></div>
+    <div class="sec-body">
+      <p class="hint">Defaults are the IRS 2027 figures (Rev. Proc. 2026-24) for family and self-only HDHP coverage. A single person uses the self-only figures. Update them for other years.</p>
       <div id="settingsBox"></div>
-    </details>
+    </div>
   </section>
 
   <section class="card" id="secResults">
@@ -376,7 +378,7 @@ header.top{box-shadow:0 2px 8px rgba(0,0,0,.5);& button{background:rgba(255,255,
 
 <script>
 "use strict";
-const APP_VERSION = "2.26.0";
+const APP_VERSION = "2.28.1";
 const STORAGE_KEY = "healthPlanEvaluator.v1";
 
 /* ENGINE START */
@@ -550,8 +552,8 @@ function defaultState(){
     stress:{ p1:true, p2:false, er:"1", erBlood:"0", erXray:"0", erUS:"1", erMRI:"0", erCT:"1", days:"3", hospBlood:"0", hospXray:"0", hospUS:"0", hospMRI:"0", hospCT:"0", surgeries:"1" },
     costs:{ er_visit:"", specialist_procedure:"", blood_work:"", xray:"", ultrasound:"", mri:"", ct:"", hospital_day:"", surgery:"", dental_cleaning:"", dental_root_canal:"", dental_crown:"" },
     defaults:{ dental_cleanings_per_year:"2", rx_tier3:"250", part_b_base:"203", part_b_growth:"5.25", part_b_override:"" },
-    view:{ hide:{ s1:false, s2:false, s3:false, s4:false, hsaDetails:false, hsaCost:false }, secHide:{ household:true, costs:true, stress:true, plans:false }, showStress:false },
-    settings:{ year:"2027", family:"9000", self:"4500", catchUp:"1000", minDed:"3500", minDedSelf:"1750", maxOop:"17400", maxOopSelf:"8700", catchAge:"55", medicareAge:"65", taxFull:false }
+    view:{ hide:{ s1:false, s2:false, s3:false, s4:false, hsaDetails:false, hsaCost:false }, secHide:{ household:true, costs:true, stress:true, plans:false, settings:true }, showStress:false },
+    settings:{ family:"9000", self:"4500", catchUp:"1000", minDed:"3500", minDedSelf:"1750", maxOop:"17400", maxOopSelf:"8700", catchAge:"55" }
   };
 }
 
@@ -720,7 +722,7 @@ function rxShare(set, lines){
 function buildLines(p, h, s, costs, defs){
   costs = costs || {}; defs = defs || {};
   const sv = p.services, pr = k => { const v = numOrNull(p.prices[k]); return v != null ? v : numOrNull(costs[k]); };
-  const psrc = k => numOrNull(p.prices[k]) != null ? "plan details: Evaluator price" : (k === "rx_tier3" ? "Defaults (section 4)" : "Costs section (2)");
+  const psrc = k => numOrNull(p.prices[k]) != null ? "plan details: Evaluator price" : (k === "rx_tier3" ? "Defaults" : "Costs");
   const single = isSingle(h), n1 = p1Name(h), n2 = p2Name(h);
   const normal = [], stress = [];
   const add = (arr, o) => { if (o.n > 0){ if (o.pk) o.psrc = psrc(o.pk); if (o.dk) o.people = single ? 1 : 2; arr.push(o.dk ? mkDental(p, o) : mkLine(p, o)); } };
@@ -776,7 +778,7 @@ function hsaLimit(state){
   const st = state.settings, h = state.household;
   const single = isSingle(h);
   const ages = single ? [num(h.p1.age)] : [num(h.p1.age), num(h.p2.age)];
-  const cAge = num(st.catchAge), mAge = num(st.medicareAge);
+  const cAge = num(st.catchAge), mAge = MEDICARE_AGE;
   const catchers = ages.filter(a => a >= cAge && a < mAge).length;
   const medicare = ages.filter(a => a >= mAge).length;
   return { max: num(single ? st.self : st.family) + catchers * num(st.catchUp), catchers, medicare, single };
@@ -785,9 +787,12 @@ function hsaLimit(state){
    Used for any plan whose own field is empty: cleanings covered per person per year, medication tier 3 price per fill, and the Part B premium.
    Part B: base amount in 2026, grown by the yearly increase for each later year (compounded); an optional flat override replaces it. */
 const PB_BASE_YEAR = 2026;
+const MEDICARE_AGE = 65;   /* statutory: no HSA contributions from this age; Medicare plan premiums count from this age */
 function planYear(p, st){
-  const y = parseInt(p && p.identity && p.identity.plan_year, 10), s = parseInt(st.settings && st.settings.year, 10);
-  return y >= 2000 && y <= 2100 ? y : (s >= 2000 && s <= 2100 ? s : PB_BASE_YEAR);
+  const ok = v => { const y = parseInt(v, 10); return y >= 2000 && y <= 2100 ? y : null; };
+  let y = ok(p && p.identity && p.identity.plan_year);
+  if (y == null) (st.plans || []).some(q => (y = ok(q.identity && q.identity.plan_year)) != null);   /* else the year of another plan in the list */
+  return y != null ? y : PB_BASE_YEAR;
 }
 function partBFor(st, year){
   const d = st.defaults || {}, ov = numOrNull(d.part_b_override);
@@ -832,12 +837,9 @@ function evaluate(state, plan){
     const blank = String(plan.hsaContrib).trim() === "";
     const requested = blank ? lim.max : num(plan.hsaContrib);
     const contrib = Math.min(Math.max(requested, 0), lim.max);
-    const usedBase = Math.min(contrib, oopBase), usedAll = Math.min(contrib, oopAll);
     r.hsa = { max: lim.max, contrib, overLimit: requested > lim.max,
       taxSavings: contrib * t, realCost: contrib * (1 - t),
-      saveOnSpend: (state.settings.taxFull ? contrib : usedBase) * t,
-      saveOnSpendStress: (state.settings.taxFull ? contrib : usedAll) * t,
-      balance: contrib - usedBase, balanceStress: contrib - usedAll, warnings: [] };
+      saveOnSpend: contrib * t, saveOnSpendStress: contrib * t, warnings: [] };   /* the deduction depends on the contribution, not on spending */
     r.net = r.complete - r.hsa.saveOnSpend;
     r.netStress = r.stress - r.hsa.saveOnSpendStress;
     const minD = num(single ? state.settings.minDedSelf : state.settings.minDed), maxO = num(single ? state.settings.maxOopSelf : state.settings.maxOop);
@@ -1004,18 +1006,13 @@ function buildTips(state, r){
   if (r.hsa){
     const x = r.hsa, lim = hsaLimit(state), S = state.settings;
     const blank = String(p.hsaContrib).trim() === "";
-    const usedB = Math.min(x.contrib, r.oopBase), usedA = Math.min(x.contrib, r.oopAll);
-    T.hsaMax = (lim.single ? "Self-only limit " + m(num(S.self)) : "Family limit " + m(num(S.family))) + " + catch-up " + lim.catchers + " × " + m(num(S.catchUp)) + " (" + (lim.single ? "age " : "spouses aged ") + S.catchAge + " up to Medicare age " + S.medicareAge + ") = " + m(x.max);
+    T.hsaMax = (lim.single ? "Self-only limit " + m(num(S.self)) : "Family limit " + m(num(S.family))) + " + catch-up " + lim.catchers + " × " + m(num(S.catchUp)) + " (" + (lim.single ? "age " : "spouses aged ") + S.catchAge + " up to Medicare age " + MEDICARE_AGE + ") = " + m(x.max);
     T.hsaContrib = (blank ? "No amount entered, so the maximum " + m(x.max) + " is used" : "Planned " + m(num(p.hsaContrib)) + ", limited to the maximum " + m(x.max)) + " = " + m(x.contrib);
     T.hsaTax = m(x.contrib) + " × " + t + "% tax rate = " + m(x.taxSavings);
     T.hsaReal = m(x.contrib) + " × (1 − " + t + "%) = " + m(x.realCost) + "\n(What the contribution really costs after the tax deduction.)";
-    const saveTip = (spent, save) => S.taxFull
-      ? "Full contribution " + m(x.contrib) + " × " + t + "% = " + m(save)
-      : "Care paid from the HSA = smaller of contribution " + m(x.contrib) + " and out-of-pocket " + m(spent === usedB ? r.oopBase : r.oopAll) + " = " + m(spent) + "\n× " + t + "% tax rate = " + m(save);
-    T.hsaSave = saveTip(usedB, x.saveOnSpend);
-    T.hsaSaveStress = saveTip(usedA, x.saveOnSpendStress);
-    T.hsaBalance = "Contribution " + m(x.contrib) + " − care paid from the HSA " + m(usedB) + " = " + m(x.balance) + "\n(Stays in your account.)";
-    T.hsaBalanceStress = "Contribution " + m(x.contrib) + " − care paid from the HSA " + m(usedA) + " = " + m(x.balanceStress) + "\n(Stays in your account.)";
+    const saveTip = save => "Contribution " + m(x.contrib) + " × " + t + "% tax rate = " + m(save) + "\n(The deduction depends on the contribution, not on how much care is paid from the HSA.)";
+    T.hsaSave = saveTip(x.saveOnSpend);
+    T.hsaSaveStress = saveTip(x.saveOnSpendStress);
     T.net = "Complete cost " + m(r.complete) + " − tax reduction " + m(x.saveOnSpend) + " = " + m(r.net);
     T.netStress = "Complete cost with stress " + m(r.stress) + " − tax reduction " + m(x.saveOnSpendStress) + " = " + m(r.netStress);
   } else {
@@ -1157,7 +1154,7 @@ function planFromSchema(doc, ctx){
   if (numOrNull(hf.max_units) != null && hf.structure === "copay") notes.push("Hospital copay is limited to " + hf.max_units + " " + (hf.unit || "unit") + "(s) per stay; the calculation applies that limit.");
   if (DENTAL_DEFS.some(d => p.services[d.key].structure)) notes.push("Dental: costed outside the medical deductible and out-of-pocket maximum, with the plan's own dental deductible and annual maximum (both per person; a couple gets two).");
   if (isMA(p)) notes.push("Medicare plan: premium is counted per enrolled person (those at or above the Medicare age); the medical deductible and the Part D drug deductible are separate (the drug deductible applies to drug tiers marked “deductible applies”); the prescription out-of-pocket cap limits what you pay for medications; out-of-network costs and the free first 20 skilled-nursing days are recorded but not costed.");
-  if (missing.length) notes.push("Enter the dollar prices in section 2 (Costs) or above under “Evaluator prices” on this card (they are the allowed prices the deductible and coinsurance apply to).");
+  if (missing.length) notes.push("Enter the dollar prices in Costs or above under “Evaluator prices” on this card (they are the allowed prices the deductible and coinsurance apply to).");
   const list = a => Array.isArray(a) ? a.filter(x => typeof x === "string").slice(0, 20).map(x => x.slice(0, 400)) : [];
   p._import = {
     source: shortStr(id.sbc_id || (Array.isArray(id.source_documents) ? id.source_documents[0] : ""), 120), carrier: shortStr(id.carrier, 80), planYear: shortStr(id.plan_year, 40),
@@ -1308,19 +1305,15 @@ function renderStress(){
     pathField("Surgeries", "stress.surgeries", { min:0, step:1 }) + "</div>";
 }
 function renderSettings(){
-  $("settingsBox").innerHTML = '<div class="grid">' +
-    pathField("Plan year", "settings.year", { text:true }) +
-    pathField("HSA family contribution limit", "settings.family", dollars()) +
-    pathField("HSA self-only contribution limit", "settings.self", dollars()) +
-    pathField("Catch-up contribution (per eligible person)", "settings.catchUp", dollars()) +
-    pathField("Catch-up eligible from age", "settings.catchAge", { min:0, step:1 }) +
-    pathField("Medicare age (no HSA contributions)", "settings.medicareAge", { min:0, step:1 }) +
-    pathField("HDHP minimum family deductible", "settings.minDed", dollars()) +
-    pathField("HDHP minimum self-only deductible", "settings.minDedSelf", dollars()) +
-    pathField("HDHP maximum family out-of-pocket", "settings.maxOop", dollars()) +
-    pathField("HDHP maximum self-only out-of-pocket", "settings.maxOopSelf", dollars()) + "</div>" +
-    '<label class="chk mt10"><input type="checkbox" data-path="settings.taxFull"' + (state.settings.taxFull ? " checked" : "") +
-    '> Count tax savings on the full HSA contribution (default: only on care paid from the HSA)</label>';
+  $("settingsBox").innerHTML = '<div class="grid hsa-grid">' +
+    pathField("HSA family contribution limit", "settings.family", dollars({ cls:"hsa-set" })) +
+    pathField("HSA self-only contribution limit", "settings.self", dollars({ cls:"hsa-set" })) +
+    pathField("Catch-up contribution (per eligible person)", "settings.catchUp", dollars({ cls:"hsa-set" })) +
+    pathField("Catch-up eligible from age", "settings.catchAge", { min:0, step:1, cls:"hsa-set" }) +
+    pathField("HDHP minimum family deductible", "settings.minDed", dollars({ cls:"hsa-set" })) +
+    pathField("HDHP minimum self-only deductible", "settings.minDedSelf", dollars({ cls:"hsa-set" })) +
+    pathField("HDHP maximum family out-of-pocket", "settings.maxOop", dollars({ cls:"hsa-set" })) +
+    pathField("HDHP maximum self-only out-of-pocket", "settings.maxOopSelf", dollars({ cls:"hsa-set" })) + "</div>";
 }
 function importBanner(p){
   const i = p._import; if (!i) return "";
@@ -1432,7 +1425,7 @@ function planCard(p){
       const sum = x => x.structure === "copay" ? m(num(x.copay_amount)) + " copay" : x.structure === "coinsurance" ? num(x.coinsurance_pct) + "%" : x.structure === "no_charge" ? "$0" : x.structure === "not_covered" ? "not covered" : x.structure === "not_applicable" ? "n/a" : "—";
       return '<div class="svc"><div class="svc-t">' + esc(c.name || c.channel) + (c.days_supply ? " (" + esc(c.days_supply) + "-day supply)" : "") + '</div><p class="hint">' +
         [1,2,3,4,5].map(t => "Tier " + t + ": " + sum(c["tier" + t])).join(" · ") + (c.insulin_cap ? " · Insulin max " + m(num(c.insulin_cap)) : "") + "</p></div>"; }).join("") : '<p class="hint">None recorded.</p>') : "") +
-    sec("prices", "Evaluator prices (your estimates)", "The <b>allowed price</b> per unit that the deductible and coinsurance apply to. A number here overrides the price in section 2 (Costs) for this plan; if both are blank the app uses the copay amount. Services that are only coinsurance need a price here, or they count as $0.",
+    sec("prices", "Evaluator prices (your estimates)", "The <b>allowed price</b> per unit that the deductible and coinsurance apply to. A number here overrides the price in Costs for this plan; if both are blank the app uses the copay amount. Services that are only coinsurance need a price here, or they count as $0.",
       '<div class="grid">' + PRICE_DEFS.map(d => pf(d[1], "prices." + d[0], dollars())).join("") + '</div><div class="grid wide">' +
       pa("Notes on your estimates (one per line)", "evaluator_notes", 3) + "</div>") +
     sec("lists", "Excluded and other covered services", "", '<div class="grid wide">' +
@@ -1450,13 +1443,16 @@ function renderPlans(){
     '<p class="hint">No plans yet. Add one or load the example.</p>';
 }
 const VIEW_ROWS = [["s1","1. Premium"],["s2","2. Other costs"],["s3","3. Complete cost"],["s4","4. With stress"],["hsaDetails","HSA details"],["hsaCost","HSA plans: cost after tax"]];
+/* HSA rows and features show only while at least one plan is marked HSA-eligible */
+const hasHsaPlan = () => state.plans.some(p => p.identity.hsa_eligible === true);
+const viewRowShown = o => (o[0] !== "s4" || state.view.showStress) && (o[0].indexOf("hsa") !== 0 || hasHsaPlan());
 function rowsLabel(){
-  const n = VIEW_ROWS.filter(o => (o[0] !== "s4" || state.view.showStress) && state.view.hide[o[0]]).length;
+  const n = VIEW_ROWS.filter(o => viewRowShown(o) && state.view.hide[o[0]]).length;
   return "Show/hide rows" + (n ? " (" + n + " hidden)" : "");
 }
 function renderViewOpts(){
   $("viewOpts").innerHTML = '<details class="rowsmenu"><summary id="rowsLbl">' + rowsLabel() + '</summary><div class="menu">' +
-    VIEW_ROWS.filter(o => o[0] !== "s4" || state.view.showStress).map(o => '<label class="chk"><input type="checkbox" data-viewrow="' + o[0] + '"' + (state.view.hide[o[0]] ? "" : " checked") + "> " + o[1] + "</label>").join("") + "</div></details>";
+    VIEW_ROWS.filter(viewRowShown).map(o => '<label class="chk"><input type="checkbox" data-viewrow="' + o[0] + '"' + (state.view.hide[o[0]] ? "" : " checked") + "> " + o[1] + "</label>").join("") + "</div></details>";
 }
 document.addEventListener("click", e => { const d = document.querySelector(".rowsmenu[open]"); if (d && !d.contains(e.target)) d.removeAttribute("open"); });
 document.addEventListener("keydown", e => { if (e.key === "Escape"){ const d = document.querySelector(".rowsmenu[open]"); if (d){ d.removeAttribute("open"); d.querySelector("summary").focus(); } } });
@@ -1483,7 +1479,7 @@ function lineDetail(L, x){
 }
 function detTipsDental(L, x, d){
   const T = {}, c = L.cs, dn = x.dental, rw = dn.rows.find(q => q.L === L) || { over:0 };
-  T.units = (L.n ? "Planned " + L.n + " (from your annual dental needs in section 1)" : "") + (L.exN > 0 ? "\nThe plan covers " + L.limitPer + " per person a year" + (L.limitDef ? " (the Default, because the plan states no limit)" : "") + " (" + L.cov + " of the " + L.n + "). The other " + L.exN + " are not covered: you pay " + m(L.exS) + " for them." : "");
+  T.units = (L.n ? "Planned " + L.n + " (from your annual dental needs in Household)" : "") + (L.exN > 0 ? "\nThe plan covers " + L.limitPer + " per person a year" + (L.limitDef ? " (the Default, because the plan states no limit)" : "") + " (" + L.cov + " of the " + L.n + "). The other " + L.exN + " are not covered: you pay " + m(L.exS) + " for them." : "");
   T.each = L.noPrice ? "No price entered and the plan gives no copay, so this is counted as $0." : "Allowed price per unit: " + m(L.A) + (L.src ? "\nSource: " + L.src : "");
   T.total = L.n + " units × " + m(L.A) + " = " + m(L.S);
   T.ded = c.ded && dn.D > 0 && c.st !== "not_covered" ? "Dental deductible " + m(dn.D) + " (per person × people covered), shared in the order cleanings, root canals, crowns. This line uses " + m(d.ded) + " of it." : "No dental deductible applies to this line.";
@@ -1498,7 +1494,7 @@ function detTipsDental(L, x, d){
 function detTips(L, x, d){
   if (L.cls === "dental") return detTipsDental(L, x, d);
   const T = {}, c = L.cs;
-  T.units = (L.nx ? L.nx + " = " + L.n : "Planned " + L.n + " (from your annual needs in section 1)") + (L.charged < L.n ? "\nOnly " + L.charged + " of the " + L.n + " are charged a copay (the plan limits copays per stay)." : "");
+  T.units = (L.nx ? L.nx + " = " + L.n : "Planned " + L.n + " (from your annual needs in Household)") + (L.charged < L.n ? "\nOnly " + L.charged + " of the " + L.n + " are charged a copay (the plan limits copays per stay)." : "");
   T.each = L.noPrice ? "No price entered and the plan gives no copay, so this is counted as $0." : "Allowed price per unit: " + m(L.A) + (L.src ? "\nSource: " + L.src : "");
   T.total = L.n + " units × " + m(L.A) + " = " + m(L.S);
   const share = c.st === "copay" ? L.charged + " charged unit(s) × " + m(c.cop == null ? 0 : c.cop) + " copay = " + m(c.cop == null ? 0 : c.cop * L.charged)
@@ -1554,7 +1550,7 @@ function renderDetail(){
     });
     rows += '<tr class="total"><th class="l">Subtotal, ' + g[0].toLowerCase() + "</th><td></td><td></td>" + cell(m(sb), "", "Sum of the base costs in this group = " + m(sb)) + '<td></td>' + cell(m(sd), "", "Sum of the deductible used in this group = " + m(sd)) + cell(m(sp), "", "Sum of what you pay in this group = " + m(sp) + "\n(Before the out-of-pocket maximum.)") + cell(m(si), "", "Sum of what insurance pays in this group = " + m(si)) + "</tr>";
   });
-  if (!nrows) rows = '<tr><td colspan="8" class="l">No services or medications are planned. Enter your annual needs in section 1 of the Evaluator tab.</td></tr>';
+  if (!nrows) rows = '<tr><td colspan="8" class="l">No services or medications are planned. Enter your annual needs in Household of the Evaluator tab.</td></tr>';
   const adj = x.capped - x.raw;
   const rxRow = x.rxOver > 0 ? '<tr class="cap"><th class="l">Prescription out-of-pocket cap of ' + m(x.R) + ' reached: reduction</th><td></td><td></td><td></td><td></td><td></td>' + cell(m(-x.rxOver), "", "What you would pay for medications " + m(x.rxRaw) + " − prescription out-of-pocket cap " + m(x.R) + " = " + m(x.rxOver) + " over the cap.\nYou pay only " + m(x.rxRaw - x.rxOver) + " for medications, so " + m(x.rxOver) + " moves to the insurer.") + cell("+" + m(x.rxOver), "", "Amount over the prescription out-of-pocket cap that insurance picks up instead of you = " + m(x.rxOver)) + "</tr>" : "";
   const foot = rxRow + (x.M > 0 && adj < 0 ? '<tr class="cap"><th class="l">Out-of-pocket maximum of ' + m(x.M) + ' reached: reduction</th><td></td><td></td><td></td><td></td><td></td>' + cell(m(adj), "", "Your payments before the cap " + m(x.raw) + " − out-of-pocket maximum " + m(x.M) + " = " + m(x.raw - x.M) + " over the cap.\nYou pay only " + m(x.capped) + " (plus anything not covered), so " + m(-adj) + " moves to the insurer.") + cell("+" + m(-adj), "", "Amount over the out-of-pocket maximum that insurance picks up instead of you = " + m(-adj)) + "</tr>" : "") +
@@ -1570,7 +1566,7 @@ function renderDetail(){
       "<div class=\"pay\" data-tip=\"" + esc("Premium " + m(prem) + " + what you pay " + m(you) + " = " + m(prem + you)) + "\" tabindex=\"0\">You pay + premium: <b>" + m(prem + you) + "</b></div></div>" +
     '<div class="tablewrap"><table class="res det"><thead><tr><th class="l">Service / medication</th><th>Units</th><th>Base cost each</th><th>Base cost total</th><th class="l">Insurance coverage</th><th>Deductible used</th><th>You pay</th><th>Insurance pays</th></tr></thead><tbody>' +
     rows + foot + "</tbody></table></div>" +
-    '<p class="hint mt10">Base cost is the allowed price: the plan\'s own Evaluator price, else your cost in section 2, else the copay. “Deductible used” is the part of your payment that goes toward the deductible. Services that are not covered are paid in full and sit outside the out-of-pocket maximum. Dental has its own deductible and annual maximum and also sits outside the medical out-of-pocket maximum.</p>';
+    '<p class="hint mt10">Base cost is the allowed price: the plan\'s own Evaluator price, else your cost in Costs, else the copay. “Deductible used” is the part of your payment that goes toward the deductible. Services that are not covered are paid in full and sit outside the out-of-pocket maximum. Dental has its own deductible and annual maximum and also sits outside the medical out-of-pocket maximum.</p>';
 }
 const tabScroll = { main:0, detail:0 };
 function setTab(t){
@@ -1836,10 +1832,13 @@ function renderResults(){
   renderResultsMain();
   if (ui.tab === "detail") renderDetail();
 }
+let lastAnyHsa;
 function renderResultsMain(){
   const evs = state.plans.map(p => evaluate(state, p));
   const n = evs.length;
-  document.body.classList.toggle("no-hsa", !evs.some(e => e.isHsa));
+  const anyHsa = evs.some(e => e.isHsa);
+  document.body.classList.toggle("no-hsa", !anyHsa);
+  if (anyHsa !== lastAnyHsa){ lastAnyHsa = anyHsa; renderViewOpts(); }
   const short = barNames(evs);
   const notices = [];   /* [class, html] or [class, html, plan evaluation]; plan notes with the same text are merged below */
   const lim = hsaLimit(state);
@@ -1863,7 +1862,7 @@ function renderResultsMain(){
       "Out-of-network costs and the free first 20 skilled-nursing days are not modeled.", e]));
   }
   if (isSingle(state.household)) evs.filter(e => singleEstimates(e.plan).length).forEach(e => notices.push(["info", "no " + esc(singleEstimates(e.plan).join(" or ")) + " is entered, so half the family amount is used for a single person. Enter the individual amount on the plan card for an exact result.", e]));
-  evs.filter(e => e.missing.length).forEach(e => notices.push(["", "no price is entered for " + esc(e.missing.join(", ")) + ", so " + (e.missing.length === 1 ? "it counts" : "they count") + " as $0. Enter the price in section 2 (Costs) or under “Evaluator prices” on the plan card.", e]));
+  evs.filter(e => e.missing.length).forEach(e => notices.push(["", "no price is entered for " + esc(e.missing.join(", ")) + ", so " + (e.missing.length === 1 ? "it counts" : "they count") + " as $0. Enter the price in Costs or under “Evaluator prices” on the plan card.", e]));
   evs.filter(e => e.dentalUnset.length).forEach(e => notices.push(["", "no dental cost share is entered for " + esc(e.dentalUnset.join(", ").toLowerCase()) + ", so " + (e.dentalUnset.length === 1 ? "it counts" : "they count") + " as not covered (you pay the full price). Enter it under “Services: dental” on the plan card.", e]));
   /* Same wording for several plans -> one notice naming them (short names, full name on hover). */
   const nameTip = list => esc(list.map(e => pn(e.plan) || "(unnamed plan)").join("\n"));
@@ -1934,8 +1933,6 @@ function renderResultsMain(){
     add(resRow("Contribution used in this analysis", h(x => x.contrib), null, T("hsaContrib")));
     add(resRow("Federal tax savings on the contribution", h(x => x.taxSavings), { cls:"sub" }, T("hsaTax")));
     add(resRow("Real contribution after the tax deduction", h(x => x.realCost), { cls:"total" }, T("hsaReal")));
-    add(resRow("Unspent HSA balance after a normal year", h(x => x.balance), { cls:"sub" }, T("hsaBalance")));
-    addS(resRow("Unspent HSA balance after the stress year", h(x => x.balanceStress), { cls:"sub" }, T("hsaBalanceStress")));
     sec("hsaCost", "HSA plans: cost after tax reduction");
     add(resRow("Complete cost (3)", col(e => e.isHsa ? e.complete : null), { cls:"sub" }, T("complete")));
     add(resRow("− Tax reduction from HSA", h(x => x.saveOnSpend), { cls:"sub" }, T("hsaSave")));
@@ -1944,9 +1941,11 @@ function renderResultsMain(){
     addS(resRow("− Tax reduction from HSA (stress year)", h(x => x.saveOnSpendStress), { cls:"sub" }, T("hsaSaveStress")));
     addS(resRow("Complete cost with stress − tax reduction", col(e => e.isHsa ? e.netStress : null), { best:true, cls:"total" }, T("netStress")));
   }
-  sec("net", "Net cost after HSA tax savings");
-  add(resRow("Complete cost, net (3)", col(e => e.net), { best:true, cls:"total" }, T("net")));
-  addS(resRow("Complete + stress, net (4)", col(e => e.netStress), { best:true, cls:"total" }, T("netStress")));
+  if (anyHsa){
+    sec("net", "Net cost after HSA tax savings");
+    add(resRow("Complete cost, net (3)", col(e => e.net), { best:true, cls:"total" }, T("net")));
+    addS(resRow("Complete + stress, net (4)", col(e => e.netStress), { best:true, cls:"total" }, T("netStress")));
+  }
   t += "</tbody>";
   $("resTable").innerHTML = t;
 }
@@ -2072,7 +2071,7 @@ function normalizeState(raw){
   }
   delete out.costs.rx_tier3; delete out.costs.part_b_monthly;
   Object.keys(out.defaults).forEach(k => { out.defaults[k] = out.defaults[k] == null ? "" : String(out.defaults[k]); });
-  out.settings = Object.assign({}, base.settings, src.settings || {});
+  out.settings = Object.assign({}, base.settings, src.settings || {}); delete out.settings.year; delete out.settings.taxFull; delete out.settings.medicareAge;
   out.view = { hide: Object.assign({}, base.view.hide) };
   out.view.secHide = Object.assign({}, base.view.secHide);
   out.view.showStress = !!(src.view && src.view.showStress === true);
@@ -2157,7 +2156,7 @@ async function saveCurrent(){
   catch (e){ setStatus("Could not save: " + e.message); flashBtn(btn, false); }
 }
 function loadText(text, name){
-  try { state = normalizeState(JSON.parse(text)); renderAll(); autosave(true); setStatus("Opened " + name + " (" + state.plans.length + " plan" + (state.plans.length === 1 ? "" : "s") + ")."); return true; }
+  try { state = normalizeState(JSON.parse(text)); renderAll(); autosave(true); setStatus(""); return true; }
   catch (e){ setStatus("Could not open that file: " + e.message); return false; }
 }
 $("btnSave").addEventListener("click", saveCurrent);
@@ -2167,7 +2166,7 @@ $("btnOpen").addEventListener("click", async () => {
   try {
     const [h] = await window.showOpenFilePicker({ types: PICKER_TYPES, multiple:false });
     const f = await h.getFile();
-    if (loadText(await f.text(), f.name)){ fileHandle = h; restoreAutoIfSafetyOff(); showFileName(); setStatus("Opened " + f.name + " (nothing was written). Save now rewrites this file."); }
+    if (loadText(await f.text(), f.name)){ fileHandle = h; restoreAutoIfSafetyOff(); showFileName(); setStatus(""); }
   } catch (e){
     if (e.name === "AbortError") return;
     if (e.name === "SecurityError"){ $("fileIn").click(); return; }
